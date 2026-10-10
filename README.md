@@ -25,6 +25,16 @@ Header-only. TensorRT-native. Zero-copy GPU pipeline. Sub-2ms inference.
 
 ---
 
+## Verified YOLO11n deployment baseline
+
+RTX 4060 Laptop, existing FP16-builder Engine with **FP32 I/O**, 640×640, batch=1, confidence=0.25, class-aware NMS IoU=0.45, max_det=300, inference-only CUDA Graph enabled. Synchronous detection and a bounded two-slot pipeline are retained.
+
+The recorded preloaded-image benchmark completes **637.11 FPS synchronously** and **791.00 FPS with two slots**. Mean frame latency is **1.5693 ms / 3.5144 ms** respectively; asynchronous latency includes backpressure and queue waiting, and throughput includes final drain. These performance figures use seven images, not COCO throughput or video decoding.
+
+Full COCO val2017 accuracy, latency attribution, exact reproduction commands and delivery provenance are documented in [部署基线交付与COCO精度验证.md](部署基线交付与COCO精度验证.md). See [the asynchronous API contract](doc/ASYNC_PIPELINE.md) for resource ownership and shutdown behavior.
+
+---
+
 ## Why YOLOs-TRT?
 
 Most YOLO C++ wrappers treat preprocessing as an afterthought — resizing on the CPU, copying synchronously, rebuilding launch parameters every frame. **YOLOs-TRT** was built from scratch around a single principle: **the GPU should never wait for the CPU**.

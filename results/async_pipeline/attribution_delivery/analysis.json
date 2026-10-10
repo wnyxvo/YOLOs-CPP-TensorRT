@@ -1,0 +1,417 @@
+{
+  "performance_source": "results/async_pipeline/final",
+  "profiling_separate_from_final_measurement": true,
+  "timing_note": "Exclusive CPU wall intervals add per frame; event wait includes GPU service/queue and is not synchronization overhead",
+  "nsight_timestamp_limitation": "CuptiUseRawGpuTimestamps=false WSL workaround; reduced timestamp accuracy; profiling is separate and not causal percentages",
+  "latency": {
+    "0": {
+      "latency_ms": {
+        "count": 5600,
+        "mean": 1.5693266355357143,
+        "p50": 1.5027205000000001,
+        "p95": 2.0639807
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 1.5693266355357143,
+        "p50": 1.5027205000000001,
+        "p95": 2.0639807
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0
+      }
+    },
+    "1": {
+      "latency_ms": {
+        "count": 5600,
+        "mean": 2.8362745423214286,
+        "p50": 2.8106625000000003,
+        "p95": 3.4366948500000003
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 1.5368347692857145,
+        "p50": 1.4820609999999999,
+        "p95": 2.03466965
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 1.2994397730357143,
+        "p50": 1.254188,
+        "p95": 1.6506546500000003
+      },
+      "submit_host_ms": {
+        "count": 5600,
+        "mean": 1.5398427558928571,
+        "p50": 1.495416,
+        "p95": 1.9138962000000002
+      },
+      "staging_ms": {
+        "count": 5600,
+        "mean": 0.17019770125,
+        "p50": 0.1453095,
+        "p95": 0.38695035
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 0.02552780392857143,
+        "p50": 0.020227,
+        "p95": 0.054938350000000004
+      },
+      "collect_event_wait_ms": {
+        "count": 5600,
+        "mean": 1.2679759676785716,
+        "p50": 1.2259015,
+        "p95": 1.6105251000000003
+      },
+      "cpu_post_ms": {
+        "count": 5600,
+        "mean": 0.002928014821428571,
+        "p50": 0.001368,
+        "p95": 0.01598445000000003
+      },
+      "exclusive_segments_ms": {
+        "capacity_wait": {
+          "count": 5600,
+          "mean": 1.2994397730357143,
+          "p50": 1.254188,
+          "p95": 1.6506546500000003
+        },
+        "staging": {
+          "count": 5600,
+          "mean": 0.17019770125,
+          "p50": 0.1453095,
+          "p95": 0.38695035
+        },
+        "remaining_host_enqueue": {
+          "count": 5600,
+          "mean": 0.07020528160714286,
+          "p50": 0.06743600000000005,
+          "p95": 0.09987064999999998
+        },
+        "collection_queue": {
+          "count": 5600,
+          "mean": 0.02552780392857143,
+          "p50": 0.020227,
+          "p95": 0.054938350000000004
+        },
+        "completion_event_wait": {
+          "count": 5600,
+          "mean": 1.2679759676785716,
+          "p50": 1.2259015,
+          "p95": 1.6105251000000003
+        },
+        "cpu_post": {
+          "count": 5600,
+          "mean": 0.002928014821428571,
+          "p50": 0.001368,
+          "p95": 0.01598445000000003
+        }
+      },
+      "max_decomposition_error_ms": 8.881784197001252e-16
+    },
+    "2": {
+      "latency_ms": {
+        "count": 5600,
+        "mean": 3.5144131708928565,
+        "p50": 3.4258550000000003,
+        "p95": 4.22878195
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 2.507287905,
+        "p50": 2.4494295,
+        "p95": 3.0949724499999998
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 1.0071252658928571,
+        "p50": 0.9837765,
+        "p95": 1.3971546500000005
+      },
+      "submit_host_ms": {
+        "count": 5600,
+        "mean": 1.2620946623214286,
+        "p50": 1.2125024999999998,
+        "p95": 1.7339494500000001
+      },
+      "staging_ms": {
+        "count": 5600,
+        "mean": 0.18109182017857142,
+        "p50": 0.160443,
+        "p95": 0.38177805000000004
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 0.9986523450000001,
+        "p50": 0.976569,
+        "p95": 1.3852753500000001
+      },
+      "collect_event_wait_ms": {
+        "count": 5600,
+        "mean": 1.2518294232142857,
+        "p50": 1.2074989999999999,
+        "p95": 1.6247314000000002
+      },
+      "cpu_post_ms": {
+        "count": 5600,
+        "mean": 0.001836740357142857,
+        "p50": 0.0011825,
+        "p95": 0.0039052000000000006
+      },
+      "exclusive_segments_ms": {
+        "capacity_wait": {
+          "count": 5600,
+          "mean": 1.0071252658928571,
+          "p50": 0.9837765,
+          "p95": 1.3971546500000005
+        },
+        "staging": {
+          "count": 5600,
+          "mean": 0.18109182017857142,
+          "p50": 0.160443,
+          "p95": 0.38177805000000004
+        },
+        "remaining_host_enqueue": {
+          "count": 5600,
+          "mean": 0.07387757625,
+          "p50": 0.06910150000000004,
+          "p95": 0.11924314999999999
+        },
+        "collection_queue": {
+          "count": 5600,
+          "mean": 0.9986523450000001,
+          "p50": 0.976569,
+          "p95": 1.3852753500000001
+        },
+        "completion_event_wait": {
+          "count": 5600,
+          "mean": 1.2518294232142857,
+          "p50": 1.2074989999999999,
+          "p95": 1.6247314000000002
+        },
+        "cpu_post": {
+          "count": 5600,
+          "mean": 0.001836740357142857,
+          "p50": 0.0011825,
+          "p95": 0.0039052000000000006
+        }
+      },
+      "max_decomposition_error_ms": 8.881784197001252e-16
+    },
+    "3": {
+      "latency_ms": {
+        "count": 5600,
+        "mean": 4.763071723214286,
+        "p50": 4.678211,
+        "p95": 5.530122050000001
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 3.7632144612500005,
+        "p50": 3.6845,
+        "p95": 4.4824674
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 0.9998572619642857,
+        "p50": 0.923611,
+        "p95": 1.3554157000000002
+      },
+      "submit_host_ms": {
+        "count": 5600,
+        "mean": 1.2589278501785715,
+        "p50": 1.189457,
+        "p95": 1.7148178500000002
+      },
+      "staging_ms": {
+        "count": 5600,
+        "mean": 0.18197286571428573,
+        "p50": 0.155837,
+        "p95": 0.39810675000000006
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 2.252959206964286,
+        "p50": 2.2186494999999997,
+        "p95": 2.8519344000000006
+      },
+      "collect_event_wait_ms": {
+        "count": 5600,
+        "mean": 1.2493674094642857,
+        "p50": 1.210041,
+        "p95": 1.5906584000000001
+      },
+      "cpu_post_ms": {
+        "count": 5600,
+        "mean": 0.001817256607142857,
+        "p50": 0.001138,
+        "p95": 0.0039342000000000005
+      },
+      "exclusive_segments_ms": {
+        "capacity_wait": {
+          "count": 5600,
+          "mean": 0.9998572619642857,
+          "p50": 0.923611,
+          "p95": 1.3554157000000002
+        },
+        "staging": {
+          "count": 5600,
+          "mean": 0.18197286571428573,
+          "p50": 0.155837,
+          "p95": 0.39810675000000006
+        },
+        "remaining_host_enqueue": {
+          "count": 5600,
+          "mean": 0.07709772250000001,
+          "p50": 0.07255950000000008,
+          "p95": 0.11715045
+        },
+        "collection_queue": {
+          "count": 5600,
+          "mean": 2.252959206964286,
+          "p50": 2.2186494999999997,
+          "p95": 2.8519344000000006
+        },
+        "completion_event_wait": {
+          "count": 5600,
+          "mean": 1.2493674094642857,
+          "p50": 1.210041,
+          "p95": 1.5906584000000001
+        },
+        "cpu_post": {
+          "count": 5600,
+          "mean": 0.001817256607142857,
+          "p50": 0.001138,
+          "p95": 0.0039342000000000005
+        }
+      },
+      "max_decomposition_error_ms": 1.7763568394002505e-15
+    }
+  },
+  "trace": {
+    "0": {
+      "sqlite_sha256": "25ad01f8bf6df9e6782b2b6a5299f85763286e16693b8d85d749b239e62e961c",
+      "frames": 140,
+      "batch_ms": 257.499095,
+      "gpu_active_union_ms": 197.842304,
+      "gpu_idle_ms": 59.656791,
+      "gpu_kernel_busy_fraction": 0.648802089964627,
+      "d2h_to_next_h2d_gap_ms": {
+        "count": 139,
+        "mean": 0.28226807913669066,
+        "p50": 0.263283,
+        "p95": 0.5279356
+      },
+      "negative_gap_count": 0,
+      "next_h2d_host_enqueued_before_previous_d2h_end": {
+        "count": 0,
+        "total": 139,
+        "fraction": 0.0
+      },
+      "stage_mean_ms": {
+        "preprocess": 0.01618547857142857,
+        "gpu_filter": 0.005105950000000001,
+        "trt_kernels": 1.172036792857143,
+        "h2d": 0.19632652142857143,
+        "d2h": 0.0231503,
+        "memset": 0.00035427142857142853
+      },
+      "h2d_kernel_overlap_ms": 0.0,
+      "d2h_kernel_overlap_ms": 0.0
+    },
+    "1": {
+      "sqlite_sha256": "d427163cfba362145ee37cdf5a3e5451117d2d1a82f0dae192afec71c07d3c32",
+      "frames": 140,
+      "batch_ms": 277.869011,
+      "gpu_active_union_ms": 211.842831,
+      "gpu_idle_ms": 66.02618000000001,
+      "gpu_kernel_busy_fraction": 0.6506336181547067,
+      "d2h_to_next_h2d_gap_ms": {
+        "count": 139,
+        "mean": 0.31847924460431654,
+        "p50": 0.299476,
+        "p95": 0.5873145999999999
+      },
+      "negative_gap_count": 0,
+      "next_h2d_host_enqueued_before_previous_d2h_end": {
+        "count": 0,
+        "total": 139,
+        "fraction": 0.0
+      },
+      "stage_mean_ms": {
+        "preprocess": 0.016310707142857143,
+        "gpu_filter": 0.0053862642857142855,
+        "trt_kernels": 1.2696667428571429,
+        "h2d": 0.19884052142857142,
+        "d2h": 0.0225865,
+        "memset": 0.00037234285714285713
+      },
+      "h2d_kernel_overlap_ms": 0.0,
+      "d2h_kernel_overlap_ms": 0.0
+    },
+    "2": {
+      "sqlite_sha256": "b717373ea8c114f0be8251af5bd0601901b2fbba5343df19a79ed9ce5eb009cd",
+      "frames": 140,
+      "batch_ms": 227.171436,
+      "gpu_active_union_ms": 208.373273,
+      "gpu_idle_ms": 18.798162999999988,
+      "gpu_kernel_busy_fraction": 0.7879974575676847,
+      "d2h_to_next_h2d_gap_ms": {
+        "count": 139,
+        "mean": 0.0015659568345323738,
+        "p50": 0.00144,
+        "p95": 0.0018591999999999999
+      },
+      "negative_gap_count": 0,
+      "next_h2d_host_enqueued_before_previous_d2h_end": {
+        "count": 139,
+        "total": 139,
+        "fraction": 1.0
+      },
+      "stage_mean_ms": {
+        "preprocess": 0.01670619285714286,
+        "gpu_filter": 0.0053183928571428575,
+        "trt_kernels": 1.256621942857143,
+        "h2d": 0.18739139999999999,
+        "d2h": 0.02197805,
+        "memset": 0.00036454285714285716
+      },
+      "h2d_kernel_overlap_ms": 0.0,
+      "d2h_kernel_overlap_ms": 0.0
+    },
+    "3": {
+      "sqlite_sha256": "130ce30e98a4f2d88612a273425e3d1de673bfb68b51af22a434a54930a3e999",
+      "frames": 140,
+      "batch_ms": 226.863698,
+      "gpu_active_union_ms": 208.188367,
+      "gpu_idle_ms": 18.675331,
+      "gpu_kernel_busy_fraction": 0.7829261647670047,
+      "d2h_to_next_h2d_gap_ms": {
+        "count": 139,
+        "mean": 0.0030532374100719424,
+        "p50": 0.003008,
+        "p95": 0.0032951
+      },
+      "negative_gap_count": 0,
+      "next_h2d_host_enqueued_before_previous_d2h_end": {
+        "count": 139,
+        "total": 139,
+        "fraction": 1.0
+      },
+      "stage_mean_ms": {
+        "preprocess": 0.016891828571428572,
+        "gpu_filter": 0.005424492857142857,
+        "trt_kernels": 1.2463802857142856,
+        "h2d": 0.19485137142857145,
+        "d2h": 0.02313717142857143,
+        "memset": 0.0003746142857142857
+      },
+      "h2d_kernel_overlap_ms": 0.0,
+      "d2h_kernel_overlap_ms": 0.0
+    }
+  }
+}

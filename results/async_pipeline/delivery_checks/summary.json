@@ -1,0 +1,219 @@
+{
+  "timestamp": "2026-10-10T17:45:58.682471",
+  "frames_per_round": 28,
+  "warmup_per_image": 2,
+  "images": 7,
+  "model_engine_sha256": "de97ab4e249a501cd138e0cc2ce66d38c5b69615933bf11d30d2bfddae8b1270",
+  "latency_definition": "submit entry (including capacity wait) to CPU final detections ready; synchronous detect entry to return",
+  "admitted_latency_definition": "slot reservation to CPU final detections ready; GPU/FIFO queue still included",
+  "throughput_definition": "completed frames / entire batch wall time including final drain and producer join; not submission rate",
+  "preloaded_images": true,
+  "profiler": false,
+  "graph": true,
+  "postprocess": "gpu-filter + CPU NMS",
+  "configurations": [
+    {
+      "slots": 0,
+      "completed_frames": 28,
+      "rounds": 1,
+      "batch_elapsed_ms": 41.633833,
+      "completed_fps": 672.5299589879221,
+      "latency_ms": {
+        "count": 28,
+        "mean": 1.4868168571428573,
+        "p50": 1.4833379999999998,
+        "p95": 1.9706902
+      },
+      "admitted_latency_ms": {
+        "count": 28,
+        "mean": 1.4868168571428573,
+        "p50": 1.4833379999999998,
+        "p95": 1.9706902
+      },
+      "submit_wait_ms": {
+        "count": 28,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0
+      },
+      "collection_queue_ms": null,
+      "rounds_raw": [
+        {
+          "slots": "0",
+          "frames": "28",
+          "images": "7",
+          "warmup_per_image": "2",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "41.633833000",
+          "completed_fps": "672.529958988",
+          "accepted": "28",
+          "collected": "28",
+          "high_water": "1",
+          "capacity_waits": "0",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 1,
+      "completed_frames": 28,
+      "rounds": 1,
+      "batch_elapsed_ms": 41.3838,
+      "completed_fps": 676.5932562983583,
+      "latency_ms": {
+        "count": 28,
+        "mean": 2.6385085000000004,
+        "p50": 2.652065,
+        "p95": 3.10257115
+      },
+      "admitted_latency_ms": {
+        "count": 28,
+        "mean": 1.4592149285714282,
+        "p50": 1.4091114999999999,
+        "p95": 1.8803943
+      },
+      "submit_wait_ms": {
+        "count": 28,
+        "mean": 1.1792935714285715,
+        "p50": 1.169009,
+        "p95": 1.5355925999999998
+      },
+      "collection_queue_ms": {
+        "count": 28,
+        "mean": 0.02448114285714286,
+        "p50": 0.020416999999999998,
+        "p95": 0.045432099999999975
+      },
+      "rounds_raw": [
+        {
+          "slots": "1",
+          "frames": "28",
+          "images": "7",
+          "warmup_per_image": "2",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "41.383800000",
+          "completed_fps": "676.593256298",
+          "accepted": "28",
+          "collected": "28",
+          "high_water": "1",
+          "capacity_waits": "27",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 2,
+      "completed_frames": 28,
+      "rounds": 1,
+      "batch_elapsed_ms": 42.255939,
+      "completed_fps": 662.6287490617591,
+      "latency_ms": {
+        "count": 28,
+        "mean": 4.084207178571428,
+        "p50": 4.1970814999999995,
+        "p95": 4.571973799999999
+      },
+      "admitted_latency_ms": {
+        "count": 28,
+        "mean": 2.93106325,
+        "p50": 2.9541304999999998,
+        "p95": 3.28376585
+      },
+      "submit_wait_ms": {
+        "count": 28,
+        "mean": 1.1531439285714284,
+        "p50": 1.210183,
+        "p95": 1.6374341000000001
+      },
+      "collection_queue_ms": {
+        "count": 28,
+        "mean": 1.185696642857143,
+        "p50": 1.203862,
+        "p95": 1.61887415
+      },
+      "rounds_raw": [
+        {
+          "slots": "2",
+          "frames": "28",
+          "images": "7",
+          "warmup_per_image": "2",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "42.255939000",
+          "completed_fps": "662.628749062",
+          "accepted": "28",
+          "collected": "28",
+          "high_water": "2",
+          "capacity_waits": "26",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 3,
+      "completed_frames": 28,
+      "rounds": 1,
+      "batch_elapsed_ms": 43.525071,
+      "completed_fps": 643.3073940304429,
+      "latency_ms": {
+        "count": 28,
+        "mean": 5.599335750000002,
+        "p50": 5.821604,
+        "p95": 6.2365207
+      },
+      "admitted_latency_ms": {
+        "count": 28,
+        "mean": 4.451977321428572,
+        "p50": 4.575628,
+        "p95": 4.9446994
+      },
+      "submit_wait_ms": {
+        "count": 28,
+        "mean": 1.1473584285714284,
+        "p50": 1.1991855,
+        "p95": 1.60602405
+      },
+      "collection_queue_ms": {
+        "count": 28,
+        "mean": 2.668231678571428,
+        "p50": 2.7700835,
+        "p95": 3.2141482
+      },
+      "rounds_raw": [
+        {
+          "slots": "3",
+          "frames": "28",
+          "images": "7",
+          "warmup_per_image": "2",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "43.525071000",
+          "completed_fps": "643.307394030",
+          "accepted": "28",
+          "collected": "28",
+          "high_water": "3",
+          "capacity_waits": "25",
+          "timeline": "0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "frames": 28,
+  "unique_outputs_checked": 7,
+  "every_frame_checked": true,
+  "matching": "same class and IoU; identical repetitions reuse verified match",
+  "all_exact": true,
+  "images": {
+    "bus.png": {
+      "matched": 5,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "dog.png": {
+      "matched": 1,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "multi_mosaic.png": {
+      "matched": 4,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "odd_landscape.png": {
+      "matched": 1,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "portrait.png": {
+      "matched": 1,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "wide.png": {
+      "matched": 1,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    },
+    "zidane.png": {
+      "matched": 3,
+      "max_coordinate_abs_delta": 0.0,
+      "max_score_abs_delta": 0.0
+    }
+  }
+}

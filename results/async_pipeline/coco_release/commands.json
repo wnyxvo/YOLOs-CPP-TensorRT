@@ -1,0 +1,38 @@
+[
+  {
+    "argv": [
+      "build/dataset_accuracy_detection",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/async_pipeline/coco_release/images.tsv",
+      "results/async_pipeline/coco_release/cpu.csv",
+      "cpu",
+      "1228800"
+    ],
+    "returncode": 0
+  },
+  {
+    "argv": [
+      "build/dataset_accuracy_detection",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/async_pipeline/coco_release/images.tsv",
+      "results/async_pipeline/coco_release/gpu-filter.csv",
+      "gpu-filter",
+      "1228800"
+    ],
+    "returncode": 0
+  },
+  {
+    "argv": [
+      "build/dataset_accuracy_detection",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/async_pipeline/coco_release/images.tsv",
+      "results/async_pipeline/coco_release/async2.csv",
+      "async2",
+      "1228800"
+    ],
+    "returncode": 0
+  }
+]

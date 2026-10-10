@@ -4,3 +4,4 @@
 *.nsys-rep
 *.sqlite
 *.tar.gz
+delivery_checks/source/

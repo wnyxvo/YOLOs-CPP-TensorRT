@@ -71,7 +71,16 @@ def main():
     run([sys.executable,ROOT/'scripts/baseline/collect_environment.py','--output',a.output/'environment.json','--binary',binary],a.output/'environment.log')
     env=json.loads((a.output/'environment.json').read_text());env['source_files_role']='Current async worktree; frozen synchronous snapshot is separate'
     env.update(source_sha256=hashes,unchanged_core_files=unchanged,baseline_commit=frozen['commit']);write(a.output/'environment.json',env)
-    write(a.output/'accuracy_status.json',json.loads((BASE/'accuracy_status.json').read_text()))
+    accuracy=next((ROOT/path for path in ('results/async_pipeline/coco_release/metrics.json','results/async_pipeline/coco_full/metrics.json') if (ROOT/path).is_file()),None)
+    if accuracy:
+        evaluation=json.loads(accuracy.read_text())
+        if evaluation['same_engine_sha256']!=frozen['model_artifacts']['models/yolo11n.trt'] or not evaluation['exact_detection_parity']:
+            raise RuntimeError('External COCO validation is not applicable to the current Engine')
+        write(a.output/'accuracy_status.json',{'status':'separate_full_coco_validation_available','metrics_path':str(accuracy),
+              'metrics_sha256':sha(accuracy),'evaluated_in_this_benchmark':False,'scope':evaluation['scope'],'images':evaluation['images'],
+              'conf':evaluation['conf'],'iou':evaluation['iou'],'max_det':evaluation['max_det']})
+    else:
+        write(a.output/'accuracy_status.json',{'status':'not_evaluated_in_this_benchmark','metrics':None,'historical_baseline_status':json.loads((BASE/'accuracy_status.json').read_text())})
     reference=read_detections(str(BASE/'reproduction.detections.csv'))
     images=ROOT/'results/baseline/samples'
     # Exercise the new dataset streaming exporter with unlabeled samples, never compute AP.
@@ -143,7 +152,8 @@ def main():
                 if saved is None:config_path.unlink(missing_ok=True)
                 else:config_path.write_bytes(saved)
     if sha(binary)!=binary_hash or any(sha(ROOT/path)!=digest for path,digest in hashes.items()):raise RuntimeError('Sources/binary changed during measurement')
-    write(a.output/'completion.json',{'status':'completed','binary_sha256':binary_hash,'source_sha256':hashes,'model_hashes':frozen['model_artifacts'],'accuracy_mAP':'not run: missing labeled dataset','nsight':a.nsight})
+    write(a.output/'completion.json',{'status':'completed','binary_sha256':binary_hash,'source_sha256':hashes,'model_hashes':frozen['model_artifacts'],
+          'accuracy_mAP':'separate evaluation; see accuracy_status.json','nsight':a.nsight})
     print(json.dumps(summary,indent=2))
 
 

@@ -118,6 +118,6 @@ python scripts/async_pipeline/dataset_accuracy.py \
   --output results/async_pipeline/coco_validation
 ```
 
-数据集评估沿用 conf=.25、IoU=.45、max_det=300；COCOeval 使用标准 maxDets=[1,10,100]。该阈值下的 AP 不应冒充低置信度完整召回设置的模型官方 mAP。首次数据集评估还需要 pycocotools。七张无标签图片只验证路径一致性，不能替代精度验证。
+数据集评估沿用 conf=.25、IoU=.45、max_det=300；COCOeval 使用标准 maxDets=[1,10,100]。该阈值下的 AP 不应冒充低置信度完整召回设置的模型官方 mAP。安装 `scripts/async_pipeline/requirements-accuracy.txt` 并用 `prepare_coco.py` 准备完整 val2017 后，`dataset_accuracy.py` 对照 CPU、同步 gpu-filter、异步2槽，检查全部 frame ID 和原图尺寸，再评估真实 AP。当前已实际完成5000图验证，结果见根目录 `部署基线交付与COCO精度验证.md`；原先缺少数据的状态文件保留为历史记录。
 
 本地正式结果、版本、复现命令、每帧原始数据、地址 CSV 与独立时间线位于 `results/async_pipeline/final`；汇总见项目根目录 `多帧异步流水线实现与实测.md`。

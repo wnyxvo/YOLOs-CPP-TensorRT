@@ -1,0 +1,1 @@
+PASS measured batch FIFO IDs, exact synchronous parity=0, accepted=28, collected=28

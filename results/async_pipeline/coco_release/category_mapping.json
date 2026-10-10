@@ -1,0 +1,482 @@
+[
+  {
+    "class_id": 0,
+    "cpp_name": "person",
+    "coco_category_id": 1,
+    "coco_name": "person"
+  },
+  {
+    "class_id": 1,
+    "cpp_name": "bicycle",
+    "coco_category_id": 2,
+    "coco_name": "bicycle"
+  },
+  {
+    "class_id": 2,
+    "cpp_name": "car",
+    "coco_category_id": 3,
+    "coco_name": "car"
+  },
+  {
+    "class_id": 3,
+    "cpp_name": "motorbike",
+    "coco_category_id": 4,
+    "coco_name": "motorcycle"
+  },
+  {
+    "class_id": 4,
+    "cpp_name": "aeroplane",
+    "coco_category_id": 5,
+    "coco_name": "airplane"
+  },
+  {
+    "class_id": 5,
+    "cpp_name": "bus",
+    "coco_category_id": 6,
+    "coco_name": "bus"
+  },
+  {
+    "class_id": 6,
+    "cpp_name": "train",
+    "coco_category_id": 7,
+    "coco_name": "train"
+  },
+  {
+    "class_id": 7,
+    "cpp_name": "truck",
+    "coco_category_id": 8,
+    "coco_name": "truck"
+  },
+  {
+    "class_id": 8,
+    "cpp_name": "boat",
+    "coco_category_id": 9,
+    "coco_name": "boat"
+  },
+  {
+    "class_id": 9,
+    "cpp_name": "traffic light",
+    "coco_category_id": 10,
+    "coco_name": "traffic light"
+  },
+  {
+    "class_id": 10,
+    "cpp_name": "fire hydrant",
+    "coco_category_id": 11,
+    "coco_name": "fire hydrant"
+  },
+  {
+    "class_id": 11,
+    "cpp_name": "stop sign",
+    "coco_category_id": 13,
+    "coco_name": "stop sign"
+  },
+  {
+    "class_id": 12,
+    "cpp_name": "parking meter",
+    "coco_category_id": 14,
+    "coco_name": "parking meter"
+  },
+  {
+    "class_id": 13,
+    "cpp_name": "bench",
+    "coco_category_id": 15,
+    "coco_name": "bench"
+  },
+  {
+    "class_id": 14,
+    "cpp_name": "bird",
+    "coco_category_id": 16,
+    "coco_name": "bird"
+  },
+  {
+    "class_id": 15,
+    "cpp_name": "cat",
+    "coco_category_id": 17,
+    "coco_name": "cat"
+  },
+  {
+    "class_id": 16,
+    "cpp_name": "dog",
+    "coco_category_id": 18,
+    "coco_name": "dog"
+  },
+  {
+    "class_id": 17,
+    "cpp_name": "horse",
+    "coco_category_id": 19,
+    "coco_name": "horse"
+  },
+  {
+    "class_id": 18,
+    "cpp_name": "sheep",
+    "coco_category_id": 20,
+    "coco_name": "sheep"
+  },
+  {
+    "class_id": 19,
+    "cpp_name": "cow",
+    "coco_category_id": 21,
+    "coco_name": "cow"
+  },
+  {
+    "class_id": 20,
+    "cpp_name": "elephant",
+    "coco_category_id": 22,
+    "coco_name": "elephant"
+  },
+  {
+    "class_id": 21,
+    "cpp_name": "bear",
+    "coco_category_id": 23,
+    "coco_name": "bear"
+  },
+  {
+    "class_id": 22,
+    "cpp_name": "zebra",
+    "coco_category_id": 24,
+    "coco_name": "zebra"
+  },
+  {
+    "class_id": 23,
+    "cpp_name": "giraffe",
+    "coco_category_id": 25,
+    "coco_name": "giraffe"
+  },
+  {
+    "class_id": 24,
+    "cpp_name": "backpack",
+    "coco_category_id": 27,
+    "coco_name": "backpack"
+  },
+  {
+    "class_id": 25,
+    "cpp_name": "umbrella",
+    "coco_category_id": 28,
+    "coco_name": "umbrella"
+  },
+  {
+    "class_id": 26,
+    "cpp_name": "handbag",
+    "coco_category_id": 31,
+    "coco_name": "handbag"
+  },
+  {
+    "class_id": 27,
+    "cpp_name": "tie",
+    "coco_category_id": 32,
+    "coco_name": "tie"
+  },
+  {
+    "class_id": 28,
+    "cpp_name": "suitcase",
+    "coco_category_id": 33,
+    "coco_name": "suitcase"
+  },
+  {
+    "class_id": 29,
+    "cpp_name": "frisbee",
+    "coco_category_id": 34,
+    "coco_name": "frisbee"
+  },
+  {
+    "class_id": 30,
+    "cpp_name": "skis",
+    "coco_category_id": 35,
+    "coco_name": "skis"
+  },
+  {
+    "class_id": 31,
+    "cpp_name": "snowboard",
+    "coco_category_id": 36,
+    "coco_name": "snowboard"
+  },
+  {
+    "class_id": 32,
+    "cpp_name": "sports ball",
+    "coco_category_id": 37,
+    "coco_name": "sports ball"
+  },
+  {
+    "class_id": 33,
+    "cpp_name": "kite",
+    "coco_category_id": 38,
+    "coco_name": "kite"
+  },
+  {
+    "class_id": 34,
+    "cpp_name": "baseball bat",
+    "coco_category_id": 39,
+    "coco_name": "baseball bat"
+  },
+  {
+    "class_id": 35,
+    "cpp_name": "baseball glove",
+    "coco_category_id": 40,
+    "coco_name": "baseball glove"
+  },
+  {
+    "class_id": 36,
+    "cpp_name": "skateboard",
+    "coco_category_id": 41,
+    "coco_name": "skateboard"
+  },
+  {
+    "class_id": 37,
+    "cpp_name": "surfboard",
+    "coco_category_id": 42,
+    "coco_name": "surfboard"
+  },
+  {
+    "class_id": 38,
+    "cpp_name": "tennis racket",
+    "coco_category_id": 43,
+    "coco_name": "tennis racket"
+  },
+  {
+    "class_id": 39,
+    "cpp_name": "bottle",
+    "coco_category_id": 44,
+    "coco_name": "bottle"
+  },
+  {
+    "class_id": 40,
+    "cpp_name": "wine glass",
+    "coco_category_id": 46,
+    "coco_name": "wine glass"
+  },
+  {
+    "class_id": 41,
+    "cpp_name": "cup",
+    "coco_category_id": 47,
+    "coco_name": "cup"
+  },
+  {
+    "class_id": 42,
+    "cpp_name": "fork",
+    "coco_category_id": 48,
+    "coco_name": "fork"
+  },
+  {
+    "class_id": 43,
+    "cpp_name": "knife",
+    "coco_category_id": 49,
+    "coco_name": "knife"
+  },
+  {
+    "class_id": 44,
+    "cpp_name": "spoon",
+    "coco_category_id": 50,
+    "coco_name": "spoon"
+  },
+  {
+    "class_id": 45,
+    "cpp_name": "bowl",
+    "coco_category_id": 51,
+    "coco_name": "bowl"
+  },
+  {
+    "class_id": 46,
+    "cpp_name": "banana",
+    "coco_category_id": 52,
+    "coco_name": "banana"
+  },
+  {
+    "class_id": 47,
+    "cpp_name": "apple",
+    "coco_category_id": 53,
+    "coco_name": "apple"
+  },
+  {
+    "class_id": 48,
+    "cpp_name": "sandwich",
+    "coco_category_id": 54,
+    "coco_name": "sandwich"
+  },
+  {
+    "class_id": 49,
+    "cpp_name": "orange",
+    "coco_category_id": 55,
+    "coco_name": "orange"
+  },
+  {
+    "class_id": 50,
+    "cpp_name": "broccoli",
+    "coco_category_id": 56,
+    "coco_name": "broccoli"
+  },
+  {
+    "class_id": 51,
+    "cpp_name": "carrot",
+    "coco_category_id": 57,
+    "coco_name": "carrot"
+  },
+  {
+    "class_id": 52,
+    "cpp_name": "hot dog",
+    "coco_category_id": 58,
+    "coco_name": "hot dog"
+  },
+  {
+    "class_id": 53,
+    "cpp_name": "pizza",
+    "coco_category_id": 59,
+    "coco_name": "pizza"
+  },
+  {
+    "class_id": 54,
+    "cpp_name": "donut",
+    "coco_category_id": 60,
+    "coco_name": "donut"
+  },
+  {
+    "class_id": 55,
+    "cpp_name": "cake",
+    "coco_category_id": 61,
+    "coco_name": "cake"
+  },
+  {
+    "class_id": 56,
+    "cpp_name": "chair",
+    "coco_category_id": 62,
+    "coco_name": "chair"
+  },
+  {
+    "class_id": 57,
+    "cpp_name": "sofa",
+    "coco_category_id": 63,
+    "coco_name": "couch"
+  },
+  {
+    "class_id": 58,
+    "cpp_name": "pottedplant",
+    "coco_category_id": 64,
+    "coco_name": "potted plant"
+  },
+  {
+    "class_id": 59,
+    "cpp_name": "bed",
+    "coco_category_id": 65,
+    "coco_name": "bed"
+  },
+  {
+    "class_id": 60,
+    "cpp_name": "diningtable",
+    "coco_category_id": 67,
+    "coco_name": "dining table"
+  },
+  {
+    "class_id": 61,
+    "cpp_name": "toilet",
+    "coco_category_id": 70,
+    "coco_name": "toilet"
+  },
+  {
+    "class_id": 62,
+    "cpp_name": "tvmonitor",
+    "coco_category_id": 72,
+    "coco_name": "tv"
+  },
+  {
+    "class_id": 63,
+    "cpp_name": "laptop",
+    "coco_category_id": 73,
+    "coco_name": "laptop"
+  },
+  {
+    "class_id": 64,
+    "cpp_name": "mouse",
+    "coco_category_id": 74,
+    "coco_name": "mouse"
+  },
+  {
+    "class_id": 65,
+    "cpp_name": "remote",
+    "coco_category_id": 75,
+    "coco_name": "remote"
+  },
+  {
+    "class_id": 66,
+    "cpp_name": "keyboard",
+    "coco_category_id": 76,
+    "coco_name": "keyboard"
+  },
+  {
+    "class_id": 67,
+    "cpp_name": "cell phone",
+    "coco_category_id": 77,
+    "coco_name": "cell phone"
+  },
+  {
+    "class_id": 68,
+    "cpp_name": "microwave",
+    "coco_category_id": 78,
+    "coco_name": "microwave"
+  },
+  {
+    "class_id": 69,
+    "cpp_name": "oven",
+    "coco_category_id": 79,
+    "coco_name": "oven"
+  },
+  {
+    "class_id": 70,
+    "cpp_name": "toaster",
+    "coco_category_id": 80,
+    "coco_name": "toaster"
+  },
+  {
+    "class_id": 71,
+    "cpp_name": "sink",
+    "coco_category_id": 81,
+    "coco_name": "sink"
+  },
+  {
+    "class_id": 72,
+    "cpp_name": "refrigerator",
+    "coco_category_id": 82,
+    "coco_name": "refrigerator"
+  },
+  {
+    "class_id": 73,
+    "cpp_name": "book",
+    "coco_category_id": 84,
+    "coco_name": "book"
+  },
+  {
+    "class_id": 74,
+    "cpp_name": "clock",
+    "coco_category_id": 85,
+    "coco_name": "clock"
+  },
+  {
+    "class_id": 75,
+    "cpp_name": "vase",
+    "coco_category_id": 86,
+    "coco_name": "vase"
+  },
+  {
+    "class_id": 76,
+    "cpp_name": "scissors",
+    "coco_category_id": 87,
+    "coco_name": "scissors"
+  },
+  {
+    "class_id": 77,
+    "cpp_name": "teddy bear",
+    "coco_category_id": 88,
+    "coco_name": "teddy bear"
+  },
+  {
+    "class_id": 78,
+    "cpp_name": "hair drier",
+    "coco_category_id": 89,
+    "coco_name": "hair drier"
+  },
+  {
+    "class_id": 79,
+    "cpp_name": "toothbrush",
+    "coco_category_id": 90,
+    "coco_name": "toothbrush"
+  }
+]

@@ -1,0 +1,274 @@
+[
+  {
+    "argv": [
+      "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/scripts/baseline/collect_environment.py",
+      "--output",
+      "results/async_pipeline/delivery_checks/environment.json",
+      "--binary",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/environment.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/dataset_accuracy_detection",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "results/async_pipeline/delivery_checks/sample_images.tsv",
+      "results/async_pipeline/delivery_checks/sample_cpu.csv",
+      "cpu"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/sample_cpu.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/dataset_accuracy_detection",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "results/async_pipeline/delivery_checks/sample_images.tsv",
+      "results/async_pipeline/delivery_checks/sample_gpu-filter.csv",
+      "gpu-filter"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/sample_gpu-filter.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g1_s0",
+      "--slots",
+      "0",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "1",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g1_s0.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g1_s1",
+      "--slots",
+      "1",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "1",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g1_s1.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g1_s2",
+      "--slots",
+      "2",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "1",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g1_s2.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g1_s3",
+      "--slots",
+      "3",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "1",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g1_s3.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g0_s0",
+      "--slots",
+      "0",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "0",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g0_s0.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g0_s1",
+      "--slots",
+      "1",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "0",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g0_s1.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g0_s2",
+      "--slots",
+      "2",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "0",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g0_s2.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/validate_g0_s3",
+      "--slots",
+      "3",
+      "--frames",
+      "84",
+      "--warmup",
+      "5",
+      "--graph",
+      "0",
+      "--validate"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/validate_g0_s3.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/final_r0_s0",
+      "--slots",
+      "0",
+      "--frames",
+      "28",
+      "--warmup",
+      "2",
+      "--graph",
+      "1"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/final_r0_s0.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/final_r0_s1",
+      "--slots",
+      "1",
+      "--frames",
+      "28",
+      "--warmup",
+      "2",
+      "--graph",
+      "1"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/final_r0_s1.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/final_r0_s2",
+      "--slots",
+      "2",
+      "--frames",
+      "28",
+      "--warmup",
+      "2",
+      "--graph",
+      "1"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/final_r0_s2.log"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/yolo11n.trt",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/models/coco.names",
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/samples",
+      "results/async_pipeline/delivery_checks/final_r0_s3",
+      "--slots",
+      "3",
+      "--frames",
+      "28",
+      "--warmup",
+      "2",
+      "--graph",
+      "1"
+    ],
+    "returncode": 0,
+    "log": "results/async_pipeline/delivery_checks/final_r0_s3.log"
+  }
+]

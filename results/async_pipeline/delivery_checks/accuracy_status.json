@@ -1,0 +1,11 @@
+{
+  "status": "separate_full_coco_validation_available",
+  "metrics_path": "/home/wnyxvo/YOLOs-CPP-TensorRT/results/async_pipeline/coco_release/metrics.json",
+  "metrics_sha256": "9e636016295cbe1e5dcf29ed1588fbcc5fc1fee5e843b330c964546ba6ed2169",
+  "evaluated_in_this_benchmark": false,
+  "scope": "full",
+  "images": 5000,
+  "conf": 0.25,
+  "iou": 0.45,
+  "max_det": 300
+}
