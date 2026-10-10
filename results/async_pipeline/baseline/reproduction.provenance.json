@@ -1,0 +1,42 @@
+{
+  "frozen_version": {
+    "commit": "dbf85ba95c53f76d510bb86de342ccc4eaaad8ae",
+    "git_status_at_freeze": "",
+    "tracked_diff_empty": true,
+    "binary_sha256": "3c0e3fc9c316d26097019d02910735aedc00540b32eb66eb228dc511edf88133",
+    "model_artifacts": {
+      "models/yolo11n.onnx": "86c32d35d058eaf9b84b4d159ac779fa4160fa735593112fcf07a1f278f70fc7",
+      "models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "models/yolo11n.trt": "de97ab4e249a501cd138e0cc2ce66d38c5b69615933bf11d30d2bfddae8b1270"
+    },
+    "default_mode": "gpu-filter",
+    "graph": true,
+    "conf": 0.25,
+    "iou": 0.45,
+    "max_det": 300
+  },
+  "argv": [
+    "results/async_pipeline/baseline/sync_baseline.binary",
+    "models/yolo11n.trt",
+    "models/coco.names",
+    "results/baseline/samples",
+    "results/async_pipeline/baseline/reproduction",
+    "--postprocess",
+    "gpu-filter",
+    "--graph",
+    "1",
+    "--warmup",
+    "30",
+    "--runs",
+    "200",
+    "--conf",
+    ".25",
+    "--iou",
+    ".45",
+    "--max-det",
+    "300",
+    "--checks"
+  ],
+  "returncode": 0,
+  "gpu": "Sat Oct 10 16:42:52 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 590.48.01              Driver Version: 591.86         CUDA Version: 13.1     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4060 ...    On  |   00000000:01:00.0  On |                  N/A |\n| N/A   48C    P0             45W /   67W |    1727MiB /   8188MiB |     80%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n"
+}

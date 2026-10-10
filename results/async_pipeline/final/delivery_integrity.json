@@ -1,0 +1,12 @@
+{
+  "current_source_and_binary_match_measurement": true,
+  "all_8_validation_and_8_measurement_parity_pass": true,
+  "nsight_config_restored": true,
+  "nsight_version": "NVIDIA Nsight Systems version 2025.3.2.474-253236389321v0",
+  "opencv_cpp": "4.10.0",
+  "cuda_toolkit": "12.4.99",
+  "labels_sha256": "33c77761e124cc74911346865e3bc1219b87c2db7d0f106e3376bf5ef3785933",
+  "report_sha256": "5e25e2245db9628911b65afa46791bddc0a321be2df51476e2a24774ef5c3166",
+  "documentation_generator_sha256": "8bae52d01d772d3017518835ed558261dc138c285950c745ff1722d46061cf82",
+  "git_status_at_delivery": " M CMakeLists.txt\n M include/yolos/tasks/detection.hpp\n?? doc/ASYNC_PIPELINE.md\n?? include/yolos/tasks/async_detection.hpp\n?? results/async_pipeline/\n?? scripts/async_pipeline/\n?? src/async_pipeline_benchmark.cpp\n?? src/dataset_accuracy_detection.cpp\n?? \"\\345\\244\\232\\345\\270\\247\\345\\274\\202\\346\\255\\245\\346\\265\\201\\346\\260\\264\\347\\272\\277\\345\\256\\236\\347\\216\\260\\344\\270\\216\\345\\256\\236\\346\\265\\213.md\"\n"
+}

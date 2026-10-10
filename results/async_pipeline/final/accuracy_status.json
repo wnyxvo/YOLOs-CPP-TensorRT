@@ -1,0 +1,25 @@
+{
+  "status": "not_run_missing_ground_truth",
+  "metrics": null,
+  "required": "COCO validation image directory and matching instances_val*.json, or another supported labeled dataset",
+  "checked_locations": [
+    "/home/wnyxvo/YOLOs-CPP-TensorRT/datasets",
+    "/home/wnyxvo/datasets",
+    "/home/wnyxvo/downloads",
+    "/mnt/c/Users/31259/Downloads",
+    "/mnt/d/work",
+    "/mnt/d/Download",
+    "/mnt/d/LabWorks"
+  ],
+  "configured_ultralytics_dataset_dir_exists": false,
+  "existing_seven_images": "unlabeled consistency samples; cannot calculate trustworthy mAP",
+  "scope": "No matching COCO annotation JSON found in checked local locations; other unprovided locations are unknown",
+  "conf": 0.25,
+  "iou": 0.45,
+  "max_det": 300,
+  "same_engine": "models/yolo11n.trt",
+  "paths": [
+    "cpu",
+    "gpu-filter"
+  ]
+}

@@ -172,18 +172,25 @@ protected:
         else TrtSessionBase::copyOutputsToHost();
     }
     std::vector<Detection> finishCandidates(const std::vector<post::Candidate>& candidates,const cv::Size& size) {
+        auto result=finishCandidatesWithGeometry(candidates,size,cachedScaleX_,cachedScaleY_,cachedPadX_,cachedPadY_);
+        lastResultCount_=result.size();
+        return result;
+    }
+    // Explicit geometry lets asynchronous slots retain their own inverse transform.
+    static std::vector<Detection> finishCandidatesWithGeometry(const std::vector<post::Candidate>& candidates,
+                                                              const cv::Size& size,float gainX,float gainY,
+                                                              float padX,float padY) {
         std::vector<Detection> result;result.reserve(candidates.size());
         for (const auto& c:candidates) {
             Detection d;d.conf=c.score;d.classId=c.classId;
-            d.xyxy={std::clamp((c.x1-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
-                    std::clamp((c.y1-cachedPadY_)/cachedScaleY_,0.f,float(size.height)),
-                    std::clamp((c.x2-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
-                    std::clamp((c.y2-cachedPadY_)/cachedScaleY_,0.f,float(size.height))};
+            d.xyxy={std::clamp((c.x1-padX)/gainX,0.f,float(size.width)),
+                    std::clamp((c.y1-padY)/gainY,0.f,float(size.height)),
+                    std::clamp((c.x2-padX)/gainX,0.f,float(size.width)),
+                    std::clamp((c.y2-padY)/gainY,0.f,float(size.height))};
             int x=int(std::round(d.xyxy[0])),y=int(std::round(d.xyxy[1]));
             d.box=BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
             result.push_back(d);
         }
-        lastResultCount_=result.size();
         return result;
     }
     std::vector<Detection> postprocessCompressed(const cv::Size& size) {

@@ -1,0 +1,274 @@
+{
+  "timestamp": "2026-10-10T17:05:19.882042+08:00",
+  "python": "3.11.17 (main, Oct  1 2026, 20:17:42) [GCC 14.3.0]",
+  "executable": "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python_packages": {
+    "ultralytics": "8.4.174",
+    "torch": "2.14.1+cu130",
+    "cv2": "5.0.0",
+    "onnx": "1.23.2",
+    "onnxruntime": "1.30.0",
+    "tensorrt": {
+      "unavailable": "No module named 'tensorrt'"
+    }
+  },
+  "torch_cuda_runtime": "13.0",
+  "torch_cuda_available": true,
+  "commands": {
+    "git_commit": {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stdout": "dbf85ba95c53f76d510bb86de342ccc4eaaad8ae\n",
+      "stderr": ""
+    },
+    "git_status": {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "returncode": 0,
+      "stdout": " M CMakeLists.txt\n M include/yolos/tasks/detection.hpp\n?? include/yolos/tasks/async_detection.hpp\n?? results/async_pipeline/\n?? scripts/async_pipeline/\n?? src/async_pipeline_benchmark.cpp\n?? src/dataset_accuracy_detection.cpp\n",
+      "stderr": ""
+    },
+    "gpu": {
+      "argv": [
+        "nvidia-smi",
+        "--query-gpu=name,driver_version,pci.bus_id,memory.total,pstate,temperature.gpu,power.draw,power.limit,clocks.sm,clocks.mem",
+        "--format=csv"
+      ],
+      "returncode": 0,
+      "stdout": "name, driver_version, pci.bus_id, memory.total [MiB], pstate, temperature.gpu, power.draw [W], power.limit [W], clocks.current.sm [MHz], clocks.current.memory [MHz]\nNVIDIA GeForce RTX 4060 Laptop GPU, 591.86, 00000000:01:00.0, 8188 MiB, P8, 42, 5.74 W, [N/A], 210 MHz, 405 MHz\n",
+      "stderr": ""
+    },
+    "nvidia_smi": {
+      "argv": [
+        "nvidia-smi"
+      ],
+      "returncode": 0,
+      "stdout": "Sat Oct 10 17:05:20 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 590.48.01              Driver Version: 591.86         CUDA Version: 13.1     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 4060 ...    On  |   00000000:01:00.0  On |                  N/A |\n| N/A   42C    P8              5W /   65W |    1708MiB /   8188MiB |     11%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+      "stderr": ""
+    },
+    "cuda_toolkit": {
+      "argv": [
+        "/usr/local/cuda/bin/nvcc",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2024 NVIDIA Corporation\nBuilt on Tue_Feb_27_16:19:38_PST_2024\nCuda compilation tools, release 12.4, V12.4.99\nBuild cuda_12.4.r12.4/compiler.33961263_0\n",
+      "stderr": ""
+    },
+    "linked_libraries": {
+      "argv": [
+        "ldd",
+        "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x0000755e94cc5000)\n\tlibnvinfer.so.10 => /home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23/lib/libnvinfer.so.10 (0x0000755e86000000)\n\tlibcudart.so.12 => /usr/local/cuda/lib64/libcudart.so.12 (0x0000755e85c00000)\n\tlibnvToolsExt.so.1 => /usr/local/cuda/lib64/libnvToolsExt.so.1 (0x0000755e85800000)\n\tlibopencv_imgcodecs.so.410 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/libopencv_imgcodecs.so.410 (0x0000755e85400000)\n\tlibopencv_core.so.410 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/libopencv_core.so.410 (0x0000755e84600000)\n\tlibstdc++.so.6 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/libstdc++.so.6 (0x0000755e85a0b000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000755e94afc000)\n\tlibgcc_s.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/libgcc_s.so.1 (0x0000755e94adc000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000755e84200000)\n\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x0000755e94ad7000)\n\tlibdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x0000755e94ad0000)\n\tlibrt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x0000755e94acb000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000755e94cc7000)\n\tlibopencv_imgproc.so.410 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libopencv_imgproc.so.410 (0x0000755e82600000)\n\tlibjpeg.so.9 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libjpeg.so.9 (0x0000755e85fb4000)\n\tlibwebp.so.7 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libwebp.so.7 (0x0000755e85efe000)\n\tlibpng16.so.16 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libpng16.so.16 (0x0000755e94a8b000)\n\tlibtiff.so.6 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libtiff.so.6 (0x0000755e8576d000)\n\tlibopenjp2.so.7 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libopenjp2.so.7 (0x0000755e85700000)\n\tlibz.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libz.so.1 (0x0000755e85ee3000)\n\tlibGL.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libGL.so.1 (0x0000755e85675000)\n\tlibgomp.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./libgomp.so.1 (0x0000755e853bf000)\n\tlibsharpyuv.so.0 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libsharpyuv.so.0 (0x0000755e85ed4000)\n\tlibzstd.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libzstd.so.1 (0x0000755e844ea000)\n\tliblzma.so.5 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././liblzma.so.5 (0x0000755e85644000)\n\tlibLerc.so.4 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libLerc.so.4 (0x0000755e8441b000)\n\tlibdeflate.so.0 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libdeflate.so.0 (0x0000755e85ebb000)\n\tlibGLdispatch.so.0 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libGLdispatch.so.0 (0x0000755e84148000)\n\tlibGLX.so.0 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././libGLX.so.0 (0x0000755e8538d000)\n\tlibX11.so.6 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./././libX11.so.6 (0x0000755e824b5000)\n\tlibxcb.so.1 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/././././libxcb.so.1 (0x0000755e8411b000)\n\tlibXau.so.6 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./././././libXau.so.6 (0x0000755e85eb4000)\n\tlibXdmcp.so.6 => /home/wnyxvo/miniconda3/envs/yolos-trt/lib/./././././libXdmcp.so.6 (0x0000755e8563c000)\n",
+      "stderr": "/bin/bash: /home/wnyxvo/miniconda3/envs/yolos-trt/lib/libtinfo.so.6: no version information available (required by /bin/bash)\n"
+    }
+  },
+  "model_artifacts": [
+    {
+      "path": "models/yolo11n.pt",
+      "bytes": 5613764,
+      "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+    },
+    {
+      "path": "models/yolo11n.onnx",
+      "bytes": 10741326,
+      "sha256": "86c32d35d058eaf9b84b4d159ac779fa4160fa735593112fcf07a1f278f70fc7"
+    },
+    {
+      "path": "models/yolo11n.trt",
+      "bytes": 9761692,
+      "sha256": "de97ab4e249a501cd138e0cc2ce66d38c5b69615933bf11d30d2bfddae8b1270"
+    }
+  ],
+  "onnx": {
+    "opsets": [
+      {
+        "domain": "",
+        "version": 11
+      }
+    ],
+    "metadata": {
+      "description": "Ultralytics YOLO11n model trained on /usr/src/ultralytics/ultralytics/cfg/datasets/coco.yaml",
+      "author": "Ultralytics",
+      "date": "2026-10-08T21:24:21.233708+08:00",
+      "version": "8.4.174",
+      "license": "AGPL-3.0 License (https://ultralytics.com/license)",
+      "docs": "https://docs.ultralytics.com",
+      "stride": "32",
+      "task": "detect",
+      "head": "Detect",
+      "batch": "1",
+      "imgsz": "[640, 640]",
+      "names": "{0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed', 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier', 79: 'toothbrush'}",
+      "args": "{'data': None, 'batch': 1, 'fraction': 1.0, 'quantize': None, 'nms': None, 'dynamic': False, 'simplify': True, 'opset': 11}",
+      "channels": "3",
+      "end2end": "False"
+    }
+  },
+  "export_command": "python models/export_onnx.py --model yolo11n",
+  "export_settings": {
+    "imgsz": 640,
+    "batch": 1,
+    "dynamic": false,
+    "opset": 11,
+    "nms": false,
+    "half": false,
+    "provenance": "command reported by user plus current export script and ONNX metadata; not re-exported in this run"
+  },
+  "engine_build_command": "./build/onnx2trt models/yolo11n.onnx models/yolo11n.trt --fp16 --workspace 2048",
+  "engine_build_settings": {
+    "fp16_builder_flag": true,
+    "workspace_mib": 2048,
+    "int8": false,
+    "provenance": "user-reported command; build log unavailable; same existing Engine reused; no rebuild"
+  },
+  "cmake_cache": "# This is the CMakeCache file.\n# For build in directory: /home/wnyxvo/YOLOs-CPP-TensorRT/build\n# It was generated by CMake: /usr/bin/cmake\n# You can edit this file to change values found and used by cmake.\n# If you do not want to change any of the values, simply exit the editor.\n# If you do want to change a value, simply edit, save, and exit the editor.\n# The syntax for the file is as follows:\n# KEY:TYPE=VALUE\n# KEY is the name of a variable in the cache.\n# TYPE is a hint to GUIs for the type of VALUE, DO NOT EDIT TYPE!.\n# VALUE is the current value for the KEY.\n\n########################\n# EXTERNAL cache entries\n########################\n\n//Build example applications\nBUILD_EXAMPLES:BOOL=OFF\n\n//Path to a program.\nCMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line\n\n//Path to a program.\nCMAKE_AR:FILEPATH=/usr/bin/ar\n\n//Choose the type of build, options are: None Debug Release RelWithDebInfo\n// MinSizeRel ...\nCMAKE_BUILD_TYPE:STRING=Release\n\n//Enable/Disable color output during build.\nCMAKE_COLOR_MAKEFILE:BOOL=ON\n\n//No help, variable specified on the command line.\nCMAKE_CUDA_ARCHITECTURES:UNINITIALIZED=89\n\n//CUDA compiler\nCMAKE_CUDA_COMPILER:STRING=/usr/local/cuda/bin/nvcc\n\n//Flags used by the CUDA compiler during all build types.\nCMAKE_CUDA_FLAGS:STRING=\n\n//Flags used by the CUDA compiler during DEBUG builds.\nCMAKE_CUDA_FLAGS_DEBUG:STRING=-g\n\n//Flags used by the CUDA compiler during MINSIZEREL builds.\nCMAKE_CUDA_FLAGS_MINSIZEREL:STRING=-O1 -DNDEBUG\n\n//Flags used by the CUDA compiler during RELEASE builds.\nCMAKE_CUDA_FLAGS_RELEASE:STRING=-O3 -DNDEBUG\n\n//Flags used by the CUDA compiler during RELWITHDEBINFO builds.\nCMAKE_CUDA_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG\n\n//CXX compiler\nCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++\n\n//A wrapper around 'ar' adding the appropriate '--plugin' option\n// for the GCC compiler\nCMAKE_CXX_COMPILER_AR:FILEPATH=/usr/bin/gcc-ar-13\n\n//A wrapper around 'ranlib' adding the appropriate '--plugin' option\n// for the GCC compiler\nCMAKE_CXX_COMPILER_RANLIB:FILEPATH=/usr/bin/gcc-ranlib-13\n\n//Flags used by the CXX compiler during all build types.\nCMAKE_CXX_FLAGS:STRING=\n\n//Flags used by the CXX compiler during DEBUG builds.\nCMAKE_CXX_FLAGS_DEBUG:STRING=-g\n\n//Flags used by the CXX compiler during MINSIZEREL builds.\nCMAKE_CXX_FLAGS_MINSIZEREL:STRING=-Os -DNDEBUG\n\n//Flags used by the CXX compiler during RELEASE builds.\nCMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG\n\n//Flags used by the CXX compiler during RELWITHDEBINFO builds.\nCMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG\n\n//Path to a program.\nCMAKE_DLLTOOL:FILEPATH=CMAKE_DLLTOOL-NOTFOUND\n\n//Flags used by the linker during all build types.\nCMAKE_EXE_LINKER_FLAGS:STRING=\n\n//Flags used by the linker during DEBUG builds.\nCMAKE_EXE_LINKER_FLAGS_DEBUG:STRING=\n\n//Flags used by the linker during MINSIZEREL builds.\nCMAKE_EXE_LINKER_FLAGS_MINSIZEREL:STRING=\n\n//Flags used by the linker during RELEASE builds.\nCMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=\n\n//Flags used by the linker during RELWITHDEBINFO builds.\nCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=\n\n//Enable/Disable output of compile commands during generation.\nCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=\n\n//Value Computed by CMake.\nCMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/home/wnyxvo/YOLOs-CPP-TensorRT/build/CMakeFiles/pkgRedirects\n\n//Install path prefix, prepended onto install directories.\nCMAKE_INSTALL_PREFIX:PATH=/usr/local\n\n//Path to a program.\nCMAKE_LINKER:FILEPATH=/usr/bin/ld\n\n//Path to a program.\nCMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/gmake\n\n//Flags used by the linker during the creation of modules during\n// all build types.\nCMAKE_MODULE_LINKER_FLAGS:STRING=\n\n//Flags used by the linker during the creation of modules during\n// DEBUG builds.\nCMAKE_MODULE_LINKER_FLAGS_DEBUG:STRING=\n\n//Flags used by the linker during the creation of modules during\n// MINSIZEREL builds.\nCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL:STRING=\n\n//Flags used by the linker during the creation of modules during\n// RELEASE builds.\nCMAKE_MODULE_LINKER_FLAGS_RELEASE:STRING=\n\n//Flags used by the linker during the creation of modules during\n// RELWITHDEBINFO builds.\nCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=\n\n//Path to a program.\nCMAKE_NM:FILEPATH=/usr/bin/nm\n\n//Path to a program.\nCMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy\n\n//Path to a program.\nCMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump\n\n//Value Computed by CMake\nCMAKE_PROJECT_DESCRIPTION:STATIC=\n\n//Value Computed by CMake\nCMAKE_PROJECT_HOMEPAGE_URL:STATIC=\n\n//Value Computed by CMake\nCMAKE_PROJECT_NAME:STATIC=YOLOs-TRT\n\n//Value Computed by CMake\nCMAKE_PROJECT_VERSION:STATIC=3.1.0\n\n//Value Computed by CMake\nCMAKE_PROJECT_VERSION_MAJOR:STATIC=3\n\n//Value Computed by CMake\nCMAKE_PROJECT_VERSION_MINOR:STATIC=1\n\n//Value Computed by CMake\nCMAKE_PROJECT_VERSION_PATCH:STATIC=0\n\n//Value Computed by CMake\nCMAKE_PROJECT_VERSION_TWEAK:STATIC=\n\n//Path to a program.\nCMAKE_RANLIB:FILEPATH=/usr/bin/ranlib\n\n//Path to a program.\nCMAKE_READELF:FILEPATH=/usr/bin/readelf\n\n//Flags used by the linker during the creation of shared libraries\n// during all build types.\nCMAKE_SHARED_LINKER_FLAGS:STRING=\n\n//Flags used by the linker during the creation of shared libraries\n// during DEBUG builds.\nCMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING=\n\n//Flags used by the linker during the creation of shared libraries\n// during MINSIZEREL builds.\nCMAKE_SHARED_LINKER_FLAGS_MINSIZEREL:STRING=\n\n//Flags used by the linker during the creation of shared libraries\n// during RELEASE builds.\nCMAKE_SHARED_LINKER_FLAGS_RELEASE:STRING=\n\n//Flags used by the linker during the creation of shared libraries\n// during RELWITHDEBINFO builds.\nCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING=\n\n//If set, runtime paths are not added when installing shared libraries,\n// but are added when building.\nCMAKE_SKIP_INSTALL_RPATH:BOOL=NO\n\n//If set, runtime paths are not added when using shared libraries.\nCMAKE_SKIP_RPATH:BOOL=NO\n\n//Flags used by the linker during the creation of static libraries\n// during all build types.\nCMAKE_STATIC_LINKER_FLAGS:STRING=\n\n//Flags used by the linker during the creation of static libraries\n// during DEBUG builds.\nCMAKE_STATIC_LINKER_FLAGS_DEBUG:STRING=\n\n//Flags used by the linker during the creation of static libraries\n// during MINSIZEREL builds.\nCMAKE_STATIC_LINKER_FLAGS_MINSIZEREL:STRING=\n\n//Flags used by the linker during the creation of static libraries\n// during RELEASE builds.\nCMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=\n\n//Flags used by the linker during the creation of static libraries\n// during RELWITHDEBINFO builds.\nCMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=\n\n//Path to a program.\nCMAKE_STRIP:FILEPATH=/usr/bin/strip\n\n//Path to a program.\nCMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND\n\n//If this value is on, makefiles will be generated without the\n// .SILENT directive, and all commands will be echoed to the console\n// during the make.  This is useful for debugging only. With Visual\n// Studio IDE projects all commands are done without /nologo.\nCMAKE_VERBOSE_MAKEFILE:BOOL=FALSE\n\n//Path to a file.\nCUDAToolkit_CUPTI_INCLUDE_DIR:PATH=/usr/local/cuda/targets/x86_64-linux/include/../../../extras/CUPTI/include\n\n//Path to a library.\nCUDAToolkit_rt_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.a\n\n//Path to a library.\nCUDA_CUDART:FILEPATH=/usr/local/cuda/lib64/libcudart.so\n\n//Path to a library.\nCUDA_OpenCL_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libOpenCL.so\n\n//Path to a library.\nCUDA_cuFile_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufile.so\n\n//Path to a library.\nCUDA_cuFile_rdma_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufile_rdma.so\n\n//Path to a library.\nCUDA_cuFile_rdma_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufile_rdma_static.a\n\n//Path to a library.\nCUDA_cuFile_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufile_static.a\n\n//Path to a library.\nCUDA_cublasLt_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcublasLt.so\n\n//Path to a library.\nCUDA_cublasLt_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcublasLt_static.a\n\n//Path to a library.\nCUDA_cublas_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcublas.so\n\n//Path to a library.\nCUDA_cublas_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcublas_static.a\n\n//Path to a library.\nCUDA_cuda_driver_LIBRARY:FILEPATH=/usr/local/cuda/targets/x86_64-linux/lib/stubs/libcuda.so\n\n//Path to a library.\nCUDA_cudart_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcudart.so\n\n//Path to a library.\nCUDA_cudart_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcudart_static.a\n\n//Path to a library.\nCUDA_cudla_LIBRARY:FILEPATH=CUDA_cudla_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_cufft_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufft.so\n\n//Path to a library.\nCUDA_cufft_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufft_static.a\n\n//Path to a library.\nCUDA_cufft_static_nocallback_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufft_static_nocallback.a\n\n//Path to a library.\nCUDA_cufftw_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufftw.so\n\n//Path to a library.\nCUDA_cufftw_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcufftw_static.a\n\n//Path to a library.\nCUDA_culibos_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libculibos.a\n\n//Path to a library.\nCUDA_cupti_LIBRARY:FILEPATH=CUDA_cupti_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_cupti_static_LIBRARY:FILEPATH=CUDA_cupti_static_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_curand_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcurand.so\n\n//Path to a library.\nCUDA_curand_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcurand_static.a\n\n//Path to a library.\nCUDA_cusolver_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusolver.so\n\n//Path to a library.\nCUDA_cusolver_lapack_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusolver_lapack_static.a\n\n//Path to a library.\nCUDA_cusolver_metis_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusolver_metis_static.a\n\n//Path to a library.\nCUDA_cusolver_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusolver_static.a\n\n//Path to a library.\nCUDA_cusparse_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusparse.so\n\n//Path to a library.\nCUDA_cusparse_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libcusparse_static.a\n\n//Path to a library.\nCUDA_nppc_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppc.so\n\n//Path to a library.\nCUDA_nppc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppc_static.a\n\n//Path to a library.\nCUDA_nppial_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppial.so\n\n//Path to a library.\nCUDA_nppial_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppial_static.a\n\n//Path to a library.\nCUDA_nppicc_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppicc.so\n\n//Path to a library.\nCUDA_nppicc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppicc_static.a\n\n//Path to a library.\nCUDA_nppicom_LIBRARY:FILEPATH=CUDA_nppicom_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nppicom_static_LIBRARY:FILEPATH=CUDA_nppicom_static_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nppidei_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppidei.so\n\n//Path to a library.\nCUDA_nppidei_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppidei_static.a\n\n//Path to a library.\nCUDA_nppif_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppif.so\n\n//Path to a library.\nCUDA_nppif_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppif_static.a\n\n//Path to a library.\nCUDA_nppig_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppig.so\n\n//Path to a library.\nCUDA_nppig_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppig_static.a\n\n//Path to a library.\nCUDA_nppim_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppim.so\n\n//Path to a library.\nCUDA_nppim_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppim_static.a\n\n//Path to a library.\nCUDA_nppist_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppist.so\n\n//Path to a library.\nCUDA_nppist_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppist_static.a\n\n//Path to a library.\nCUDA_nppisu_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppisu.so\n\n//Path to a library.\nCUDA_nppisu_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppisu_static.a\n\n//Path to a library.\nCUDA_nppitc_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppitc.so\n\n//Path to a library.\nCUDA_nppitc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnppitc_static.a\n\n//Path to a library.\nCUDA_npps_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnpps.so\n\n//Path to a library.\nCUDA_npps_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnpps_static.a\n\n//Path to a library.\nCUDA_nvJitLink_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvJitLink.so\n\n//Path to a library.\nCUDA_nvJitLink_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvJitLink_static.a\n\n//Path to a library.\nCUDA_nvToolsExt_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvToolsExt.so\n\n//Path to a library.\nCUDA_nvgraph_LIBRARY:FILEPATH=CUDA_nvgraph_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nvgraph_static_LIBRARY:FILEPATH=CUDA_nvgraph_static_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nvjpeg_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvjpeg.so\n\n//Path to a library.\nCUDA_nvjpeg_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvjpeg_static.a\n\n//Path to a library.\nCUDA_nvml_LIBRARY:FILEPATH=/usr/local/cuda/targets/x86_64-linux/lib/stubs/libnvidia-ml.so\n\n//Path to a library.\nCUDA_nvperf_host_LIBRARY:FILEPATH=CUDA_nvperf_host_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nvperf_host_static_LIBRARY:FILEPATH=CUDA_nvperf_host_static_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nvperf_target_LIBRARY:FILEPATH=CUDA_nvperf_target_LIBRARY-NOTFOUND\n\n//Path to a library.\nCUDA_nvptxcompiler_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvptxcompiler_static.a\n\n//Path to a library.\nCUDA_nvrtc_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvrtc.so\n\n//Path to a library.\nCUDA_nvrtc_builtins_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvrtc-builtins.so\n\n//Path to a library.\nCUDA_nvrtc_builtins_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvrtc-builtins_static.a\n\n//Path to a library.\nCUDA_nvrtc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.4/targets/x86_64-linux/lib/libnvrtc_static.a\n\n//Path to a library.\nCUDA_pcsamplingutil_LIBRARY:FILEPATH=CUDA_pcsamplingutil_LIBRARY-NOTFOUND\n\n//Enable compiler warnings\nENABLE_WARNINGS:BOOL=ON\n\n//Path to a library.\nNVINFER_LIB:FILEPATH=/home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23/lib/libnvinfer.so\n\n//Path to a library.\nNVONNXPARSER_LIB:FILEPATH=/home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23/lib/libnvonnxparser.so\n\n//No help, variable specified on the command line.\nOpenCV_DIR:UNINITIALIZED=/home/wnyxvo/miniconda3/envs/yolos-trt/lib/cmake/opencv4\n\n//No help, variable specified on the command line.\nTENSORRT_DIR:UNINITIALIZED=/home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23\n\n//Path to a file.\nTENSORRT_INCLUDE_DIR:PATH=/home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23/include\n\n//Value Computed by CMake\nYOLOs-TRT_BINARY_DIR:STATIC=/home/wnyxvo/YOLOs-CPP-TensorRT/build\n\n//Value Computed by CMake\nYOLOs-TRT_IS_TOP_LEVEL:STATIC=ON\n\n//Value Computed by CMake\nYOLOs-TRT_SOURCE_DIR:STATIC=/home/wnyxvo/YOLOs-CPP-TensorRT\n\n\n########################\n# INTERNAL cache entries\n########################\n\n//ADVANCED property for variable: CMAKE_ADDR2LINE\nCMAKE_ADDR2LINE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_AR\nCMAKE_AR-ADVANCED:INTERNAL=1\n//This is the directory where this CMakeCache.txt was created\nCMAKE_CACHEFILE_DIR:INTERNAL=/home/wnyxvo/YOLOs-CPP-TensorRT/build\n//Major version of cmake used to create the current loaded cache\nCMAKE_CACHE_MAJOR_VERSION:INTERNAL=3\n//Minor version of cmake used to create the current loaded cache\nCMAKE_CACHE_MINOR_VERSION:INTERNAL=28\n//Patch version of cmake used to create the current loaded cache\nCMAKE_CACHE_PATCH_VERSION:INTERNAL=3\n//ADVANCED property for variable: CMAKE_COLOR_MAKEFILE\nCMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1\n//Path to CMake executable.\nCMAKE_COMMAND:INTERNAL=/usr/bin/cmake\n//Path to cpack program executable.\nCMAKE_CPACK_COMMAND:INTERNAL=/usr/bin/cpack\n//Path to ctest program executable.\nCMAKE_CTEST_COMMAND:INTERNAL=/usr/bin/ctest\n//ADVANCED property for variable: CMAKE_CUDA_COMPILER\nCMAKE_CUDA_COMPILER-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CUDA_FLAGS\nCMAKE_CUDA_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CUDA_FLAGS_DEBUG\nCMAKE_CUDA_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CUDA_FLAGS_MINSIZEREL\nCMAKE_CUDA_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CUDA_FLAGS_RELEASE\nCMAKE_CUDA_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CUDA_FLAGS_RELWITHDEBINFO\nCMAKE_CUDA_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_COMPILER\nCMAKE_CXX_COMPILER-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_COMPILER_AR\nCMAKE_CXX_COMPILER_AR-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_COMPILER_RANLIB\nCMAKE_CXX_COMPILER_RANLIB-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_FLAGS\nCMAKE_CXX_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_FLAGS_DEBUG\nCMAKE_CXX_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_FLAGS_MINSIZEREL\nCMAKE_CXX_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_FLAGS_RELEASE\nCMAKE_CXX_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_CXX_FLAGS_RELWITHDEBINFO\nCMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_DLLTOOL\nCMAKE_DLLTOOL-ADVANCED:INTERNAL=1\n//Executable file format\nCMAKE_EXECUTABLE_FORMAT:INTERNAL=ELF\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS\nCMAKE_EXE_LINKER_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_DEBUG\nCMAKE_EXE_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_MINSIZEREL\nCMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELEASE\nCMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO\nCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS\nCMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1\n//Name of external makefile project generator.\nCMAKE_EXTRA_GENERATOR:INTERNAL=\n//Name of generator.\nCMAKE_GENERATOR:INTERNAL=Unix Makefiles\n//Generator instance identifier.\nCMAKE_GENERATOR_INSTANCE:INTERNAL=\n//Name of generator platform.\nCMAKE_GENERATOR_PLATFORM:INTERNAL=\n//Name of generator toolset.\nCMAKE_GENERATOR_TOOLSET:INTERNAL=\n//Test CMAKE_HAVE_LIBC_PTHREAD\nCMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1\n//Source directory with the top level CMakeLists.txt file for this\n// project\nCMAKE_HOME_DIRECTORY:INTERNAL=/home/wnyxvo/YOLOs-CPP-TensorRT\n//Install .so files without execute permission.\nCMAKE_INSTALL_SO_NO_EXE:INTERNAL=1\n//ADVANCED property for variable: CMAKE_LINKER\nCMAKE_LINKER-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MAKE_PROGRAM\nCMAKE_MAKE_PROGRAM-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS\nCMAKE_MODULE_LINKER_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_DEBUG\nCMAKE_MODULE_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL\nCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_RELEASE\nCMAKE_MODULE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO\nCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_NM\nCMAKE_NM-ADVANCED:INTERNAL=1\n//number of local generators\nCMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1\n//ADVANCED property for variable: CMAKE_OBJCOPY\nCMAKE_OBJCOPY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_OBJDUMP\nCMAKE_OBJDUMP-ADVANCED:INTERNAL=1\n//Platform information initialized\nCMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_RANLIB\nCMAKE_RANLIB-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_READELF\nCMAKE_READELF-ADVANCED:INTERNAL=1\n//Path to CMake installation.\nCMAKE_ROOT:INTERNAL=/usr/share/cmake-3.28\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS\nCMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG\nCMAKE_SHARED_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL\nCMAKE_SHARED_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_RELEASE\nCMAKE_SHARED_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO\nCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SKIP_INSTALL_RPATH\nCMAKE_SKIP_INSTALL_RPATH-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_SKIP_RPATH\nCMAKE_SKIP_RPATH-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS\nCMAKE_STATIC_LINKER_FLAGS-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_DEBUG\nCMAKE_STATIC_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL\nCMAKE_STATIC_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_RELEASE\nCMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO\nCMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_STRIP\nCMAKE_STRIP-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CMAKE_TAPI\nCMAKE_TAPI-ADVANCED:INTERNAL=1\n//uname command\nCMAKE_UNAME:INTERNAL=/usr/bin/uname\n//ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE\nCMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDAToolkit_CUPTI_INCLUDE_DIR\nCUDAToolkit_CUPTI_INCLUDE_DIR-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDAToolkit_rt_LIBRARY\nCUDAToolkit_rt_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_CUDART\nCUDA_CUDART-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_OpenCL_LIBRARY\nCUDA_OpenCL_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cuFile_LIBRARY\nCUDA_cuFile_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cuFile_rdma_LIBRARY\nCUDA_cuFile_rdma_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cuFile_rdma_static_LIBRARY\nCUDA_cuFile_rdma_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cuFile_static_LIBRARY\nCUDA_cuFile_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cublasLt_LIBRARY\nCUDA_cublasLt_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cublasLt_static_LIBRARY\nCUDA_cublasLt_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cublas_LIBRARY\nCUDA_cublas_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cublas_static_LIBRARY\nCUDA_cublas_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cuda_driver_LIBRARY\nCUDA_cuda_driver_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cudart_LIBRARY\nCUDA_cudart_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cudart_static_LIBRARY\nCUDA_cudart_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cudla_LIBRARY\nCUDA_cudla_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cufft_LIBRARY\nCUDA_cufft_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cufft_static_LIBRARY\nCUDA_cufft_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cufft_static_nocallback_LIBRARY\nCUDA_cufft_static_nocallback_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cufftw_LIBRARY\nCUDA_cufftw_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cufftw_static_LIBRARY\nCUDA_cufftw_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_culibos_LIBRARY\nCUDA_culibos_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cupti_LIBRARY\nCUDA_cupti_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cupti_static_LIBRARY\nCUDA_cupti_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_curand_LIBRARY\nCUDA_curand_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_curand_static_LIBRARY\nCUDA_curand_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusolver_LIBRARY\nCUDA_cusolver_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusolver_lapack_static_LIBRARY\nCUDA_cusolver_lapack_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusolver_metis_static_LIBRARY\nCUDA_cusolver_metis_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusolver_static_LIBRARY\nCUDA_cusolver_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusparse_LIBRARY\nCUDA_cusparse_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_cusparse_static_LIBRARY\nCUDA_cusparse_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppc_LIBRARY\nCUDA_nppc_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppc_static_LIBRARY\nCUDA_nppc_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppial_LIBRARY\nCUDA_nppial_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppial_static_LIBRARY\nCUDA_nppial_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppicc_LIBRARY\nCUDA_nppicc_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppicc_static_LIBRARY\nCUDA_nppicc_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppicom_LIBRARY\nCUDA_nppicom_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppicom_static_LIBRARY\nCUDA_nppicom_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppidei_LIBRARY\nCUDA_nppidei_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppidei_static_LIBRARY\nCUDA_nppidei_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppif_LIBRARY\nCUDA_nppif_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppif_static_LIBRARY\nCUDA_nppif_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppig_LIBRARY\nCUDA_nppig_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppig_static_LIBRARY\nCUDA_nppig_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppim_LIBRARY\nCUDA_nppim_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppim_static_LIBRARY\nCUDA_nppim_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppist_LIBRARY\nCUDA_nppist_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppist_static_LIBRARY\nCUDA_nppist_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppisu_LIBRARY\nCUDA_nppisu_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppisu_static_LIBRARY\nCUDA_nppisu_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppitc_LIBRARY\nCUDA_nppitc_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nppitc_static_LIBRARY\nCUDA_nppitc_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_npps_LIBRARY\nCUDA_npps_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_npps_static_LIBRARY\nCUDA_npps_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvJitLink_LIBRARY\nCUDA_nvJitLink_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvJitLink_static_LIBRARY\nCUDA_nvJitLink_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvToolsExt_LIBRARY\nCUDA_nvToolsExt_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvgraph_LIBRARY\nCUDA_nvgraph_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvgraph_static_LIBRARY\nCUDA_nvgraph_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvjpeg_LIBRARY\nCUDA_nvjpeg_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvjpeg_static_LIBRARY\nCUDA_nvjpeg_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvml_LIBRARY\nCUDA_nvml_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvperf_host_LIBRARY\nCUDA_nvperf_host_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvperf_host_static_LIBRARY\nCUDA_nvperf_host_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvperf_target_LIBRARY\nCUDA_nvperf_target_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvptxcompiler_static_LIBRARY\nCUDA_nvptxcompiler_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvrtc_LIBRARY\nCUDA_nvrtc_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvrtc_builtins_LIBRARY\nCUDA_nvrtc_builtins_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvrtc_builtins_static_LIBRARY\nCUDA_nvrtc_builtins_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_nvrtc_static_LIBRARY\nCUDA_nvrtc_static_LIBRARY-ADVANCED:INTERNAL=1\n//ADVANCED property for variable: CUDA_pcsamplingutil_LIBRARY\nCUDA_pcsamplingutil_LIBRARY-ADVANCED:INTERNAL=1\n//Details about finding CUDAToolkit\nFIND_PACKAGE_MESSAGE_DETAILS_CUDAToolkit:INTERNAL=[/usr/local/cuda/targets/x86_64-linux/include][/usr/local/cuda/lib64/libcudart.so][/usr/local/cuda/bin][v12.4.99()]\n//Details about finding OpenCV\nFIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/home/wnyxvo/miniconda3/envs/yolos-trt][v4.10.0()]\n//Details about finding Threads\nFIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]\n//linker supports push/pop state\n_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE\n\n",
+  "tracked_worktree_diff": {
+    "argv": [
+      "git",
+      "diff",
+      "--binary"
+    ],
+    "returncode": 0,
+    "stdout": "diff --git a/CMakeLists.txt b/CMakeLists.txt\nindex 4ee17cc..56e6d02 100644\n--- a/CMakeLists.txt\n+++ b/CMakeLists.txt\n@@ -216,6 +216,12 @@ endfunction()\n # ============================================================================\n add_yolo_executable(image_inference src/image_inference.cpp)\n add_yolo_executable(baseline_detection src/baseline_detection.cpp)\n+add_yolo_executable(async_pipeline_benchmark src/async_pipeline_benchmark.cpp)\n+add_yolo_executable(dataset_accuracy_detection src/dataset_accuracy_detection.cpp)\n+if(TARGET CUDA::nvToolsExt)\n+    target_link_libraries(async_pipeline_benchmark PRIVATE CUDA::nvToolsExt)\n+    target_compile_definitions(async_pipeline_benchmark PRIVATE YOLOS_PIPELINE_NVTX)\n+endif()\n add_yolo_executable(cuda_postprocessing_test tests/detection/cuda_postprocessing_test.cpp)\n add_yolo_executable(video_inference src/video_inference.cpp)\n add_yolo_executable(camera_inference src/camera_inference.cpp)\ndiff --git a/include/yolos/tasks/detection.hpp b/include/yolos/tasks/detection.hpp\nindex 7708a54..dfce8e3 100644\n--- a/include/yolos/tasks/detection.hpp\n+++ b/include/yolos/tasks/detection.hpp\n@@ -172,18 +172,25 @@ protected:\n         else TrtSessionBase::copyOutputsToHost();\n     }\n     std::vector<Detection> finishCandidates(const std::vector<post::Candidate>& candidates,const cv::Size& size) {\n+        auto result=finishCandidatesWithGeometry(candidates,size,cachedScaleX_,cachedScaleY_,cachedPadX_,cachedPadY_);\n+        lastResultCount_=result.size();\n+        return result;\n+    }\n+    // Explicit geometry lets asynchronous slots retain their own inverse transform.\n+    static std::vector<Detection> finishCandidatesWithGeometry(const std::vector<post::Candidate>& candidates,\n+                                                              const cv::Size& size,float gainX,float gainY,\n+                                                              float padX,float padY) {\n         std::vector<Detection> result;result.reserve(candidates.size());\n         for (const auto& c:candidates) {\n             Detection d;d.conf=c.score;d.classId=c.classId;\n-            d.xyxy={std::clamp((c.x1-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),\n-                    std::clamp((c.y1-cachedPadY_)/cachedScaleY_,0.f,float(size.height)),\n-                    std::clamp((c.x2-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),\n-                    std::clamp((c.y2-cachedPadY_)/cachedScaleY_,0.f,float(size.height))};\n+            d.xyxy={std::clamp((c.x1-padX)/gainX,0.f,float(size.width)),\n+                    std::clamp((c.y1-padY)/gainY,0.f,float(size.height)),\n+                    std::clamp((c.x2-padX)/gainX,0.f,float(size.width)),\n+                    std::clamp((c.y2-padY)/gainY,0.f,float(size.height))};\n             int x=int(std::round(d.xyxy[0])),y=int(std::round(d.xyxy[1]));\n             d.box=BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);\n             result.push_back(d);\n         }\n-        lastResultCount_=result.size();\n         return result;\n     }\n     std::vector<Detection> postprocessCompressed(const cv::Size& size) {\n",
+    "stderr": ""
+  },
+  "torch_gpu_properties": {
+    "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "compute_capability": [
+      8,
+      9
+    ],
+    "total_memory_bytes": 8585216000
+  },
+  "executable_artifact": {
+    "path": "/home/wnyxvo/YOLOs-CPP-TensorRT/build/async_pipeline_benchmark",
+    "bytes": 887056,
+    "sha256": "793f8d79d122ce60fe022219fea52517c8244821709b67e4f42281ea50e5bb2c"
+  },
+  "tensorrt_cpp_runtime": {
+    "path": "/home/wnyxvo/miniconda3/envs/yolos-trt/opt/TensorRT-10.7.0.23/lib/libnvinfer.so.10",
+    "getInferLibVersion": 100700
+  },
+  "source_files_role": "Current async worktree; frozen synchronous snapshot is separate",
+  "source_files": [
+    {
+      "path": "scripts/baseline/check_engine_guards.py",
+      "bytes": 1941,
+      "sha256": "0cf8a12d365824f1f53779c37cd0046221efbfe8ee12009232c997b13d7ea6bf"
+    },
+    {
+      "path": "scripts/baseline/check_graph.py",
+      "bytes": 1528,
+      "sha256": "e3200142370e405d8e866870b05e3ac42f176ef7094b5353677bdd868db0170c"
+    },
+    {
+      "path": "scripts/baseline/collect_environment.py",
+      "bytes": 4328,
+      "sha256": "e6229610193ef3878371c293ddfe0f7d2b7f10efe15e4238d181b260d42e1946"
+    },
+    {
+      "path": "scripts/baseline/make_samples.py",
+      "bytes": 2030,
+      "sha256": "e62db51d9f3cb34f961b2b9649d1d9e5fd3bfc948a9aa86eee1d05f23e219fe5"
+    },
+    {
+      "path": "scripts/baseline/reference.py",
+      "bytes": 10336,
+      "sha256": "cf9ac6c1c442cf5a2841170d38462ad673643fcc4372206cd965c6904a486c31"
+    },
+    {
+      "path": "scripts/baseline/report.py",
+      "bytes": 14834,
+      "sha256": "5dca517d6b450b036f726a5230cb32b74cd0349bfdab7978add7ec9897726381"
+    },
+    {
+      "path": "scripts/baseline/run.py",
+      "bytes": 3296,
+      "sha256": "3eafd76441e38f99d3ac03b6cd0092e05b230658d519cb6e700b6428d5f21ecc"
+    },
+    {
+      "path": "scripts/baseline/summarize.py",
+      "bytes": 1921,
+      "sha256": "1594a2f13d7aa48113e0c4e82a84149912e77935cb675664096b1d96e8154aba"
+    },
+    {
+      "path": "include/yolos/core/cuda_preprocessing.cu",
+      "bytes": 4872,
+      "sha256": "fdf5d8086e934101043daa57c3fb1fab69fae33dcb5788cf78ea9f84d14fe044"
+    },
+    {
+      "path": "include/yolos/core/trt_session_base.hpp",
+      "bytes": 22647,
+      "sha256": "c6b02b4e8bf1acac00cbe2794d8b9c41567e2f9c724dd9db062851f0893bd5b3"
+    },
+    {
+      "path": "include/yolos/tasks/detection.hpp",
+      "bytes": 22816,
+      "sha256": "ba2accb635b85640da4d0c760a12efe3eab88a39a15e8622adac97f3dc3bc893"
+    },
+    {
+      "path": "src/baseline_detection.cpp",
+      "bytes": 11514,
+      "sha256": "042422b34eae04b1278ecdddcea06bcbb829c66c2b14ba3c87c1890bc834dd9e"
+    }
+  ],
+  "source_sha256": {
+    "CMakeLists.txt": "dc6e81efc02cb949c2ff02e8cf5b4592d79d742a0e864711ac16bc896c4b08b0",
+    "include/tools/BoundedThreadSafeQueue.hpp": "209cbaa063334efa3bf8a2f7262fa1ebf217d76d1c67b06622852334d11f2f42",
+    "include/tools/Config.hpp": "8dd1bb440c855bc6663d9f4c72a9eba5bbcae4491251def7a54bfd5f467c034b",
+    "include/yolos/core/cuda_postprocessing.cu": "4ca0ad54b18358b7cfee1b677df23819e23afd6631c85c839297dc0cfd231b5f",
+    "include/yolos/core/cuda_postprocessing.hpp": "34145336893a0f0181a295ece3605c8eb1c613876bd9aa1d25d1e0049d9c5141",
+    "include/yolos/core/cuda_preprocessing.cu": "fdf5d8086e934101043daa57c3fb1fab69fae33dcb5788cf78ea9f84d14fe044",
+    "include/yolos/core/cuda_preprocessing.hpp": "1d2d47ae359841d1e1cf349586d0405d73d216db926205d0495e60f64c797bae",
+    "include/yolos/core/detection_postprocessing.hpp": "a6a649df0b238a34615d2ba1f3464ec3f07e5da98b26cf1c4ae728b482abc4a7",
+    "include/yolos/core/drawing.hpp": "9606f0adbd847f5eeda318dedd3bd6b000530d3717b7f5c6db0e2139b9d91d76",
+    "include/yolos/core/nms.hpp": "0578e42093f876f714c7e46203c54bfecbf27753e91dffd3d57ccdc7763060d7",
+    "include/yolos/core/preprocessing.hpp": "cb3432ae57c10193f79fde25174544288c10fd2d1ba86640991ce3d79f45c8d2",
+    "include/yolos/core/trt_session_base.hpp": "c6b02b4e8bf1acac00cbe2794d8b9c41567e2f9c724dd9db062851f0893bd5b3",
+    "include/yolos/core/trt_utils.hpp": "7c08766fcdefa33deae4efc5cdf2562f9db7c0d8a4d0756346dca3de653fee06",
+    "include/yolos/core/types.hpp": "1958c4df8241e9d887f4ad54b70851160c374eaeb34c7b5696f72f02a47f680d",
+    "include/yolos/core/utils.hpp": "3a21b52af0152e6e3c05c1f04e54ed7be3846ff644587884dc7a83de3a31b6fd",
+    "include/yolos/core/version.hpp": "32517907e11e2ad71972859ee5702af72997d2a65475175124e8375e7d63145c",
+    "include/yolos/tasks/async_detection.hpp": "ef92272104229216d663b76ba4b667cfc73f9cca59ce094745eda52ef7b408d7",
+    "include/yolos/tasks/classification.hpp": "894e1e39b76d936767b33f01ffffbf0148a6b4f81a57641c898fc3bd8a51360c",
+    "include/yolos/tasks/depth.hpp": "6a6e1bef0f315d7b6469014d8cd118af5ff7a8ab6910e7b0aad8cc5f5329ae6e",
+    "include/yolos/tasks/detection.hpp": "ba2accb635b85640da4d0c760a12efe3eab88a39a15e8622adac97f3dc3bc893",
+    "include/yolos/tasks/obb.hpp": "ba8b94e47e16f82326a4456b86864eb2d50eb300ad35f6c9f02a081fb321dd3c",
+    "include/yolos/tasks/pose.hpp": "7c921ddecaa4246e5d6fc5be132593b6321c7995d8f9a54f19abda2067cca2cb",
+    "include/yolos/tasks/segmentation.hpp": "40e20b5e9ac7d5d9fe9a3c674305a6d9c6c94fbc83bbcfe1c8fe2ba172e6fbc9",
+    "include/yolos/yolos.hpp": "83cab61162543e84d633dda921e5ec4196136f04b581988f6d2442ee9d174aaf",
+    "scripts/async_pipeline/dataset_accuracy.py": "c33590b11c05a22b6eed37d1f21bf1a1f642fd089be3fd5e37e46210ff3d953f",
+    "scripts/async_pipeline/reproduce_sync.py": "a625a4eb9c0b5a85694510033ee254e58c674f55c8bc9cbaa40e82e667750740",
+    "scripts/async_pipeline/run.py": "cca51d44c965db0f634c660d2cca53af6aae2adfe2d61b5a3996a338d72aa369",
+    "scripts/async_pipeline/timeline.py": "b0dd0c54997ba4dd8c7bbb487e34c532b52bacbf4801211d59149e540a18fa2f",
+    "src/async_pipeline_benchmark.cpp": "93a24ae5d0d434edf1ab2741b618623d3280e8ccf8d507893cbc300e2883067c",
+    "src/baseline_detection.cpp": "042422b34eae04b1278ecdddcea06bcbb829c66c2b14ba3c87c1890bc834dd9e",
+    "src/batch_image_inference.cpp": "b6f8bf9f0bd30eef0077fad81f7cc38d12f201a49cff3956b2932872283c6f53",
+    "src/camera_inference.cpp": "2b31c835a7446adebdb8a89fc8551b2895df719a2897bc2553dc0eeda1ee3118",
+    "src/class_image_inference.cpp": "def66f9f244eaa45a1b9c728e2e593dc7ed02e014c68fa627b126410729a097a",
+    "src/dataset_accuracy_detection.cpp": "ec14db396ca33cd76b0e360a062fffc69cd030fe68fb608d1eec7f9ea0a3131b",
+    "src/depth_image_inference.cpp": "2a2ba6d5247c2b33fb81dc7332cb790b5ffe30dcb32316ae4c660fc151f4e5a1",
+    "src/image_inference.cpp": "4b1650ca3b775deca8bc89a0bf3993ab8864c64ef8a9d60caa3c79f1a09d00b2",
+    "src/video_inference.cpp": "9f85e08c8e2ab875f2402d2dbbbd6474261f769ba39c4fbf433e8c092e2d4154"
+  },
+  "unchanged_core_files": [
+    "include/yolos/core/cuda_preprocessing.cu",
+    "include/yolos/core/cuda_preprocessing.hpp",
+    "include/yolos/core/cuda_postprocessing.cu",
+    "include/yolos/core/cuda_postprocessing.hpp",
+    "include/yolos/core/trt_session_base.hpp",
+    "include/yolos/core/detection_postprocessing.hpp"
+  ],
+  "baseline_commit": "dbf85ba95c53f76d510bb86de342ccc4eaaad8ae"
+}

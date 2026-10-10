@@ -1,0 +1,9 @@
+resource,index,host_source,device_source,host_candidates,upload_done,compute_done,download_done,source_bytes,candidate_device_bytes
+slot,0,0x206200000,0x603e00000,0x206041c10,0x605d0c86c350,0x605d0c86c550,0x605d0c86c750,4922883,268816
+slot,1,0x206800000,0x604400000,0x206083810,0x605d0c86ea00,0x605d0c86ec00,0x605d0c86ee00,4922883,268816
+slot,2,0x206e00000,0x604a00000,0x2060c5410,0x605d0c8710b0,0x605d0c8712b0,0x605d0c8714b0,4922883,268816
+shared_input,0,,0x602e00000,,,,,4915200,0
+shared_output,0,,0x603400000,,,,,2822400,0
+upload_stream,0,,0x605d0c65f560,,,,,0,0
+compute_stream,0,,0x605d05294760,,,,,0,0
+download_stream,0,,0x605d0c65b140,,,,,0,0

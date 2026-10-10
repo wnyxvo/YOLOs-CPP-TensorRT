@@ -1,0 +1,7 @@
+{
+  "temporary_config_path": "/home/wnyxvo/.config/NVIDIA Corporation/nsys-config.ini",
+  "override": "CuptiUseRawGpuTimestamps=false",
+  "original_existed": false,
+  "restoration": "finally block",
+  "reference": "https://forums.developer.nvidia.com/t/nsys-doesnt-show-cuda-kernel-and-memory-data/315536"
+}

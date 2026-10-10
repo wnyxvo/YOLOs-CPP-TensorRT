@@ -1,0 +1,6 @@
+*.binary
+*.f32
+*.npy
+*.nsys-rep
+*.sqlite
+*.tar.gz

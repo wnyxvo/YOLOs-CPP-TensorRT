@@ -1,0 +1,295 @@
+{
+  "timestamp": "2026-10-10T17:06:07.909838",
+  "frames_per_round": 2800,
+  "warmup_per_image": 30,
+  "images": 7,
+  "model_engine_sha256": "de97ab4e249a501cd138e0cc2ce66d38c5b69615933bf11d30d2bfddae8b1270",
+  "latency_definition": "submit entry (including capacity wait) to CPU final detections ready; synchronous detect entry to return",
+  "admitted_latency_definition": "slot reservation to CPU final detections ready; GPU/FIFO queue still included",
+  "throughput_definition": "completed frames / entire batch wall time including final drain and producer join; not submission rate",
+  "preloaded_images": true,
+  "profiler": false,
+  "graph": true,
+  "postprocess": "gpu-filter + CPU NMS",
+  "configurations": [
+    {
+      "slots": 0,
+      "completed_frames": 5600,
+      "rounds": 2,
+      "batch_elapsed_ms": 8789.625304000001,
+      "completed_fps": 637.1147581742239,
+      "latency_ms": {
+        "count": 5600,
+        "mean": 1.5693266355357143,
+        "p50": 1.5027205000000001,
+        "p95": 2.0639807
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 1.5693266355357143,
+        "p50": 1.5027205000000001,
+        "p95": 2.0639807
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0
+      },
+      "collection_queue_ms": null,
+      "rounds_raw": [
+        {
+          "slots": "0",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "4412.538253000",
+          "completed_fps": "634.555405406",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "1",
+          "capacity_waits": "0",
+          "timeline": "0"
+        },
+        {
+          "slots": "0",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "4377.087051000",
+          "completed_fps": "639.694839827",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "1",
+          "capacity_waits": "0",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 1,
+      "completed_frames": 5600,
+      "rounds": 2,
+      "batch_elapsed_ms": 8710.937269,
+      "completed_fps": 642.8699722048245,
+      "latency_ms": {
+        "count": 5600,
+        "mean": 2.8362745423214286,
+        "p50": 2.8106625000000003,
+        "p95": 3.4366948500000003
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 1.5368347692857145,
+        "p50": 1.4820609999999999,
+        "p95": 2.03466965
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 1.2994397730357143,
+        "p50": 1.254188,
+        "p95": 1.6506546500000003
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 0.02552780392857143,
+        "p50": 0.020227,
+        "p95": 0.054938350000000004
+      },
+      "rounds_raw": [
+        {
+          "slots": "1",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "4421.580746000",
+          "completed_fps": "633.257687883",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "1",
+          "capacity_waits": "2799",
+          "timeline": "0"
+        },
+        {
+          "slots": "1",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "4289.356523000",
+          "completed_fps": "652.778565966",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "1",
+          "capacity_waits": "2799",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 2,
+      "completed_frames": 5600,
+      "rounds": 2,
+      "batch_elapsed_ms": 7079.642986,
+      "completed_fps": 791.0003387280975,
+      "latency_ms": {
+        "count": 5600,
+        "mean": 3.5144131708928565,
+        "p50": 3.4258550000000003,
+        "p95": 4.22878195
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 2.507287905,
+        "p50": 2.4494295,
+        "p95": 3.0949724499999998
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 1.0071252658928571,
+        "p50": 0.9837765,
+        "p95": 1.3971546500000005
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 0.9986523450000001,
+        "p50": 0.976569,
+        "p95": 1.3852753500000001
+      },
+      "rounds_raw": [
+        {
+          "slots": "2",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "3541.300919000",
+          "completed_fps": "790.669887718",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "2",
+          "capacity_waits": "2797",
+          "timeline": "0"
+        },
+        {
+          "slots": "2",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "3538.342067000",
+          "completed_fps": "791.331066070",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "2",
+          "capacity_waits": "2795",
+          "timeline": "0"
+        }
+      ]
+    },
+    {
+      "slots": 3,
+      "completed_frames": 5600,
+      "rounds": 2,
+      "batch_elapsed_ms": 7064.123381,
+      "completed_fps": 792.7381357837016,
+      "latency_ms": {
+        "count": 5600,
+        "mean": 4.763071723214286,
+        "p50": 4.678211,
+        "p95": 5.530122050000001
+      },
+      "admitted_latency_ms": {
+        "count": 5600,
+        "mean": 3.7632144612500005,
+        "p50": 3.6845,
+        "p95": 4.4824674
+      },
+      "submit_wait_ms": {
+        "count": 5600,
+        "mean": 0.9998572619642857,
+        "p50": 0.923611,
+        "p95": 1.3554157000000002
+      },
+      "collection_queue_ms": {
+        "count": 5600,
+        "mean": 2.252959206964286,
+        "p50": 2.2186494999999997,
+        "p95": 2.8519344000000006
+      },
+      "rounds_raw": [
+        {
+          "slots": "3",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "3542.887039000",
+          "completed_fps": "790.315911622",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "3",
+          "capacity_waits": "2796",
+          "timeline": "0"
+        },
+        {
+          "slots": "3",
+          "frames": "2800",
+          "images": "7",
+          "warmup_per_image": "30",
+          "graph": "1",
+          "postprocess": "gpu-filter",
+          "conf": "0.25",
+          "iou": "0.45",
+          "max_det": "300",
+          "image_capacity_bytes": "4922883",
+          "batch_elapsed_ms": "3521.236342000",
+          "completed_fps": "795.175253249",
+          "accepted": "2800",
+          "collected": "2800",
+          "high_water": "3",
+          "capacity_waits": "2797",
+          "timeline": "0"
+        }
+      ]
+    }
+  ]
+}

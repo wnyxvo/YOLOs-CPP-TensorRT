@@ -1,0 +1,2 @@
+slots,frames,images,warmup_per_image,graph,postprocess,conf,iou,max_det,image_capacity_bytes,batch_elapsed_ms,completed_fps,accepted,collected,high_water,capacity_waits,timeline
+3,2800,7,30,1,gpu-filter,0.25,0.45,300,4922883,3542.887039000,790.315911622,2800,2800,3,2796,0

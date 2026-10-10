@@ -1,0 +1,40 @@
+{
+  "sqlite": "results/async_pipeline/final/timeline_s0.sqlite",
+  "scope": "MEASURED_BATCH; warmup/setup excluded",
+  "batch_ms": 257.499095,
+  "cuda_api_calls": {
+    "cudaMemcpyAsync": 280,
+    "cudaLaunchKernel": 280,
+    "cudaGraphLaunch": 140,
+    "cudaMemsetAsync": 140,
+    "cudaStreamSynchronize": 140
+  },
+  "raw_gpu_timestamp_workaround": true,
+  "timestamp_note": "CUPTI GPU/CPU conversion workaround for WSL; NVIDIA describes reduced timestamp accuracy",
+  "profiler_timings_are_not_final_performance": true,
+  "status": "executed",
+  "kernel_count": 25480,
+  "h2d_count": 140,
+  "d2h_count": 140,
+  "cpu_post_ranges": 0,
+  "kernel_stream_ids": [
+    13
+  ],
+  "copy_stream_ids": [
+    13
+  ],
+  "union_busy_ms": {
+    "kernels": 167.065951,
+    "h2d": 27.485713,
+    "d2h": 3.241042,
+    "cpu_post": 0.0
+  },
+  "overlap_ms": {
+    "h2d_kernels": 0.0,
+    "d2h_kernels": 0.0,
+    "h2d_d2h": 0.0,
+    "cpu_post_kernels": 0.0
+  },
+  "h2d_bytes": 319617960,
+  "d2h_bytes": 37634240
+}

@@ -1,0 +1,103 @@
+{
+  "scope": "Seven unlabeled images; NOT mAP",
+  "checks": [
+    {
+      "image": "bus.png",
+      "mode": "cpu",
+      "matched": 5,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "bus.png",
+      "mode": "gpu-filter",
+      "matched": 5,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "dog.png",
+      "mode": "cpu",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "dog.png",
+      "mode": "gpu-filter",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "multi_mosaic.png",
+      "mode": "cpu",
+      "matched": 4,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "multi_mosaic.png",
+      "mode": "gpu-filter",
+      "matched": 4,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "odd_landscape.png",
+      "mode": "cpu",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "odd_landscape.png",
+      "mode": "gpu-filter",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "portrait.png",
+      "mode": "cpu",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "portrait.png",
+      "mode": "gpu-filter",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "wide.png",
+      "mode": "cpu",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "wide.png",
+      "mode": "gpu-filter",
+      "matched": 1,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "zidane.png",
+      "mode": "cpu",
+      "matched": 3,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    },
+    {
+      "image": "zidane.png",
+      "mode": "gpu-filter",
+      "matched": 3,
+      "max_coordinate_abs_delta": 0,
+      "max_score_abs_delta": 0
+    }
+  ]
+}

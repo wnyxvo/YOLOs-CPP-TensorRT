@@ -1,0 +1,4 @@
+PASS repeated ring reuse, mixed image sizes, noncontiguous ROI, mutation/release after submit, exact results and stable resources
+PASS full ring blocks submit until collect, strict frame IDs, FIFO and explicit stop/drain returns every pending result
+PASS unsupported type/over-capacity input/configuration/synchronous overlap rejected; empty closed collection terminates
+PASS measured batch FIFO IDs, exact synchronous parity=1, accepted=84, collected=84

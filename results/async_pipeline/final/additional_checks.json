@@ -1,0 +1,8 @@
+{
+  "gpu_nms_current_binary_exact_frozen_parity": true,
+  "images": 7,
+  "matched_boxes": 16,
+  "pycocotools_installed": false,
+  "mAP": null,
+  "mAP_status": "missing labeled dataset"
+}

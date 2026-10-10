@@ -1,0 +1,16 @@
+{
+  "commit": "dbf85ba95c53f76d510bb86de342ccc4eaaad8ae",
+  "git_status_at_freeze": "",
+  "tracked_diff_empty": true,
+  "binary_sha256": "3c0e3fc9c316d26097019d02910735aedc00540b32eb66eb228dc511edf88133",
+  "model_artifacts": {
+    "models/yolo11n.onnx": "86c32d35d058eaf9b84b4d159ac779fa4160fa735593112fcf07a1f278f70fc7",
+    "models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+    "models/yolo11n.trt": "de97ab4e249a501cd138e0cc2ce66d38c5b69615933bf11d30d2bfddae8b1270"
+  },
+  "default_mode": "gpu-filter",
+  "graph": true,
+  "conf": 0.25,
+  "iou": 0.45,
+  "max_det": 300
+}
