@@ -1,0 +1,6 @@
+{
+  "source": "Unexpected concurrent worktree modification at 2026-10-08 23:01:29 Asia/Shanghai; not written by this baseline turn. User explicitly says they did not modify it.",
+  "disposition": "Frozen source and binary, extra_scan_optimization.patch and independent final_current experiment retained. Extra optimization removed from active worktree to restore the tested minimal-correction baseline.",
+  "formal_baseline": "results/baseline/final_corrected",
+  "extra_experiment": "results/baseline/final_current"
+}

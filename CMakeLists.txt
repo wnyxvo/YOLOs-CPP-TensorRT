@@ -207,6 +207,7 @@ endfunction()
 # Main Executables
 # ============================================================================
 add_yolo_executable(image_inference src/image_inference.cpp)
+add_yolo_executable(baseline_detection src/baseline_detection.cpp)
 add_yolo_executable(video_inference src/video_inference.cpp)
 add_yolo_executable(camera_inference src/camera_inference.cpp)
 add_yolo_executable(class_image_inference src/class_image_inference.cpp)

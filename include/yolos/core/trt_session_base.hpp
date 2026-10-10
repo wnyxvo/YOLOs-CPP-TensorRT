@@ -24,6 +24,10 @@
 #include <opencv2/core.hpp>
 
 #include <algorithm>
+#include <array>
+#include <chrono>
+#include <cstring>
+#include <fstream>
 #include <cassert>
 #include <iostream>
 #include <numeric>
@@ -63,6 +67,44 @@ public:
     TrtSessionBase& operator=(const TrtSessionBase&) = delete;
     TrtSessionBase(TrtSessionBase&&) = default;
     TrtSessionBase& operator=(TrtSessionBase&&) = default;
+
+    struct StageTimes {
+        double stagingMs{0};
+        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, d2hMs{0};
+    };
+    void setGraphEnabled(bool enabled) { graphEnabled_ = enabled; }
+    bool isGraphEnabled() const { return graphEnabled_ && graphCaptured_; }
+    void setProfiling(bool enabled) {
+        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 5>>();
+        profiling_ = enabled;
+    }
+    const StageTimes& stageTimes() const { return stageTimes_; }
+
+    // Diagnostics only: call after inferGpu's completion, outside measured regions.
+    void dumpTensors(const std::string& prefix) {
+        auto& in = inputTensors_.at(0);
+        CUDA_CHECK(cudaMemcpy(in.hostBuf.data(), in.deviceBuf.data(), in.bytes, cudaMemcpyDeviceToHost));
+        auto write = [](const std::string& path, const TensorInfo& t) {
+            std::ofstream f(path, std::ios::binary);
+            f.write(static_cast<const char*>(t.hostBuf.data()), t.bytes);
+            if (!f) throw std::runtime_error("Cannot write tensor: " + path);
+        };
+        write(prefix + ".input.f32", in);
+        for (size_t i = 0; i < outputTensors_.size(); ++i)
+            write(prefix + ".output" + std::to_string(i) + ".f32", outputTensors_[i]);
+    }
+    void writeEngineInfo(std::ostream& os) const {
+        os << "mode,name,dtype,shape,bytes\n";
+        auto write = [&](const TensorInfo& t) {
+            const char* dtype = t.dtype == nvinfer1::DataType::kFLOAT ? "float32" :
+                                t.dtype == nvinfer1::DataType::kHALF ? "float16" : "unsupported";
+            os << (t.isInput ? "input" : "output") << ',' << t.name << ',' << dtype << ',';
+            for (size_t i = 0; i < t.shape.size(); ++i) { if (i) os << 'x'; os << t.shape[i]; }
+            os << ',' << t.bytes << '\n';
+        };
+        for (const auto& t : inputTensors_) write(t);
+        for (const auto& t : outputTensors_) write(t);
+    }
 
     // ── Accessors ───────────────────────────────────────────────────────
 
@@ -112,11 +154,17 @@ protected:
     cudaGraph_t graph_{nullptr};
     cudaGraphExec_t graphExec_{nullptr};
     bool graphCaptured_{false};
+    bool graphEnabled_{true};
+    bool profiling_{false};
+    std::unique_ptr<std::array<trt::CudaEvent, 5>> events_;
+    StageTimes stageTimes_;
+    void markStage(size_t i) { if (profiling_) (*events_)[i].record(stream_.get()); }
 
     // ── Scale/pad cache (set during GPU preprocess, read by postprocess) ──
     mutable float cachedScale_{1.0f};
     mutable float cachedPadX_{0.0f};
     mutable float cachedPadY_{0.0f};
+    mutable float cachedScaleX_{1.0f}, cachedScaleY_{1.0f};
 
     // ====================================================================
     // GPU-accelerated full pipeline: cv::Mat → detect
@@ -128,6 +176,8 @@ protected:
     ///
     /// @param image  Input BGR cv::Mat (any size)
     void inferGpu(const cv::Mat& image) {
+        if (image.empty() || image.type() != CV_8UC3 || image.dims != 2)
+            throw std::invalid_argument("GPU detection requires a non-empty 2D CV_8UC3 BGR image");
         const int srcH = image.rows;
         const int srcW = image.cols;
         const size_t srcBytes = static_cast<size_t>(srcH) * srcW * 3;
@@ -136,10 +186,21 @@ protected:
         ensureSrcCapacity(srcBytes);
 
         // 1. Copy raw BGR pixels host→device via pinned staging (truly async)
-        std::memcpy(pinnedSrc_.data(), image.data, srcBytes);
+        const auto stagingStart = profiling_ ? std::chrono::steady_clock::now() : std::chrono::steady_clock::time_point{};
+        if (image.isContinuous()) std::memcpy(pinnedSrc_.data(), image.data, srcBytes);
+        else {
+            const size_t rowBytes = static_cast<size_t>(srcW) * 3;
+            auto* dst = static_cast<uint8_t*>(pinnedSrc_.data());
+            for (int y = 0; y < srcH; ++y) std::memcpy(dst + y * rowBytes, image.ptr(y), rowBytes);
+        }
+        if (profiling_) stageTimes_.stagingMs = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - stagingStart).count();
+        markStage(0);
         CUDA_CHECK(cudaMemcpyAsync(
             deviceSrc_.data(), pinnedSrc_.data(), srcBytes,
             cudaMemcpyHostToDevice, stream_.get()));
+
+        markStage(1);
 
         // 2. CUDA letterbox+BGR→RGB+normalize → directly into TRT input buffer
         float* trtInput = static_cast<float*>(inputTensors_[0].deviceBuf.data());
@@ -150,12 +211,17 @@ protected:
             inputShape_.width, inputShape_.height,
             stream_.get());
 
+        CUDA_CHECK(cudaGetLastError());
+        markStage(2);
+
         // 3. Inference (CUDA graph if available, else enqueueV3)
-        if (graphCaptured_ && graphExec_) {
+        if (graphEnabled_ && graphCaptured_ && graphExec_) {
             CUDA_CHECK(cudaGraphLaunch(graphExec_, stream_.get()));
         } else {
-            context_->enqueueV3(stream_.get());
+            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
         }
+
+        markStage(3);
 
         // 4. D2H copy of outputs
         for (auto& out : outputTensors_) {
@@ -164,8 +230,17 @@ protected:
                 cudaMemcpyDeviceToHost, stream_.get()));
         }
 
+        markStage(4);
+
         // 5. Single sync point
         stream_.synchronize();
+
+        if (profiling_) {
+            stageTimes_.h2dMs = trt::CudaEvent::elapsed((*events_)[0], (*events_)[1]);
+            stageTimes_.preprocessMs = trt::CudaEvent::elapsed((*events_)[1], (*events_)[2]);
+            stageTimes_.inferenceMs = trt::CudaEvent::elapsed((*events_)[2], (*events_)[3]);
+            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
+        }
 
         // 6. Cache scale/pad for postprocessing (computed on host, negligible)
         computeScalePad(srcW, srcH);
@@ -179,7 +254,7 @@ protected:
         // Copy from pinned input host buffer for speed
         TensorInfo& inp = inputTensors_[0];
         const size_t bytes = count * sizeof(float);
-        assert(bytes <= inp.bytes);
+        if (!blob || bytes != inp.bytes) throw std::invalid_argument("CPU blob must exactly fill the FP32 input");
 
         // Copy blob into pinned buffer first, then async H2D
         std::memcpy(inp.hostBuf.data(), blob, bytes);
@@ -187,10 +262,10 @@ protected:
             inp.deviceBuf.data(), inp.hostBuf.data(), bytes,
             cudaMemcpyHostToDevice, stream_.get()));
 
-        if (graphCaptured_ && graphExec_) {
+        if (graphEnabled_ && graphCaptured_ && graphExec_) {
             CUDA_CHECK(cudaGraphLaunch(graphExec_, stream_.get()));
         } else {
-            context_->enqueueV3(stream_.get());
+            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
         }
 
         for (auto& out : outputTensors_) {
@@ -256,6 +331,16 @@ private:
             nvinfer1::Dims dims = engine_->getTensorShape(name);
             nvinfer1::DataType dtype = engine_->getTensorDataType(name);
 
+            if (dtype != nvinfer1::DataType::kFLOAT)
+                throw std::runtime_error(std::string("Unsupported Engine I/O dtype for ") + name +
+                    ": only FP32 I/O is implemented (FP16 compute does not imply FP16 I/O)");
+            if (engine_->getTensorLocation(name) != nvinfer1::TensorLocation::kDEVICE ||
+                engine_->getTensorFormat(name) != nvinfer1::TensorFormat::kLINEAR ||
+                engine_->getTensorVectorizedDim(name) != -1)
+                throw std::runtime_error("Only device LINEAR Engine I/O is supported");
+            for (int d = 0; d < dims.nbDims; ++d)
+                if (dims.d[d] <= 0) throw std::runtime_error("Only positive static Engine shapes are supported");
+
             TensorInfo ti;
             ti.name = name;
             ti.dims = dims;
@@ -263,24 +348,10 @@ private:
             ti.isInput = (mode == nvinfer1::TensorIOMode::kINPUT);
 
             ti.shape.resize(dims.nbDims);
-            bool hasDynamic = false;
             for (int d = 0; d < dims.nbDims; ++d) {
                 ti.shape[d] = dims.d[d];
-                if (dims.d[d] == -1) hasDynamic = true;
             }
 
-            if (ti.isInput && hasDynamic) {
-                nvinfer1::Dims optDims = dims;
-                for (int d = 0; d < dims.nbDims; ++d) {
-                    if (dims.d[d] == -1) {
-                        if (d == 0) optDims.d[d] = 1;
-                        else if (d == 1) optDims.d[d] = 3;
-                        else optDims.d[d] = 640;
-                    }
-                }
-                context_->setInputShape(name, optDims);
-                for (int d = 0; d < optDims.nbDims; ++d) ti.shape[d] = optDims.d[d];
-            }
 
             int64_t vol = 1;
             for (auto s : ti.shape) vol *= (s > 0 ? s : 1);
@@ -294,7 +365,7 @@ private:
             else            outputTensors_.push_back(std::move(ti));
         }
 
-        if (inputTensors_.empty()) throw std::runtime_error("Engine has no inputs");
+        if (inputTensors_.size() != 1) throw std::runtime_error("Exactly one Engine input is supported");
         if (outputTensors_.empty()) throw std::runtime_error("Engine has no outputs");
 
         // Resolve output shapes
@@ -317,14 +388,15 @@ private:
 
         // Derive input image shape
         const auto& inShape = inputTensors_[0].shape;
-        if (inShape.size() >= 4) {
+        if (inShape.size() == 4 && inShape[0] == 1 && inShape[1] == 3) {
             isDynamicBatchSize_ = (inputTensors_[0].dims.d[0] == -1);
             isDynamicInputShape_ = (inputTensors_[0].dims.d[2] == -1 || inputTensors_[0].dims.d[3] == -1);
             inputShape_ = cv::Size(static_cast<int>(inShape[3]), static_cast<int>(inShape[2]));
         } else {
-            throw std::runtime_error("Expected 4D input [N,C,H,W]");
+            throw std::runtime_error("Expected static FP32 NCHW input [1,3,H,W]");
         }
 
+        writeEngineInfo(std::cout);
         std::cout << "[INFO] Engine: " << enginePath << std::endl;
         std::cout << "[INFO] Input: " << inputShape_.width << "x" << inputShape_.height
                   << (isDynamicInputShape_ ? " (dynamic)" : "") << std::endl;
@@ -360,13 +432,12 @@ private:
     void computeScalePad(int srcW, int srcH) const {
         const int dstW = inputShape_.width;
         const int dstH = inputShape_.height;
-        cachedScale_ = std::min(
-            static_cast<float>(dstH) / srcH,
-            static_cast<float>(dstW) / srcW);
-        const int newW = static_cast<int>(std::round(srcW * cachedScale_));
-        const int newH = static_cast<int>(std::round(srcH * cachedScale_));
-        cachedPadX_ = std::round((dstW - newW) / 2.0f - 0.1f);
-        cachedPadY_ = std::round((dstH - newH) / 2.0f - 0.1f);
+        const auto g = cuda::letterboxGeometry(srcW, srcH, dstW, dstH);
+        cachedScale_ = static_cast<float>(g.scale);
+        cachedScaleX_ = static_cast<float>(g.newW) / srcW;
+        cachedScaleY_ = static_cast<float>(g.newH) / srcH;
+        cachedPadX_ = g.padLeft;
+        cachedPadY_ = g.padTop;
     }
 
     // ── CUDA Graph Capture ──────────────────────────────────────────────
@@ -406,7 +477,7 @@ private:
             inputTensors_[0].bytes, stream_.get()));
 
         for (int i = 0; i < runs; ++i) {
-            context_->enqueueV3(stream_.get());
+            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
         }
         for (auto& out : outputTensors_) {
             CUDA_CHECK(cudaMemcpyAsync(

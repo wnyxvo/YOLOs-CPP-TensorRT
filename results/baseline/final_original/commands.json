@@ -1,0 +1,172 @@
+[
+  {
+    "argv": [
+      "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+      "scripts/baseline/collect_environment.py",
+      "--output",
+      "results/baseline/final_original/environment.json"
+    ],
+    "start": "2026-10-08T22:51:19.027849+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:21.191704+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/validation_on",
+      "--graph",
+      "1",
+      "--warmup",
+      "5",
+      "--runs",
+      "1",
+      "--dump"
+    ],
+    "start": "2026-10-08T22:51:21.191939+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:21.767325+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/validation_off",
+      "--graph",
+      "0",
+      "--warmup",
+      "5",
+      "--runs",
+      "1",
+      "--dump"
+    ],
+    "start": "2026-10-08T22:51:21.767538+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:22.317172+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+      "scripts/baseline/reference.py",
+      "--cpp-prefix",
+      "results/baseline/final_original/validation_on",
+      "--images",
+      "results/baseline/samples",
+      "--pt",
+      "models/yolo11n.pt",
+      "--output",
+      "results/baseline/final_original/reference"
+    ],
+    "start": "2026-10-08T22:51:22.317451+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:24.460429+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+      "scripts/baseline/check_graph.py",
+      "results/baseline/final_original/validation_on",
+      "results/baseline/final_original/validation_off",
+      "--images",
+      "results/baseline/samples",
+      "--output",
+      "results/baseline/final_original/graph_equivalence.json"
+    ],
+    "start": "2026-10-08T22:51:24.460643+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:25.688748+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/graph_on",
+      "--graph",
+      "1",
+      "--warmup",
+      "30",
+      "--runs",
+      "200"
+    ],
+    "start": "2026-10-08T22:51:25.688969+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:29.663909+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/graph_off",
+      "--graph",
+      "0",
+      "--warmup",
+      "30",
+      "--runs",
+      "200"
+    ],
+    "start": "2026-10-08T22:51:29.664155+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:34.716511+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/profile_on",
+      "--graph",
+      "1",
+      "--warmup",
+      "30",
+      "--runs",
+      "200",
+      "--profile"
+    ],
+    "start": "2026-10-08T22:51:34.716763+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:38.573754+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/YOLOs-CPP-TensorRT/results/baseline/original/baseline_detection.binary",
+      "models/yolo11n.trt",
+      "models/coco.names",
+      "results/baseline/samples",
+      "results/baseline/final_original/profile_off",
+      "--graph",
+      "0",
+      "--warmup",
+      "30",
+      "--runs",
+      "200",
+      "--profile"
+    ],
+    "start": "2026-10-08T22:51:38.574034+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:43.607165+08:00"
+  },
+  {
+    "argv": [
+      "/home/wnyxvo/miniconda3/envs/yolos-trt/bin/python",
+      "scripts/baseline/summarize.py",
+      "results/baseline/final_original/graph_on",
+      "results/baseline/final_original/graph_off",
+      "results/baseline/final_original/profile_on",
+      "results/baseline/final_original/profile_off",
+      "--output",
+      "results/baseline/final_original/summary.json"
+    ],
+    "start": "2026-10-08T22:51:43.607404+08:00",
+    "returncode": 0,
+    "end": "2026-10-08T22:51:43.684033+08:00"
+  }
+]

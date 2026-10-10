@@ -1,0 +1,8 @@
+image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,d2h_ms,postprocess_ms
+"bus.png",0,2.971145,,,,,,
+"dog.png",0,3.217520,,,,,,
+"multi_mosaic.png",0,4.120188,,,,,,
+"odd_landscape.png",0,3.620497,,,,,,
+"portrait.png",0,2.857666,,,,,,
+"wide.png",0,2.940894,,,,,,
+"zidane.png",0,3.688830,,,,,,

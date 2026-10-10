@@ -1,0 +1,84 @@
+{
+  "source": "data/dog.jpg",
+  "source_sha256": "d3294c9a40f6fd282e7be7187f41f339190030fbc2068476a266fc35e0841986",
+  "scope": "7 images from 3 local scenes: 5 deterministic dog transformations plus installed Ultralytics bus/zidane samples; not mAP",
+  "sources": [
+    {
+      "path": "data/dog.jpg",
+      "sha256": "d3294c9a40f6fd282e7be7187f41f339190030fbc2068476a266fc35e0841986"
+    },
+    {
+      "path": "/home/wnyxvo/miniconda3/envs/yolos-trt/lib/python3.11/site-packages/ultralytics/assets/bus.jpg",
+      "sha256": "c02019c4979c191eb739ddd944445ef408dad5679acab6fd520ef9d434bfbc63"
+    },
+    {
+      "path": "/home/wnyxvo/miniconda3/envs/yolos-trt/lib/python3.11/site-packages/ultralytics/assets/zidane.jpg",
+      "sha256": "16d73869e3267a7d4ed00de8e860833bd1657c1b252e94c0c348277adc7b6edb"
+    }
+  ],
+  "samples": [
+    {
+      "image": "dog.png",
+      "shape": [
+        329,
+        302,
+        3
+      ],
+      "sha256": "fd884edf3ba037becb245dc6860a59aa19ea87ac12b0532d2495e6c8f16ccd84"
+    },
+    {
+      "image": "odd_landscape.png",
+      "shape": [
+        667,
+        1001,
+        3
+      ],
+      "sha256": "33e5716f77889ef1c93f57dece05bb875109d97cae3440deb7a70b7f80d82d96"
+    },
+    {
+      "image": "portrait.png",
+      "shape": [
+        901,
+        577,
+        3
+      ],
+      "sha256": "163e6f58372f9523f05897aa78d330ccf7c0fcf6a2a2565ec4e53ce2b542729d"
+    },
+    {
+      "image": "wide.png",
+      "shape": [
+        501,
+        1203,
+        3
+      ],
+      "sha256": "a2547e8e7204885fd4a4269e54785f8e9fc2e1f4d57ffcb62ec343370925e3d3"
+    },
+    {
+      "image": "multi_mosaic.png",
+      "shape": [
+        1281,
+        1281,
+        3
+      ],
+      "sha256": "3d422e560f1f252f41c3908ac53ee2a147da84f07bed8b2440777bf18faf04c5"
+    },
+    {
+      "image": "bus.png",
+      "shape": [
+        1080,
+        810,
+        3
+      ],
+      "sha256": "bf5a9f8f6a89bb2ec24dff2121b2614344e76abc8a884bc66a46689ac0ee39c6"
+    },
+    {
+      "image": "zidane.png",
+      "shape": [
+        720,
+        1280,
+        3
+      ],
+      "sha256": "6c2f6c030c660af02e1827b63e34ecd9045afd4751fd02abb760e06db6bbe7bf"
+    }
+  ]
+}

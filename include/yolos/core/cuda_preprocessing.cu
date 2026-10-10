@@ -47,8 +47,8 @@ __global__ void letterboxNormalizeKernel(
     if (srcX >= 0 && srcX < newW && srcY >= 0 && srcY < newH) {
         // Bilinear coordinate mapping back to original source
         // src coords (float) for bilinear interpolation
-        const float fx = static_cast<float>(srcX) * srcW / static_cast<float>(newW);
-        const float fy = static_cast<float>(srcY) * srcH / static_cast<float>(newH);
+        const float fx = fmaxf(0.0f, (static_cast<float>(srcX) + 0.5f) * srcW / newW - 0.5f);
+        const float fy = fmaxf(0.0f, (static_cast<float>(srcY) + 0.5f) * srcH / newH - 0.5f);
 
         const int x0 = static_cast<int>(fx);
         const int y0 = static_cast<int>(fy);
@@ -77,7 +77,8 @@ __global__ void letterboxNormalizeKernel(
                       + (1.0f - ax) * ay          * p10[srcC]
                       + ax          * ay          * p11[srcC];
 
-            dst[c * planeSize + idx] = val * normScale;
+            // OpenCV resizes uint8 before normalizing. Quantize to uint8 here too.
+            dst[c * planeSize + idx] = floorf(val + 0.5f) * normScale;
         }
     } else {
         // Padding pixel
@@ -96,19 +97,9 @@ void letterboxPreprocess(
     float* d_dst, int dstW, int dstH,
     cudaStream_t stream
 ) {
-    // Compute resize dimensions (maintain aspect ratio)
-    const float scale = fminf(
-        static_cast<float>(dstH) / srcH,
-        static_cast<float>(dstW) / srcW
-    );
-    const int newW = static_cast<int>(roundf(srcW * scale));
-    const int newH = static_cast<int>(roundf(srcH * scale));
-
-    // Ultralytics-compatible asymmetric padding
-    const float dw = (dstW - newW) / 2.0f;
-    const float dh = (dstH - newH) / 2.0f;
-    const int padLeft = static_cast<int>(roundf(dw - 0.1f));
-    const int padTop  = static_cast<int>(roundf(dh - 0.1f));
+    const auto g = letterboxGeometry(srcW, srcH, dstW, dstH);
+    const int newW = g.newW, newH = g.newH;
+    const int padLeft = g.padLeft, padTop = g.padTop;
 
     constexpr float normScale = 1.0f / 255.0f;
     constexpr float padValue  = 114.0f / 255.0f;

@@ -1,0 +1,5 @@
+# Local diagnostic tensors and saved executables; keep JSON/CSV/source evidence.
+*.f32
+*.npy
+*.binary
+*.ses

@@ -11,10 +11,24 @@
 // ============================================================================
 
 #include <cuda_runtime.h>
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
 #include <cstdint>
 
 namespace yolos {
 namespace cuda {
+
+struct LetterboxGeometry { double scale; int newW, newH, padLeft, padTop; };
+// Match Python round (ties to even) and use double for the host geometry.
+inline LetterboxGeometry letterboxGeometry(int srcW, int srcH, int dstW, int dstH) {
+    double r = std::min(double(dstH) / srcH, double(dstW) / srcW);
+    int w = int(std::nearbyint(srcW * r)), h = int(std::nearbyint(srcH * r));
+    if (w < 1 || h < 1) throw std::invalid_argument("Letterbox resized dimension is zero");
+    return {r, w, h, int(std::nearbyint((dstW-w)/2.0 - 0.1)),
+                     int(std::nearbyint((dstH-h)/2.0 - 0.1))};
+}
+
 
 /// @brief GPU letterbox + BGR→RGB + normalize in a single kernel.
 ///

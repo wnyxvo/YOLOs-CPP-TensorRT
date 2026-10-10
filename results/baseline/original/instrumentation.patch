@@ -1,0 +1,333 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -207,6 +207,7 @@
+ # Main Executables
+ # ============================================================================
+ add_yolo_executable(image_inference src/image_inference.cpp)
++add_yolo_executable(baseline_detection src/baseline_detection.cpp)
+ add_yolo_executable(video_inference src/video_inference.cpp)
+ add_yolo_executable(camera_inference src/camera_inference.cpp)
+ add_yolo_executable(class_image_inference src/class_image_inference.cpp)
+--- a/include/yolos/core/trt_session_base.hpp
++++ b/include/yolos/core/trt_session_base.hpp
+@@ -24,6 +24,10 @@
+ #include <opencv2/core.hpp>
+ 
+ #include <algorithm>
++#include <array>
++#include <chrono>
++#include <cstring>
++#include <fstream>
+ #include <cassert>
+ #include <iostream>
+ #include <numeric>
+@@ -64,6 +68,44 @@
+     TrtSessionBase(TrtSessionBase&&) = default;
+     TrtSessionBase& operator=(TrtSessionBase&&) = default;
+ 
++    struct StageTimes {
++        double stagingMs{0};
++        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, d2hMs{0};
++    };
++    void setGraphEnabled(bool enabled) { graphEnabled_ = enabled; }
++    bool isGraphEnabled() const { return graphEnabled_ && graphCaptured_; }
++    void setProfiling(bool enabled) {
++        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 5>>();
++        profiling_ = enabled;
++    }
++    const StageTimes& stageTimes() const { return stageTimes_; }
++
++    // Diagnostics only: call after inferGpu's completion, outside measured regions.
++    void dumpTensors(const std::string& prefix) {
++        auto& in = inputTensors_.at(0);
++        CUDA_CHECK(cudaMemcpy(in.hostBuf.data(), in.deviceBuf.data(), in.bytes, cudaMemcpyDeviceToHost));
++        auto write = [](const std::string& path, const TensorInfo& t) {
++            std::ofstream f(path, std::ios::binary);
++            f.write(static_cast<const char*>(t.hostBuf.data()), t.bytes);
++            if (!f) throw std::runtime_error("Cannot write tensor: " + path);
++        };
++        write(prefix + ".input.f32", in);
++        for (size_t i = 0; i < outputTensors_.size(); ++i)
++            write(prefix + ".output" + std::to_string(i) + ".f32", outputTensors_[i]);
++    }
++    void writeEngineInfo(std::ostream& os) const {
++        os << "mode,name,dtype,shape,bytes\n";
++        auto write = [&](const TensorInfo& t) {
++            const char* dtype = t.dtype == nvinfer1::DataType::kFLOAT ? "float32" :
++                                t.dtype == nvinfer1::DataType::kHALF ? "float16" : "unsupported";
++            os << (t.isInput ? "input" : "output") << ',' << t.name << ',' << dtype << ',';
++            for (size_t i = 0; i < t.shape.size(); ++i) { if (i) os << 'x'; os << t.shape[i]; }
++            os << ',' << t.bytes << '\n';
++        };
++        for (const auto& t : inputTensors_) write(t);
++        for (const auto& t : outputTensors_) write(t);
++    }
++
+     // ── Accessors ───────────────────────────────────────────────────────
+ 
+     [[nodiscard]] cv::Size getInputShape() const noexcept { return inputShape_; }
+@@ -112,6 +154,11 @@
+     cudaGraph_t graph_{nullptr};
+     cudaGraphExec_t graphExec_{nullptr};
+     bool graphCaptured_{false};
++    bool graphEnabled_{true};
++    bool profiling_{false};
++    std::unique_ptr<std::array<trt::CudaEvent, 5>> events_;
++    StageTimes stageTimes_;
++    void markStage(size_t i) { if (profiling_) (*events_)[i].record(stream_.get()); }
+ 
+     // ── Scale/pad cache (set during GPU preprocess, read by postprocess) ──
+     mutable float cachedScale_{1.0f};
+@@ -136,10 +183,16 @@
+         ensureSrcCapacity(srcBytes);
+ 
+         // 1. Copy raw BGR pixels host→device via pinned staging (truly async)
++        const auto stagingStart = profiling_ ? std::chrono::steady_clock::now() : std::chrono::steady_clock::time_point{};
+         std::memcpy(pinnedSrc_.data(), image.data, srcBytes);
++        if (profiling_) stageTimes_.stagingMs = std::chrono::duration<double, std::milli>(
++            std::chrono::steady_clock::now() - stagingStart).count();
++        markStage(0);
+         CUDA_CHECK(cudaMemcpyAsync(
+             deviceSrc_.data(), pinnedSrc_.data(), srcBytes,
+             cudaMemcpyHostToDevice, stream_.get()));
++
++        markStage(1);
+ 
+         // 2. CUDA letterbox+BGR→RGB+normalize → directly into TRT input buffer
+         float* trtInput = static_cast<float*>(inputTensors_[0].deviceBuf.data());
+@@ -150,12 +203,17 @@
+             inputShape_.width, inputShape_.height,
+             stream_.get());
+ 
++        CUDA_CHECK(cudaGetLastError());
++        markStage(2);
++
+         // 3. Inference (CUDA graph if available, else enqueueV3)
+-        if (graphCaptured_ && graphExec_) {
++        if (graphEnabled_ && graphCaptured_ && graphExec_) {
+             CUDA_CHECK(cudaGraphLaunch(graphExec_, stream_.get()));
+         } else {
+-            context_->enqueueV3(stream_.get());
+-        }
++            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
++        }
++
++        markStage(3);
+ 
+         // 4. D2H copy of outputs
+         for (auto& out : outputTensors_) {
+@@ -164,8 +222,17 @@
+                 cudaMemcpyDeviceToHost, stream_.get()));
+         }
+ 
++        markStage(4);
++
+         // 5. Single sync point
+         stream_.synchronize();
++
++        if (profiling_) {
++            stageTimes_.h2dMs = trt::CudaEvent::elapsed((*events_)[0], (*events_)[1]);
++            stageTimes_.preprocessMs = trt::CudaEvent::elapsed((*events_)[1], (*events_)[2]);
++            stageTimes_.inferenceMs = trt::CudaEvent::elapsed((*events_)[2], (*events_)[3]);
++            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
++        }
+ 
+         // 6. Cache scale/pad for postprocessing (computed on host, negligible)
+         computeScalePad(srcW, srcH);
+@@ -187,10 +254,10 @@
+             inp.deviceBuf.data(), inp.hostBuf.data(), bytes,
+             cudaMemcpyHostToDevice, stream_.get()));
+ 
+-        if (graphCaptured_ && graphExec_) {
++        if (graphEnabled_ && graphCaptured_ && graphExec_) {
+             CUDA_CHECK(cudaGraphLaunch(graphExec_, stream_.get()));
+         } else {
+-            context_->enqueueV3(stream_.get());
++            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
+         }
+ 
+         for (auto& out : outputTensors_) {
+@@ -325,6 +392,7 @@
+             throw std::runtime_error("Expected 4D input [N,C,H,W]");
+         }
+ 
++        writeEngineInfo(std::cout);
+         std::cout << "[INFO] Engine: " << enginePath << std::endl;
+         std::cout << "[INFO] Input: " << inputShape_.width << "x" << inputShape_.height
+                   << (isDynamicInputShape_ ? " (dynamic)" : "") << std::endl;
+@@ -406,7 +474,7 @@
+             inputTensors_[0].bytes, stream_.get()));
+ 
+         for (int i = 0; i < runs; ++i) {
+-            context_->enqueueV3(stream_.get());
++            if (!context_->enqueueV3(stream_.get())) throw std::runtime_error("TensorRT enqueueV3 failed");
+         }
+         for (auto& out : outputTensors_) {
+             CUDA_CHECK(cudaMemcpyAsync(
+--- a/include/yolos/tasks/detection.hpp
++++ b/include/yolos/tasks/detection.hpp
+@@ -34,12 +34,13 @@
+ /// @brief Detection result containing bounding box, confidence, and class ID
+ struct Detection {
+     BoundingBox box;    ///< Axis-aligned bounding box
++    std::array<float, 4> xyxy{0, 0, 0, 0}; ///< Float coordinates; integer box is for drawing.
+     float conf{0.0f};   ///< Confidence score
+     int classId{-1};    ///< Class ID
+ 
+     Detection() = default;
+     Detection(const BoundingBox& box_, float conf_, int classId_)
+-        : box(box_), conf(conf_), classId(classId_) {}
++        : box(box_), xyxy{float(box_.x), float(box_.y), float(box_.x + box_.width), float(box_.y + box_.height)}, conf(conf_), classId(classId_) {}
+ };
+ 
+ // ============================================================================
+--- /dev/null
++++ b/src/baseline_detection.cpp
+@@ -0,0 +1,147 @@
++// Headless correctness and latency entry point. Images stay in memory throughout timing.
++#include "yolos/tasks/detection.hpp"
++#include <filesystem>
++#include <fstream>
++#include <iomanip>
++
++namespace fs = std::filesystem;
++using Clock = std::chrono::steady_clock;
++using yolos::det::Detection;
++
++static std::string csv(const std::string& s) {
++    std::string out = "\"";
++    for (char c : s) { out += c; if (c == '"') out += c; }
++    return out + "\"";
++}
++
++class BaselineDetector : public yolos::det::YOLODetector {
++public:
++    using YOLODetector::YOLODetector;
++    double postMs{0};
++    std::vector<Detection> measured(const cv::Mat& im, float conf, float iou, bool profile) {
++        inferGpu(im);
++        auto start = profile ? Clock::now() : Clock::time_point{};
++        auto result = postprocess(im.size(), inputShape_, version_, conf, iou);
++        if (profile) postMs = std::chrono::duration<double, std::milli>(Clock::now() - start).count();
++        return result;
++    }
++    void checkOutput() const {
++        const auto& s = getOutputShape();
++        if (numOutputs() != 1 || s.size() != 3 || s[0] != 1 || s[1] != 84 || s[2] != 8400 ||
++            getInputShape() != cv::Size(640,640) || getClassNames().size() != 80)
++            throw std::runtime_error("This baseline requires COCO YOLO11 [1,3,640,640] -> [1,84,8400]");
++    }
++};
++
++int main(int argc, char** argv) try {
++    if (argc < 5) {
++        std::cerr << "Usage: baseline_detection ENGINE LABELS IMAGE_OR_FOLDER OUTPUT_PREFIX "
++                     "[--graph 0|1] [--profile] [--warmup N] [--runs N] [--dump] [--checks] "
++                     "[--conf F] [--iou F]\n";
++        return 1;
++    }
++    const std::string prefix = argv[4];
++    int warmup = 30, runs = 100, graph = 1;
++    float conf = .25f, iou = .45f;
++    bool profile = false, dump = false, checks = false;
++    for (int i = 5; i < argc; ++i) {
++        std::string a = argv[i];
++        if (a == "--profile") profile = true;
++        else if (a == "--dump") dump = true;
++        else if (a == "--checks") checks = true;
++        else if (i+1 < argc && a == "--warmup") warmup = std::stoi(argv[++i]);
++        else if (i+1 < argc && a == "--runs") runs = std::stoi(argv[++i]);
++        else if (i+1 < argc && a == "--graph") graph = std::stoi(argv[++i]);
++        else if (i+1 < argc && a == "--conf") conf = std::stof(argv[++i]);
++        else if (i+1 < argc && a == "--iou") iou = std::stof(argv[++i]);
++        else throw std::runtime_error("Unknown/missing option: " + a);
++    }
++    if (warmup < 0 || runs < 1 || (graph != 0 && graph != 1) || conf < 0 || conf > 1 || iou < 0 || iou > 1)
++        throw std::runtime_error("Invalid benchmark settings");
++    fs::create_directories(fs::absolute(prefix).parent_path());
++    std::vector<fs::path> paths;
++    if (fs::is_directory(argv[3])) {
++        for (const auto& e : fs::directory_iterator(argv[3])) {
++            auto ext = e.path().extension().string();
++            std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
++            if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp") paths.push_back(e.path());
++        }
++    } else paths.emplace_back(argv[3]);
++    std::sort(paths.begin(), paths.end());
++    if (paths.empty()) throw std::runtime_error("No images");
++    std::vector<cv::Mat> images;
++    for (const auto& p : paths) {
++        images.push_back(cv::imread(p.string(), cv::IMREAD_COLOR));
++        if (images.back().empty()) throw std::runtime_error("Cannot read " + p.string());
++    }
++    BaselineDetector det(argv[1], argv[2], yolos::YOLOVersion::V11);
++    det.checkOutput();
++    det.setGraphEnabled(graph != 0);
++    if (graph && !det.isGraphEnabled()) throw std::runtime_error("Graph requested but capture unavailable");
++    det.setProfiling(profile);
++    std::ofstream io(prefix + ".engine.csv"), config(prefix + ".config.csv");
++    det.writeEngineInfo(io);
++    config << "graph_requested,graph_actual,profile,warmup_per_image,runs_per_image,images,conf,iou,max_det,opencv,trt\n"
++           << graph << ',' << det.isGraphEnabled() << ',' << profile << ',' << warmup << ',' << runs << ','
++           << images.size() << ',' << conf << ',' << iou << ",300," << CV_VERSION << ','
++           << NV_TENSORRT_MAJOR << '.' << NV_TENSORRT_MINOR << '.' << NV_TENSORRT_PATCH << '.' << NV_TENSORRT_BUILD << '\n';
++    std::ofstream results(prefix + ".detections.csv"), times(prefix + ".timings.csv");
++    results << "image,class_id,class_name,confidence,x1,y1,x2,y2\n" << std::setprecision(9);
++    times << "image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,d2h_ms,postprocess_ms\n"
++          << std::fixed << std::setprecision(6);
++    // Round-robin whole-set warmup and measurement to reduce image/order bias.
++    for (int n = 0; n < warmup; ++n)
++        for (const auto& im : images) det.measured(im, conf, iou, profile);
++    for (int n = 0; n < runs; ++n) {
++        for (size_t k = 0; k < images.size(); ++k) {
++            auto start = Clock::now();
++            auto ds = det.measured(images[k], conf, iou, profile);
++            double ms = std::chrono::duration<double, std::milli>(Clock::now() - start).count();
++            times << csv(paths[k].filename().string()) << ',' << n << ',' << ms;
++            if (profile) {
++                const auto& t = det.stageTimes();
++                times << ',' << t.stagingMs << ',' << t.h2dMs << ',' << t.preprocessMs << ',' << t.inferenceMs
++                      << ',' << t.d2hMs << ',' << det.postMs;
++            } else times << ",,,,,,";
++            times << '\n';
++            if (n == 0) {
++                for (const auto& d : ds) {
++                    results << csv(paths[k].filename().string()) << ',' << d.classId << ','
++                            << csv(det.getClassNames().at(d.classId)) << ',' << d.conf;
++                    for (float x : d.xyxy) results << ',' << x;
++                    results << '\n';
++                }
++                if (dump) det.dumpTensors(prefix + "." + paths[k].filename().string());
++            }
++        }
++    }
++    if (checks) {
++        std::ofstream check(prefix + ".checks.txt");
++        for (size_t k = 0; k < images.size(); ++k) {
++            const auto& im = images[k];
++            cv::Mat backing(im.rows+2, im.cols+7, CV_8UC3);
++            auto roi = backing(cv::Rect(3,1,im.cols,im.rows)); im.copyTo(roi);
++            auto a = det.detect(im,conf,iou), b = det.detect(roi,conf,iou);
++            if (roi.isContinuous() || a.size() != b.size()) throw std::runtime_error("ROI mismatch");
++            for (size_t i=0;i<a.size();++i)
++                if (a[i].xyxy != b[i].xyxy || a[i].conf != b[i].conf || a[i].classId != b[i].classId)
++                    throw std::runtime_error("ROI results differ");
++        }
++        check << "PASS non-contiguous ROI exactly equals contiguous input for all images\n";
++        for (int type : {CV_8UC1, CV_8UC4, CV_32FC3}) {
++            bool rejected = false;
++            try { det.detect(cv::Mat(16,16,type)); } catch (const std::invalid_argument&) { rejected = true; }
++            if (!rejected) throw std::runtime_error("Unsupported cv::Mat type accepted");
++        }
++        bool rejected = false;
++        try { det.detect(cv::Mat()); } catch (const std::invalid_argument&) { rejected = true; }
++        if (!rejected) throw std::runtime_error("Empty Mat accepted");
++        check << "PASS empty/gray/BGRA/float input rejected\n";
++    }
++    if (!io || !config || !results || !times) throw std::runtime_error("Output write failed");
++    std::cout << "Saved " << prefix << ".{engine,config,detections,timings}.csv\n";
++    return 0;
++} catch (const std::exception& e) {
++    std::cerr << "[ERROR] " << e.what() << '\n';
++    return 1;
++}

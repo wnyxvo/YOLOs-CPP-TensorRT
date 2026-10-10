@@ -34,12 +34,13 @@ namespace det {
 /// @brief Detection result containing bounding box, confidence, and class ID
 struct Detection {
     BoundingBox box;    ///< Axis-aligned bounding box
+    std::array<float, 4> xyxy{0, 0, 0, 0}; ///< Float coordinates; integer box is for drawing.
     float conf{0.0f};   ///< Confidence score
     int classId{-1};    ///< Class ID
 
     Detection() = default;
     Detection(const BoundingBox& box_, float conf_, int classId_)
-        : box(box_), conf(conf_), classId(classId_) {}
+        : box(box_), xyxy{float(box_.x), float(box_.y), float(box_.x + box_.width), float(box_.y + box_.height)}, conf(conf_), classId(classId_) {}
 };
 
 // ============================================================================
@@ -110,6 +111,11 @@ public:
         }
     }
 
+    void setMaxDet(int n) {
+        if (n < 1 || n > 30000) throw std::invalid_argument("max_det must be in [1,30000]");
+        maxDet_ = n;
+    }
+
     /// @brief Get class names
     [[nodiscard]] const std::vector<std::string>& getClassNames() const { return classNames_; }
 
@@ -117,6 +123,7 @@ public:
     [[nodiscard]] const std::vector<cv::Scalar>& getClassColors() const { return classColors_; }
 
 protected:
+    int maxDet_{300};
     YOLOVersion version_{YOLOVersion::Auto};
     std::vector<std::string> classNames_;
     std::vector<cv::Scalar> classColors_;
@@ -158,63 +165,64 @@ protected:
         const float* __restrict__ rawOutput = getOutputData(0);
         const auto& outputShape = getOutputShape(0);
 
+        if (outputShape.size() != 3) throw std::runtime_error("Expected 3D standard detection output");
         const int numFeatures = static_cast<int>(outputShape[1]);
         const int numDets     = static_cast<int>(outputShape[2]);
         const int numClasses  = numFeatures - 4;
 
         if (numDets == 0 || numClasses <= 0) return {};
 
-        const int imgW = originalSize.width;
-        const int imgH = originalSize.height;
-
-        // Pre-size with headroom to avoid realloc in hot loop
-        std::vector<BoundingBox> boxes;
-        std::vector<float> confs;
-        std::vector<int> classIds;
-        boxes.reserve(512);
-        confs.reserve(512);
-        classIds.reserve(512);
-
-        // Pointers to xywh rows for cache-friendly strided access
-        const float* pCx = rawOutput;
-        const float* pCy = rawOutput + numDets;
-        const float* pW  = rawOutput + 2 * numDets;
-        const float* pH  = rawOutput + 3 * numDets;
-
+        if (outputShape.size() != 3 || outputShape[0] != 1 ||
+            static_cast<size_t>(numClasses) != classNames_.size())
+            throw std::runtime_error("Standard detection requires [1,4+classes,boxes] with matching labels");
+        struct Candidate { std::array<float,4> xyxy; float score; int cls; };
+        std::vector<Candidate> candidates;
+        candidates.reserve(512);
         for (int d = 0; d < numDets; ++d) {
-            // Find argmax class (unrolled scan)
-            int bestClass = 0;
-            float bestScore = rawOutput[4 * numDets + d];
+            int cls = 0; float score = rawOutput[4 * numDets + d];
             for (int c = 1; c < numClasses; ++c) {
-                const float s = rawOutput[(4 + c) * numDets + d];
-                if (s > bestScore) { bestScore = s; bestClass = c; }
+                float v = rawOutput[(4 + c) * numDets + d];
+                if (v > score) { score = v; cls = c; }
             }
-            if (bestScore <= confThreshold) continue;
-
-            const float cx = pCx[d], cy = pCy[d], w = pW[d], h = pH[d];
-            const float left = (cx - w * 0.5f - padX) * invScale;
-            const float top  = (cy - h * 0.5f - padY) * invScale;
-            const float bw   = w * invScale;
-            const float bh   = h * invScale;
-
-            BoundingBox box;
-            box.x      = utils::clamp(static_cast<int>(left), 0, imgW - 1);
-            box.y      = utils::clamp(static_cast<int>(top),  0, imgH - 1);
-            box.width  = utils::clamp(static_cast<int>(bw),   1, imgW - box.x);
-            box.height = utils::clamp(static_cast<int>(bh),   1, imgH - box.y);
-
-            boxes.push_back(box);
-            confs.push_back(bestScore);
-            classIds.push_back(bestClass);
+            if (score <= confThreshold) continue;
+            float cx = rawOutput[d], cy = rawOutput[numDets+d];
+            float w = rawOutput[2*numDets+d], h = rawOutput[3*numDets+d];
+            candidates.push_back({{cx-w*.5f,cy-h*.5f,cx+w*.5f,cy+h*.5f},score,cls});
         }
-
-        std::vector<int> indices;
-        nms::NMSBoxesBatched(boxes, confs, classIds, confThreshold, iouThreshold, indices);
-
-        std::vector<Detection> detections;
-        detections.reserve(indices.size());
-        for (int idx : indices) {
-            detections.emplace_back(boxes[idx], confs[idx], classIds[idx]);
+        std::stable_sort(candidates.begin(), candidates.end(),
+                         [](const Candidate& a, const Candidate& b) { return a.score > b.score; });
+        if (candidates.size() > 30000) candidates.resize(30000);
+        std::vector<size_t> kept;
+        kept.reserve(std::min(size_t(maxDet_), candidates.size()));
+        auto iou = [](const std::array<float,4>& a, const std::array<float,4>& b) {
+            float inter = std::max(0.f, std::min(a[2],b[2])-std::max(a[0],b[0])) *
+                          std::max(0.f, std::min(a[3],b[3])-std::max(a[1],b[1]));
+            float area = (a[2]-a[0])*(a[3]-a[1]) + (b[2]-b[0])*(b[3]-b[1])-inter;
+            return area > 0 ? inter/area : 0.f;
+        };
+        for (size_t i=0;i<candidates.size();++i) {
+            bool suppressed = false;
+            for (size_t k : kept)
+                if (candidates[i].cls == candidates[k].cls && iou(candidates[i].xyxy,candidates[k].xyxy)>iouThreshold) {
+                    suppressed = true; break;
+                }
+            if (!suppressed) kept.push_back(i);
+            if (kept.size() >= size_t(maxDet_)) break;
+        }
+        // NMS in input coordinates with float boxes. Undo letterbox and clip only afterwards.
+        // Installed Ultralytics uses separate gains from rounded resize dimensions.
+        (void)invScale;
+        std::vector<Detection> detections; detections.reserve(kept.size());
+        for (size_t i : kept) {
+            const auto& c = candidates[i];
+            Detection d; d.conf = c.score; d.classId = c.cls;
+            d.xyxy = {std::clamp((c.xyxy[0]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
+                      std::clamp((c.xyxy[1]-padY)/cachedScaleY_,0.f,float(originalSize.height)),
+                      std::clamp((c.xyxy[2]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
+                      std::clamp((c.xyxy[3]-padY)/cachedScaleY_,0.f,float(originalSize.height))};
+            int x = int(std::round(d.xyxy[0])), y = int(std::round(d.xyxy[1]));
+            d.box = BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
+            detections.push_back(d);
         }
         return detections;
     }

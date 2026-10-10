@@ -1,0 +1,704 @@
+{
+  "pass": true,
+  "images": [
+    {
+      "image": "bus.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 5,
+        "reference_count": 5,
+        "matched": [
+          {
+            "class_id": 5,
+            "actual": {
+              "class_id": 5,
+              "confidence": 0.940354466,
+              "xyxy": [
+                9.0,
+                228.0,
+                798.0,
+                734.0
+              ]
+            },
+            "reference": {
+              "class_id": 5,
+              "confidence": 0.940354466,
+              "xyxy": [
+                9.0,
+                228.0,
+                798.0,
+                734.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.901922643,
+              "xyxy": [
+                50.0,
+                398.0,
+                242.0,
+                904.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.901922643,
+              "xyxy": [
+                50.0,
+                398.0,
+                242.0,
+                904.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.853425503,
+              "xyxy": [
+                671.0,
+                394.0,
+                809.0,
+                879.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.853425503,
+              "xyxy": [
+                671.0,
+                394.0,
+                809.0,
+                879.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.830592752,
+              "xyxy": [
+                221.0,
+                403.0,
+                344.0,
+                859.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.830592752,
+              "xyxy": [
+                221.0,
+                403.0,
+                344.0,
+                859.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.356671602,
+              "xyxy": [
+                0.0,
+                553.0,
+                65.0,
+                870.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.356671602,
+              "xyxy": [
+                0.0,
+                553.0,
+                65.0,
+                870.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "dog.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.889526129,
+              "xyxy": [
+                0.0,
+                53.0,
+                265.0,
+                323.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.889526129,
+              "xyxy": [
+                0.0,
+                53.0,
+                265.0,
+                323.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "multi_mosaic.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 4,
+        "reference_count": 4,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.931461394,
+              "xyxy": [
+                643.0,
+                746.0,
+                1205.0,
+                1278.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.931461394,
+              "xyxy": [
+                643.0,
+                746.0,
+                1205.0,
+                1278.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.927360415,
+              "xyxy": [
+                1.0,
+                746.0,
+                567.0,
+                1278.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.927360415,
+              "xyxy": [
+                1.0,
+                746.0,
+                567.0,
+                1278.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.924689174,
+              "xyxy": [
+                642.0,
+                105.0,
+                1202.0,
+                636.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.924689174,
+              "xyxy": [
+                642.0,
+                105.0,
+                1202.0,
+                636.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.923590541,
+              "xyxy": [
+                1.0,
+                105.0,
+                566.0,
+                631.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.923590541,
+              "xyxy": [
+                1.0,
+                105.0,
+                566.0,
+                631.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "odd_landscape.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.851955652,
+              "xyxy": [
+                0.0,
+                110.0,
+                840.0,
+                653.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.851955652,
+              "xyxy": [
+                0.0,
+                110.0,
+                840.0,
+                653.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "portrait.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.917896271,
+              "xyxy": [
+                0.0,
+                305.0,
+                509.0,
+                662.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.917896271,
+              "xyxy": [
+                0.0,
+                305.0,
+                509.0,
+                662.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "wide.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.921360254,
+              "xyxy": [
+                268.0,
+                83.0,
+                834.0,
+                493.0
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.921360254,
+              "xyxy": [
+                268.0,
+                83.0,
+                834.0,
+                493.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    },
+    {
+      "image": "zidane.png",
+      "detections": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.999,
+        "actual_count": 3,
+        "reference_count": 3,
+        "matched": [
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.86927259,
+              "xyxy": [
+                747.0,
+                41.0,
+                1149.0,
+                709.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.86927259,
+              "xyxy": [
+                747.0,
+                41.0,
+                1149.0,
+                709.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.815232635,
+              "xyxy": [
+                139.0,
+                201.0,
+                1133.0,
+                712.0
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.815232635,
+              "xyxy": [
+                139.0,
+                201.0,
+                1133.0,
+                712.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 27,
+            "actual": {
+              "class_id": 27,
+              "confidence": 0.422504723,
+              "xyxy": [
+                363.0,
+                439.0,
+                520.0,
+                715.0
+              ]
+            },
+            "reference": {
+              "class_id": 27,
+              "confidence": 0.422504723,
+              "xyxy": [
+                363.0,
+                439.0,
+                520.0,
+                715.0
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0,
+        "max_score_abs_delta": 0.0
+      },
+      "input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "raw_output": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "bit_exact_input": true,
+      "bit_exact_raw_output": true
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+mode,name,dtype,shape,bytes
+input,images,float32,1x3x640x640,4915200
+output,output0,float32,1x84x8400,2822400

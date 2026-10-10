@@ -1,0 +1,9 @@
+image,class_id,class_name,confidence,x1,y1,x2,y2
+"dog.png",16,"dog",0.889526129,0,53,265,323
+"multi_mosaic.png",16,"dog",0.931461394,643,746,1205,1278
+"multi_mosaic.png",16,"dog",0.927360415,1,746,567,1278
+"multi_mosaic.png",16,"dog",0.924689174,642,105,1202,636
+"multi_mosaic.png",16,"dog",0.923590541,1,105,566,631
+"odd_landscape.png",16,"dog",0.851955652,0,110,840,653
+"portrait.png",16,"dog",0.917896271,0,305,509,662
+"wide.png",16,"dog",0.921360254,268,83,834,493

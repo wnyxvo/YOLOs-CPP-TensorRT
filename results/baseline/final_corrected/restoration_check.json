@@ -1,0 +1,12 @@
+{
+  "binary_equals_measured_executable": true,
+  "sha256": "72ca5f883685fa2cb5e8ff0641437656f1aaa39b8120e95998a461eb53fb634c",
+  "source_hash_checks": {
+    "include/yolos/core/cuda_preprocessing.cu": true,
+    "include/yolos/core/trt_session_base.hpp": true,
+    "include/yolos/tasks/detection.hpp": true,
+    "src/baseline_detection.cpp": true
+  },
+  "extra_change_preserved": "../current_snapshot",
+  "extra_change_source": "User confirmed they did not change it; origin unknown"
+}

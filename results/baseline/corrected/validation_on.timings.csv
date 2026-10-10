@@ -1,0 +1,6 @@
+image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,d2h_ms,postprocess_ms
+"dog.png",0,1.888206,,,,,,
+"multi_mosaic.png",0,2.881548,,,,,,
+"odd_landscape.png",0,2.922409,,,,,,
+"portrait.png",0,2.686929,,,,,,
+"wide.png",0,2.560994,,,,,,
