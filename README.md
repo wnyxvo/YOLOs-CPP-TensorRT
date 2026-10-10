@@ -33,6 +33,8 @@ The recorded preloaded-image benchmark completes **637.11 FPS synchronously** an
 
 Full COCO val2017 accuracy, latency attribution, exact reproduction commands and delivery provenance are documented in [部署基线交付与COCO精度验证.md](部署基线交付与COCO精度验证.md). See [the asynchronous API contract](doc/ASYNC_PIPELINE.md) for resource ownership and shutdown behavior.
 
+The current detector trace has no copy/kernel overlap. Independent CUDA controls show that issuing the next upload before the dependency-blocked current download enables overlap in this environment; see [拷贝计算重叠诊断.md](拷贝计算重叠诊断.md). This diagnosis does not change the detector or its recorded performance baseline.
+
 ---
 
 ## Why YOLOs-TRT?
@@ -75,7 +77,7 @@ Measured on **NVIDIA RTX 2000 Ada (Laptop)** — YOLOv11n · 640×640 · 1000 it
 | Optimization | Impact |
 |---|---|
 | **GPU letterbox + normalize** | A single CUDA kernel performs bilinear letterbox resize, BGR→RGB conversion, and `/255.0` normalization — writing directly into the TRT input buffer. Eliminates all CPU preprocessing from the hot path. |
-| **Pinned staging buffers** | Raw BGR pixels are `memcpy`'d into a CUDA pinned buffer, enabling truly asynchronous `cudaMemcpyAsync` H2D transfer that overlaps with compute. |
+| **Pinned staging buffers** | Raw BGR pixels are copied into persistent CUDA pinned memory for asynchronous H2D submission. Actual copy/compute overlap depends on stream dependencies, submission order, and device scheduling; it is not observed in the current detector trace. |
 | **CUDA Graph capture** | For fixed-shape engines, the entire `enqueueV3` call graph is captured once and replayed via `cudaGraphLaunch`, cutting ~0.1–0.3 ms of per-frame dispatch overhead. |
 | **10-iteration warm-up** | Lets TensorRT's internal autotuner converge on optimal kernel selections before timing begins. |
 | **Single-stream pipeline** | Minimal synchronization points — one `cudaStream_t` drives the entire preprocess → infer → postprocess pipeline. |

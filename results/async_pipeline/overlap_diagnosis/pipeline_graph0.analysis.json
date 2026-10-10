@@ -1,0 +1,45 @@
+{
+  "sqlite": "/home/wnyxvo/YOLOs-CPP-TensorRT/results/async_pipeline/overlap_diagnosis/pipeline_graph0.sqlite",
+  "scope": "MEASURED_BATCH; warmup/setup excluded",
+  "batch_ms": 340.068033,
+  "cuda_api_calls": {
+    "cudaMemcpyAsync": 280,
+    "cudaEventRecord": 420,
+    "cudaStreamWaitEvent": 280,
+    "cudaLaunchKernel": 8540,
+    "cuLaunchKernelEx": 12460,
+    "cuLaunchKernel": 4480,
+    "cudaStreamIsCapturing": 140,
+    "cudaMemsetAsync": 140,
+    "cudaEventSynchronize": 140
+  },
+  "raw_gpu_timestamp_workaround": true,
+  "timestamp_note": "CUPTI GPU/CPU conversion workaround for WSL; NVIDIA describes reduced timestamp accuracy",
+  "profiler_timings_are_not_final_performance": true,
+  "status": "executed",
+  "kernel_count": 25480,
+  "h2d_count": 140,
+  "d2h_count": 140,
+  "cpu_post_ranges": 140,
+  "kernel_stream_ids": [
+    13
+  ],
+  "copy_stream_ids": [
+    18,
+    19
+  ],
+  "union_busy_ms": {
+    "kernels": 165.369112,
+    "h2d": 26.809447,
+    "d2h": 3.158497,
+    "cpu_post": 1.514202
+  },
+  "overlap_ms": {
+    "h2d_kernels": 0.0,
+    "d2h_kernels": 0.0,
+    "h2d_d2h": 0.0,
+    "cpu_post_kernels": 0.0
+  },
+  "h2d_bytes": 319617960,
+  "d2h_bytes": 37634240
+}
