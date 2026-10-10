@@ -19,6 +19,7 @@ public:
     using YOLODetector::YOLODetector;
     double postMs{0};
     std::vector<Detection> measured(const cv::Mat& im, float conf, float iou, bool profile) {
+        configurePostprocess(conf,iou);
         inferGpu(im);
         auto start = profile ? Clock::now() : Clock::time_point{};
         auto result = postprocess(im.size(), inputShape_, version_, conf, iou);
@@ -27,6 +28,9 @@ public:
     }
     void inferCpuForDiagnostic(const std::vector<float>& blob) { infer(blob.data(),blob.size()); }
     void checkPostprocessing() {
+        // Synthetic expectations below use max_det=300 independently of the
+        // CLI limit being validated; the caller restores its configured limit.
+        setMaxDet(300);
         auto* raw = outputTensors_[0].hostBuf.as<float>();
         std::vector<float> backup(raw, raw + outputTensors_[0].bytes/sizeof(float));
         auto savedX=cachedScaleX_, savedY=cachedScaleY_, savedPx=cachedPadX_, savedPy=cachedPadY_;
@@ -66,16 +70,19 @@ int main(int argc, char** argv) try {
     if (argc < 5) {
         std::cerr << "Usage: baseline_detection ENGINE LABELS IMAGE_OR_FOLDER OUTPUT_PREFIX "
                      "[--graph 0|1] [--profile] [--warmup N] [--runs N] [--dump] [--checks] "
-                     "[--conf F] [--iou F]\n";
+                     "[--conf F] [--iou F] [--postprocess cpu|gpu-filter|gpu-nms] [--max-det N]\n";
         return 1;
     }
     const std::string prefix = argv[4];
-    int warmup = 30, runs = 100, graph = 1;
+    int warmup = 30, runs = 100, graph = 1, maxDet=300;
+    std::string postprocessMode="cpu";
     float conf = .25f, iou = .45f;
     bool profile = false, dump = false, checks = false;
     for (int i = 5; i < argc; ++i) {
         std::string a = argv[i];
-        if (a == "--profile") profile = true;
+        if (a=="--postprocess" && i+1<argc) postprocessMode=argv[++i];
+        else if (a=="--max-det" && i+1<argc) maxDet=std::stoi(argv[++i]);
+        else if (a == "--profile") profile = true;
         else if (a == "--dump") dump = true;
         else if (a == "--checks") checks = true;
         else if (i+1 < argc && a == "--warmup") warmup = std::stoi(argv[++i]);
@@ -105,18 +112,21 @@ int main(int argc, char** argv) try {
     }
     BaselineDetector det(argv[1], argv[2], yolos::YOLOVersion::V11);
     det.checkOutput();
+    det.setMaxDet(maxDet);
+    det.setPostprocessMode(postprocessMode);
     det.setGraphEnabled(graph != 0);
     if (graph && !det.isGraphEnabled()) throw std::runtime_error("Graph requested but capture unavailable");
     det.setProfiling(profile);
     std::ofstream io(prefix + ".engine.csv"), config(prefix + ".config.csv");
     det.writeEngineInfo(io);
-    config << "graph_requested,graph_actual,profile,warmup_per_image,runs_per_image,images,conf,iou,max_det,opencv,trt\n"
+    config << "graph_requested,graph_actual,profile,warmup_per_image,runs_per_image,images,conf,iou,max_det,opencv,trt,postprocess,candidate_capacity,extra_device_bytes\n"
            << graph << ',' << det.isGraphEnabled() << ',' << profile << ',' << warmup << ',' << runs << ','
-           << images.size() << ',' << conf << ',' << iou << ",300," << CV_VERSION << ','
-           << NV_TENSORRT_MAJOR << '.' << NV_TENSORRT_MINOR << '.' << NV_TENSORRT_PATCH << '.' << NV_TENSORRT_BUILD << '\n';
+           << images.size() << ',' << conf << ',' << iou << ',' << maxDet << ',' << CV_VERSION << ','
+           << NV_TENSORRT_MAJOR << '.' << NV_TENSORRT_MINOR << '.' << NV_TENSORRT_PATCH << '.' << NV_TENSORRT_BUILD
+           << ',' << det.postprocessModeName() << ",8400," << det.postprocessDeviceBytes() << '\n';
     std::ofstream results(prefix + ".detections.csv"), times(prefix + ".timings.csv");
     results << "image,class_id,class_name,confidence,x1,y1,x2,y2\n" << std::setprecision(9);
-    times << "image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,d2h_ms,postprocess_ms\n"
+    times << "image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,filter_ms,nms_ms,d2h_ms,postprocess_ms,candidate_count,result_count,d2h_bytes\n"
           << std::fixed << std::setprecision(6);
     // Round-robin whole-set warmup and measurement to reduce image/order bias.
     for (int n = 0; n < warmup; ++n)
@@ -130,9 +140,9 @@ int main(int argc, char** argv) try {
             if (profile) {
                 const auto& t = det.stageTimes();
                 times << ',' << t.stagingMs << ',' << t.h2dMs << ',' << t.preprocessMs << ',' << t.inferenceMs
-                      << ',' << t.d2hMs << ',' << det.postMs;
-            } else times << ",,,,,,";
-            times << '\n';
+                      << ',' << t.filterMs << ',' << t.nmsMs << ',' << t.d2hMs << ',' << det.postMs;
+            } else times << ",,,,,,,,";
+            times << ',' << det.lastCandidateCount() << ',' << ds.size() << ',' << det.lastD2hBytes() << '\n';
             if (n == 0) {
                 for (const auto& d : ds) {
                     results << csv(paths[k].filename().string()) << ',' << d.classId << ','
@@ -181,6 +191,7 @@ int main(int argc, char** argv) try {
         if (!rejected) throw std::runtime_error("Empty Mat accepted");
         check << "PASS empty/gray/BGRA/float input rejected\n";
         det.checkPostprocessing();
+        det.setMaxDet(maxDet);
         check << "PASS float NMS, clipping after NMS, class-aware NMS, max_det and confidence boundary\n";
     }
     if (!io || !config || !results || !times) throw std::runtime_error("Output write failed");

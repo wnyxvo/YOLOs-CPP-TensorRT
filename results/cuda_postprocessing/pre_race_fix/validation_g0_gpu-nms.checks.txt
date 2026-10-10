@@ -1,0 +1,3 @@
+PASS non-contiguous ROI exactly equals contiguous input for all images
+PASS empty/gray/BGRA/float input rejected
+PASS float NMS, clipping after NMS, class-aware NMS, max_det and confidence boundary

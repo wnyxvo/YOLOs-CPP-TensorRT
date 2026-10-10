@@ -23,6 +23,7 @@
 #include "yolos/core/nms.hpp"
 #include "yolos/core/drawing.hpp"
 #include "yolos/core/trt_session_base.hpp"
+#include "yolos/core/cuda_postprocessing.hpp"
 
 namespace yolos {
 namespace det {
@@ -80,6 +81,7 @@ public:
     virtual std::vector<Detection> detect(const cv::Mat& image,
                                           float confThreshold = 0.4f,
                                           float iouThreshold = 0.45f) {
+        configurePostprocess(confThreshold,iouThreshold);
         // Full GPU pipeline: pinned H2D → CUDA letterbox → TRT infer → D2H
         inferGpu(image);
 
@@ -111,6 +113,31 @@ public:
         }
     }
 
+    enum class PostprocessMode { CPU, GPUFilter, GPUNms };
+    void setPostprocessMode(const std::string& mode) {
+        PostprocessMode next;
+        if (mode=="cpu") next=PostprocessMode::CPU;
+        else if (mode=="gpu-filter") next=PostprocessMode::GPUFilter;
+        else if (mode=="gpu-nms") next=PostprocessMode::GPUNms;
+        else throw std::invalid_argument("postprocess must be cpu, gpu-filter, or gpu-nms");
+        if (next!=PostprocessMode::CPU) {
+            const auto& shape=getOutputShape();
+            if ((version_!=YOLOVersion::V8 && version_!=YOLOVersion::V11) || numOutputs()!=1 ||
+                shape.size()!=3 || shape[0]!=1 || shape[1]!=int64_t(classNames_.size()+4) ||
+                shape[2]<1 || shape[2]>30000)
+                throw std::invalid_argument("GPU postprocessing requires standard YOLOv8/v11 [1,4+classes,N], N<=30000");
+            gpuPost_=std::make_unique<cuda::DetectionPostprocessor>(int(shape[2]),next==PostprocessMode::GPUNms);
+        } else gpuPost_.reset();
+        postprocessMode_=next;
+    }
+    const char* postprocessModeName() const {
+        return postprocessMode_==PostprocessMode::CPU ? "cpu" : postprocessMode_==PostprocessMode::GPUFilter ? "gpu-filter" : "gpu-nms";
+    }
+    size_t lastCandidateCount() const {return lastCandidateCount_;}
+    size_t lastResultCount() const {return lastResultCount_;}
+    size_t lastD2hBytes() const {return gpuPost_ ? gpuPost_->transferBytes(maxDet_) : outputTensors_[0].bytes;}
+    size_t postprocessDeviceBytes() const {return gpuPost_ ? gpuPost_->deviceBytes() : 0;}
+
     void setMaxDet(int n) {
         if (n < 1 || n > 30000) throw std::invalid_argument("max_det must be in [1,30000]");
         maxDet_ = n;
@@ -124,6 +151,55 @@ public:
 
 protected:
     int maxDet_{300};
+    PostprocessMode postprocessMode_{PostprocessMode::CPU};
+    std::unique_ptr<cuda::DetectionPostprocessor> gpuPost_;
+    float gpuConf_{.4f},gpuIou_{.45f};
+    size_t lastCandidateCount_{0},lastResultCount_{0};
+    void configurePostprocess(float conf,float iou) {
+        if (!std::isfinite(conf)||!std::isfinite(iou)||conf<0||conf>1||iou<0||iou>1)
+            throw std::invalid_argument("Detection thresholds must be finite in [0,1]");
+        gpuConf_=conf;gpuIou_=iou;
+    }
+    void filterGpuOutputs() override {
+        if (gpuPost_) gpuPost_->filter(static_cast<const float*>(outputTensors_[0].deviceBuf.data()),
+                                       int(classNames_.size()),gpuConf_,stream_.get());
+    }
+    void nmsGpuOutputs() override {
+        if (postprocessMode_==PostprocessMode::GPUNms) gpuPost_->nms(gpuIou_,maxDet_,stream_.get());
+    }
+    void copyOutputsToHost() override {
+        if (gpuPost_) gpuPost_->copyToHost(maxDet_,stream_.get());
+        else TrtSessionBase::copyOutputsToHost();
+    }
+    std::vector<Detection> finishCandidates(const std::vector<post::Candidate>& candidates,const cv::Size& size) {
+        std::vector<Detection> result;result.reserve(candidates.size());
+        for (const auto& c:candidates) {
+            Detection d;d.conf=c.score;d.classId=c.classId;
+            d.xyxy={std::clamp((c.x1-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
+                    std::clamp((c.y1-cachedPadY_)/cachedScaleY_,0.f,float(size.height)),
+                    std::clamp((c.x2-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
+                    std::clamp((c.y2-cachedPadY_)/cachedScaleY_,0.f,float(size.height))};
+            int x=int(std::round(d.xyxy[0])),y=int(std::round(d.xyxy[1]));
+            d.box=BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
+            result.push_back(d);
+        }
+        lastResultCount_=result.size();
+        return result;
+    }
+    std::vector<Detection> postprocessCompressed(const cv::Size& size) {
+        const auto& h=gpuPost_->header();
+        const auto capacity=size_t(getOutputShape()[2]);
+        if (h.overflow || h.candidateCount>capacity) throw std::runtime_error("GPU candidate capacity exceeded; no silent truncation");
+        if (h.invalid) throw std::runtime_error("Non-finite GPU candidate/score");
+        lastCandidateCount_=h.candidateCount;
+        size_t count=postprocessMode_==PostprocessMode::GPUNms ? h.resultCount : h.candidateCount;
+        if (count>capacity || (postprocessMode_==PostprocessMode::GPUNms && count>size_t(maxDet_)))
+            throw std::runtime_error("Invalid GPU result count");
+        std::vector<post::Candidate> candidates(gpuPost_->records(),gpuPost_->records()+count);
+        if (postprocessMode_==PostprocessMode::GPUFilter) candidates=post::nms(std::move(candidates),gpuIou_,maxDet_);
+        return finishCandidates(candidates,size);
+    }
+
     YOLOVersion version_{YOLOVersion::Auto};
     std::vector<std::string> classNames_;
     std::vector<cv::Scalar> classColors_;
@@ -140,6 +216,7 @@ protected:
                                                YOLOVersion version,
                                                float confThreshold,
                                                float iouThreshold) {
+        if (gpuPost_) return postprocessCompressed(originalSize);
         // Use cached scale/pad computed during GPU preprocessing
         const float invScale = 1.0f / getCachedScale();
         const float padX = getCachedPadX();
@@ -175,56 +252,11 @@ protected:
         if (outputShape.size() != 3 || outputShape[0] != 1 ||
             static_cast<size_t>(numClasses) != classNames_.size())
             throw std::runtime_error("Standard detection requires [1,4+classes,boxes] with matching labels");
-        struct Candidate { std::array<float,4> xyxy; float score; int cls; };
-        std::vector<Candidate> candidates;
-        candidates.reserve(512);
-        for (int d = 0; d < numDets; ++d) {
-            int cls = 0; float score = rawOutput[4 * numDets + d];
-            for (int c = 1; c < numClasses; ++c) {
-                float v = rawOutput[(4 + c) * numDets + d];
-                if (v > score) { score = v; cls = c; }
-            }
-            if (score <= confThreshold) continue;
-            float cx = rawOutput[d], cy = rawOutput[numDets+d];
-            float w = rawOutput[2*numDets+d], h = rawOutput[3*numDets+d];
-            candidates.push_back({{cx-w*.5f,cy-h*.5f,cx+w*.5f,cy+h*.5f},score,cls});
-        }
-        std::stable_sort(candidates.begin(), candidates.end(),
-                         [](const Candidate& a, const Candidate& b) { return a.score > b.score; });
-        if (candidates.size() > 30000) candidates.resize(30000);
-        std::vector<size_t> kept;
-        kept.reserve(std::min(size_t(maxDet_), candidates.size()));
-        auto iou = [](const std::array<float,4>& a, const std::array<float,4>& b) {
-            float inter = std::max(0.f, std::min(a[2],b[2])-std::max(a[0],b[0])) *
-                          std::max(0.f, std::min(a[3],b[3])-std::max(a[1],b[1]));
-            float area = (a[2]-a[0])*(a[3]-a[1]) + (b[2]-b[0])*(b[3]-b[1])-inter;
-            return area > 0 ? inter/area : 0.f;
-        };
-        for (size_t i=0;i<candidates.size();++i) {
-            bool suppressed = false;
-            for (size_t k : kept)
-                if (candidates[i].cls == candidates[k].cls && iou(candidates[i].xyxy,candidates[k].xyxy)>iouThreshold) {
-                    suppressed = true; break;
-                }
-            if (!suppressed) kept.push_back(i);
-            if (kept.size() >= size_t(maxDet_)) break;
-        }
-        // NMS in input coordinates with float boxes. Undo letterbox and clip only afterwards.
-        // Installed Ultralytics uses separate gains from rounded resize dimensions.
-        (void)invScale;
-        std::vector<Detection> detections; detections.reserve(kept.size());
-        for (size_t i : kept) {
-            const auto& c = candidates[i];
-            Detection d; d.conf = c.score; d.classId = c.cls;
-            d.xyxy = {std::clamp((c.xyxy[0]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
-                      std::clamp((c.xyxy[1]-padY)/cachedScaleY_,0.f,float(originalSize.height)),
-                      std::clamp((c.xyxy[2]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
-                      std::clamp((c.xyxy[3]-padY)/cachedScaleY_,0.f,float(originalSize.height))};
-            int x = int(std::round(d.xyxy[0])), y = int(std::round(d.xyxy[1]));
-            d.box = BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
-            detections.push_back(d);
-        }
-        return detections;
+        auto candidates=post::collect(rawOutput,numDets,numClasses,confThreshold);
+        lastCandidateCount_=candidates.size();
+        auto kept=post::nms(std::move(candidates),iouThreshold,maxDet_);
+        (void)invScale;(void)padX;(void)padY;
+        return finishCandidates(kept,originalSize);
     }
 
     /// @brief Postprocess for YOLOv7 format [batch, boxes, features]

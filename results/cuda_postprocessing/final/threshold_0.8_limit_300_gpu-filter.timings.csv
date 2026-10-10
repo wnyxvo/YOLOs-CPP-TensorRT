@@ -1,0 +1,8 @@
+image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,filter_ms,nms_ms,d2h_ms,postprocess_ms,candidate_count,result_count,d2h_bytes
+"bus.png",0,1.595867,,,,,,,,,26,4,268816
+"dog.png",0,1.181182,,,,,,,,,8,1,268816
+"multi_mosaic.png",0,1.980948,,,,,,,,,39,4,268816
+"odd_landscape.png",0,1.486054,,,,,,,,,7,1,268816
+"portrait.png",0,1.391407,,,,,,,,,10,1,268816
+"wide.png",0,1.506271,,,,,,,,,10,1,268816
+"zidane.png",0,1.705862,,,,,,,,,8,1,268816

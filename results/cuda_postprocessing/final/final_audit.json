@@ -1,0 +1,30 @@
+{
+  "measured_sources_and_executables_unchanged_after_full_build": {
+    "CMakeLists.txt": true,
+    "include/yolos/core/cuda_postprocessing.cu": true,
+    "include/yolos/core/cuda_postprocessing.hpp": true,
+    "include/yolos/core/detection_postprocessing.hpp": true,
+    "include/yolos/core/trt_session_base.hpp": true,
+    "include/yolos/tasks/detection.hpp": true,
+    "src/baseline_detection.cpp": true,
+    "src/image_inference.cpp": true,
+    "tests/detection/cuda_postprocessing_test.cpp": true,
+    "scripts/cuda_postprocessing/run.py": true,
+    "build/baseline_detection": true,
+    "build/cuda_postprocessing_test": true
+  },
+  "git_status": " M CMakeLists.txt\n M include/yolos/core/trt_session_base.hpp\n M include/yolos/tasks/detection.hpp\n M src/baseline_detection.cpp\n M src/image_inference.cpp\n?? \"CUDA\\345\\220\\216\\345\\244\\204\\347\\220\\206\\344\\270\\216\\350\\276\\223\\345\\207\\272\\345\\216\\213\\347\\274\\251\\344\\274\\230\\345\\214\\226\\350\\256\\260\\345\\275\\225.md\"\n?? doc/CUDA_POSTPROCESSING.md\n?? include/yolos/core/cuda_postprocessing.cu\n?? include/yolos/core/cuda_postprocessing.hpp\n?? include/yolos/core/detection_postprocessing.hpp\n?? results/cuda_postprocessing/\n?? scripts/cuda_postprocessing/\n?? tests/detection/cuda_postprocessing_test.cpp\n",
+  "diff_check_returncode": 0,
+  "sanitizer_logs": [
+    "../memcheck.log",
+    "../racecheck_greedy.log",
+    "../racecheck_masks.log",
+    "../synccheck.log"
+  ],
+  "process_document": {
+    "path": "CUDA\u540e\u5904\u7406\u4e0e\u8f93\u51fa\u538b\u7f29\u4f18\u5316\u8bb0\u5f55.md",
+    "sha256": "4d9c2eabe13554c1099eb77f3fd22c3a492f9df146514437e81d26ed6c1edc06",
+    "links_checked": 30
+  },
+  "build_log": "../final_full_build.log"
+}

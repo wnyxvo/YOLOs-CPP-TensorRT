@@ -1,0 +1,2957 @@
+{
+  "primary_reference": {
+    "model": "models/yolo11n.onnx",
+    "backend": "ONNX Runtime CPUExecutionProvider FP32",
+    "version": "1.30.0",
+    "providers": [
+      "CPUExecutionProvider"
+    ]
+  },
+  "secondary_reference": {
+    "model": "models/yolo11n.pt",
+    "backend": "PyTorch CPU FP32 fused eval",
+    "version": "2.14.1+cu130"
+  },
+  "preprocessing": {
+    "imgsz": 640,
+    "batch": 1,
+    "auto": false,
+    "scale_fill": false,
+    "scaleup": true,
+    "center": true,
+    "interpolation": "cv2.INTER_LINEAR uint8",
+    "padding": 114,
+    "color": "BGR->RGB",
+    "layout": "NCHW",
+    "normalization": "float32/255",
+    "opencv_python": "5.0.0",
+    "ultralytics": "8.4.174"
+  },
+  "postprocessing": {
+    "conf": 0.25,
+    "iou": 0.45,
+    "class_aware": true,
+    "multi_label": false,
+    "max_det": 300,
+    "max_nms": 30000,
+    "coordinate_inverse": "installed ultralytics scale_boxes: separately rounded resize gain_x/gain_y; clip after NMS",
+    "class_names": [
+      "person",
+      "bicycle",
+      "car",
+      "motorcycle",
+      "airplane",
+      "bus",
+      "train",
+      "truck",
+      "boat",
+      "traffic light",
+      "fire hydrant",
+      "stop sign",
+      "parking meter",
+      "bench",
+      "bird",
+      "cat",
+      "dog",
+      "horse",
+      "sheep",
+      "cow",
+      "elephant",
+      "bear",
+      "zebra",
+      "giraffe",
+      "backpack",
+      "umbrella",
+      "handbag",
+      "tie",
+      "suitcase",
+      "frisbee",
+      "skis",
+      "snowboard",
+      "sports ball",
+      "kite",
+      "baseball bat",
+      "baseball glove",
+      "skateboard",
+      "surfboard",
+      "tennis racket",
+      "bottle",
+      "wine glass",
+      "cup",
+      "fork",
+      "knife",
+      "spoon",
+      "bowl",
+      "banana",
+      "apple",
+      "sandwich",
+      "orange",
+      "broccoli",
+      "carrot",
+      "hot dog",
+      "pizza",
+      "donut",
+      "cake",
+      "chair",
+      "couch",
+      "potted plant",
+      "bed",
+      "dining table",
+      "toilet",
+      "tv",
+      "laptop",
+      "mouse",
+      "remote",
+      "keyboard",
+      "cell phone",
+      "microwave",
+      "oven",
+      "toaster",
+      "sink",
+      "refrigerator",
+      "book",
+      "clock",
+      "vase",
+      "scissors",
+      "teddy bear",
+      "hair drier",
+      "toothbrush"
+    ],
+    "cpp_label_aliases": {
+      "motorbike": "motorcycle",
+      "aeroplane": "airplane",
+      "sofa": "couch",
+      "pottedplant": "potted plant",
+      "diningtable": "dining table",
+      "tvmonitor": "tv"
+    }
+  },
+  "scope": "Small-image consistency check, not complete mAP validation",
+  "structural_pass": true,
+  "images": [
+    {
+      "image": "bus.png",
+      "shape": [
+        1080,
+        810,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00033980742800395093,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011543585561284444
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 7.187652587890625,
+            "mean_abs": 0.14070828508053507,
+            "p95_abs": 0.5652641296386716,
+            "rms": 0.3060696750448018
+          },
+          "scores": {
+            "max_abs": 0.024242162704467773,
+            "mean_abs": 4.292316291303862e-07,
+            "p95_abs": 1.1920928955078125e-07,
+            "rms": 4.2081750249409716e-05
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 12.618072509765625,
+            "mean_abs": 0.13206487022695088,
+            "p95_abs": 0.4686359405517577,
+            "rms": 0.4026470188990381
+          },
+          "scores": {
+            "max_abs": 0.031044602394104004,
+            "mean_abs": 3.020802867554483e-07,
+            "p95_abs": 1.4901161193847656e-07,
+            "rms": 4.137116991289168e-05
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 5,
+        "reference_count": 5,
+        "matched": [
+          {
+            "class_id": 5,
+            "actual": {
+              "class_id": 5,
+              "confidence": 0.939916253,
+              "xyxy": [
+                11.554493,
+                228.3992,
+                799.107849,
+                735.202271
+              ]
+            },
+            "reference": {
+              "class_id": 5,
+              "confidence": 0.9392049908638,
+              "xyxy": [
+                11.91840648651123,
+                228.39425659179688,
+                799.22509765625,
+                735.2150268554688
+              ]
+            },
+            "iou": 0.9993542481136257,
+            "coordinate_delta": [
+              -0.3639134865112297,
+              0.004943408203132549,
+              -0.11724865625001257,
+              -0.012755855468753907
+            ],
+            "score_delta": 0.000711262136199986
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.90261066,
+              "xyxy": [
+                48.6095047,
+                397.874573,
+                243.251358,
+                904.553528
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.9019901156425476,
+              "xyxy": [
+                48.59269332885742,
+                397.9607849121094,
+                243.21270751953125,
+                904.5357055664062
+              ]
+            },
+            "iou": 0.9995098317755935,
+            "coordinate_delta": [
+              0.016811371142580356,
+              -0.08621191210937695,
+              0.038650480468760406,
+              0.01782243359377844
+            ],
+            "score_delta": 0.0006205443574524017
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.849472761,
+              "xyxy": [
+                670.536682,
+                392.621735,
+                810.0,
+                879.563232
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8492758274078369,
+              "xyxy": [
+                670.556396484375,
+                392.5902099609375,
+                810.0,
+                879.6233520507812
+              ]
+            },
+            "iou": 0.9996705234205485,
+            "coordinate_delta": [
+              -0.019714484374958374,
+              0.03152503906250104,
+              0.0,
+              -0.06012005078127913
+            ],
+            "score_delta": 0.00019693359216310657
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.833323896,
+              "xyxy": [
+                223.125992,
+                405.616882,
+                345.206787,
+                859.871033
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.832786500453949,
+              "xyxy": [
+                223.1195526123047,
+                405.57794189453125,
+                345.2289733886719,
+                859.7220458984375
+              ]
+            },
+            "iou": 0.9993520770269069,
+            "coordinate_delta": [
+              0.006439387695309051,
+              0.038940105468725505,
+              -0.022186388671855184,
+              0.14898710156251127
+            ],
+            "score_delta": 0.0005373955460510338
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.39420104,
+              "xyxy": [
+                0.0,
+                550.231079,
+                66.0365143,
+                871.760376
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.3993430733680725,
+              "xyxy": [
+                0.0,
+                550.1926879882812,
+                66.00817108154297,
+                871.7786254882812
+              ]
+            },
+            "iou": 0.9993948172383155,
+            "coordinate_delta": [
+              0.0,
+              0.03839101171877246,
+              0.028343218457024477,
+              -0.01824948828129891
+            ],
+            "score_delta": -0.005142033368072507
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.3639134865112297,
+        "max_score_abs_delta": 0.005142033368072507
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 5,
+        "reference_count": 5,
+        "matched": [
+          {
+            "class_id": 5,
+            "actual": {
+              "class_id": 5,
+              "confidence": 0.939916253,
+              "xyxy": [
+                11.554493,
+                228.3992,
+                799.107849,
+                735.202271
+              ]
+            },
+            "reference": {
+              "class_id": 5,
+              "confidence": 0.9399162530899048,
+              "xyxy": [
+                11.554492950439453,
+                228.39920043945312,
+                799.1078491210938,
+                735.2022705078125
+              ]
+            },
+            "iou": 0.9999999979450412,
+            "coordinate_delta": [
+              4.956054766580564e-08,
+              -4.39453117451194e-07,
+              -1.2109376257285476e-07,
+              4.921874960928108e-07
+            ],
+            "score_delta": -8.990475031112055e-11
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.90261066,
+              "xyxy": [
+                48.6095047,
+                397.874573,
+                243.251358,
+                904.553528
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.9026106595993042,
+              "xyxy": [
+                48.60950469970703,
+                397.87457275390625,
+                243.25135803222656,
+                904.5535278320312
+              ]
+            },
+            "iou": 0.9999999990157176,
+            "coordinate_delta": [
+              2.929709808086045e-10,
+              2.460937480464054e-07,
+              -3.222655209356162e-08,
+              1.6796877844171831e-07
+            ],
+            "score_delta": 4.00695809865681e-10
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.849472761,
+              "xyxy": [
+                670.536682,
+                392.621735,
+                810.0,
+                879.563232
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8494727611541748,
+              "xyxy": [
+                670.5366821289062,
+                392.6217346191406,
+                810.0,
+                879.563232421875
+              ]
+            },
+            "iou": 0.9999999974271747,
+            "coordinate_delta": [
+              -1.289062083742465e-07,
+              3.8085937603682396e-07,
+              0.0,
+              -4.218750291329343e-07
+            ],
+            "score_delta": -1.5417478405055363e-10
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.833323896,
+              "xyxy": [
+                223.125992,
+                405.616882,
+                345.206787,
+                859.871033
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8333238959312439,
+              "xyxy": [
+                223.12599182128906,
+                405.61688232421875,
+                345.206787109375,
+                859.8710327148438
+              ]
+            },
+            "iou": 0.999999996298718,
+            "coordinate_delta": [
+              1.787109340511961e-07,
+              -3.242187744945113e-07,
+              -1.0937498018392944e-07,
+              2.8515626127045834e-07
+            ],
+            "score_delta": 6.875611191503594e-11
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.39420104,
+              "xyxy": [
+                0.0,
+                550.231079,
+                66.0365143,
+                871.760376
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.39420104026794434,
+              "xyxy": [
+                0.0,
+                550.2310791015625,
+                66.03651428222656,
+                871.7603759765625
+              ]
+            },
+            "iou": 0.9999999993420875,
+            "coordinate_delta": [
+              0.0,
+              -1.0156247753911885e-07,
+              1.7773430727174855e-08,
+              2.3437451091012917e-08
+            ],
+            "score_delta": -2.6794433338750423e-10
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 4.921874960928108e-07,
+        "max_score_abs_delta": 4.00695809865681e-10
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 5,
+        "reference_count": 5,
+        "matched": [
+          {
+            "class_id": 5,
+            "actual": {
+              "class_id": 5,
+              "confidence": 0.9392048716545105,
+              "xyxy": [
+                11.918586730957031,
+                228.39418029785156,
+                799.2251586914062,
+                735.2149658203125
+              ]
+            },
+            "reference": {
+              "class_id": 5,
+              "confidence": 0.9392049908638,
+              "xyxy": [
+                11.91840648651123,
+                228.39425659179688,
+                799.22509765625,
+                735.2150268554688
+              ]
+            },
+            "iou": 0.9999994225763015,
+            "coordinate_delta": [
+              0.00018024444580078125,
+              -7.62939453125e-05,
+              6.103515625e-05,
+              -6.103515625e-05
+            ],
+            "score_delta": -1.1920928955078125e-07
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.9019901752471924,
+              "xyxy": [
+                48.592716217041016,
+                397.960693359375,
+                243.21273803710938,
+                904.5357055664062
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.9019901156425476,
+              "xyxy": [
+                48.59269332885742,
+                397.9607849121094,
+                243.21270751953125,
+                904.5357055664062
+              ]
+            },
+            "iou": 0.9999995448608047,
+            "coordinate_delta": [
+              2.288818359375e-05,
+              -9.1552734375e-05,
+              3.0517578125e-05,
+              0.0
+            ],
+            "score_delta": 5.960464477539063e-08
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8492760062217712,
+              "xyxy": [
+                670.556396484375,
+                392.5902099609375,
+                810.0,
+                879.623291015625
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8492758274078369,
+              "xyxy": [
+                670.556396484375,
+                392.5902099609375,
+                810.0,
+                879.6233520507812
+              ]
+            },
+            "iou": 0.9999998746796656,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              -6.103515625e-05
+            ],
+            "score_delta": 1.7881393432617188e-07
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8327863812446594,
+              "xyxy": [
+                223.11959838867188,
+                405.5780029296875,
+                345.2289733886719,
+                859.7220458984375
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.832786500453949,
+              "xyxy": [
+                223.1195526123047,
+                405.57794189453125,
+                345.2289733886719,
+                859.7220458984375
+              ]
+            },
+            "iou": 0.999999490724141,
+            "coordinate_delta": [
+              4.57763671875e-05,
+              6.103515625e-05,
+              0.0,
+              0.0
+            ],
+            "score_delta": -1.1920928955078125e-07
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.3993436396121979,
+              "xyxy": [
+                0.0,
+                550.1926879882812,
+                66.00817108154297,
+                871.7786254882812
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.3993430733680725,
+              "xyxy": [
+                0.0,
+                550.1926879882812,
+                66.00817108154297,
+                871.7786254882812
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 5.662441253662109e-07
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.00018024444580078125,
+        "max_score_abs_delta": 5.662441253662109e-07
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00033980742800395093,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011543585561284444
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 8.82403564453125,
+          "mean_abs": 0.16483595264099893,
+          "p95_abs": 0.6377029418945311,
+          "rms": 0.3429861684614065
+        },
+        "scores": {
+          "max_abs": 0.02048856019973755,
+          "mean_abs": 4.2991708254530317e-07,
+          "p95_abs": 5.960464477539063e-08,
+          "rms": 3.929083551736653e-05
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 5,
+        "reference_count": 5,
+        "matched": [
+          {
+            "class_id": 5,
+            "actual": {
+              "class_id": 5,
+              "confidence": 0.9399162530899048,
+              "xyxy": [
+                11.876667022705078,
+                228.39695739746094,
+                799.1729736328125,
+                735.2757568359375
+              ]
+            },
+            "reference": {
+              "class_id": 5,
+              "confidence": 0.9392049908638,
+              "xyxy": [
+                11.91840648651123,
+                228.39425659179688,
+                799.22509765625,
+                735.2150268554688
+              ]
+            },
+            "iou": 0.9997556691753666,
+            "coordinate_delta": [
+              -0.041739463806152344,
+              0.0027008056640625,
+              -0.0521240234375,
+              0.06072998046875
+            ],
+            "score_delta": 0.0007112622261047363
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.9019226431846619,
+              "xyxy": [
+                48.607460021972656,
+                398.0557556152344,
+                243.1521759033203,
+                904.5615844726562
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.9019901156425476,
+              "xyxy": [
+                48.59269332885742,
+                397.9607849121094,
+                243.21270751953125,
+                904.5357055664062
+              ]
+            },
+            "iou": 0.9993746629638647,
+            "coordinate_delta": [
+              0.014766693115234375,
+              0.094970703125,
+              -0.0605316162109375,
+              0.02587890625
+            ],
+            "score_delta": -6.747245788574219e-05
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8484716415405273,
+              "xyxy": [
+                670.5368041992188,
+                392.499755859375,
+                810.0,
+                879.5722045898438
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8492758274078369,
+              "xyxy": [
+                670.556396484375,
+                392.5902099609375,
+                810.0,
+                879.6233520507812
+              ]
+            },
+            "iou": 0.999568882841322,
+            "coordinate_delta": [
+              -0.01959228515625,
+              -0.0904541015625,
+              0.0,
+              -0.0511474609375
+            ],
+            "score_delta": -0.0008041858673095703
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8316894173622131,
+              "xyxy": [
+                223.06959533691406,
+                405.5877380371094,
+                345.205078125,
+                859.8840942382812
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.832786500453949,
+              "xyxy": [
+                223.1195526123047,
+                405.57794189453125,
+                345.2289733886719,
+                859.7220458984375
+              ]
+            },
+            "iou": 0.9990174912925042,
+            "coordinate_delta": [
+              -0.049957275390625,
+              0.009796142578125,
+              -0.023895263671875,
+              0.16204833984375
+            ],
+            "score_delta": -0.0010970830917358398
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.3988746404647827,
+              "xyxy": [
+                0.0,
+                550.2379760742188,
+                66.0265121459961,
+                871.7333984375
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.3993430733680725,
+              "xyxy": [
+                0.0,
+                550.1926879882812,
+                66.00817108154297,
+                871.7786254882812
+              ]
+            },
+            "iou": 0.9994409081510808,
+            "coordinate_delta": [
+              0.0,
+              0.0452880859375,
+              0.018341064453125,
+              -0.04522705078125
+            ],
+            "score_delta": -0.0004684329032897949
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.16204833984375,
+        "max_score_abs_delta": 0.0010970830917358398
+      }
+    },
+    {
+      "image": "dog.png",
+      "shape": [
+        329,
+        302,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.0003643227573858591,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011952714491478954
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 15.995819091796875,
+            "mean_abs": 0.35506355448138144,
+            "p95_abs": 1.2795639038085933,
+            "rms": 0.6642212193613507
+          },
+          "scores": {
+            "max_abs": 0.003117501735687256,
+            "mean_abs": 8.108688607102349e-08,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 7.022784204874354e-06
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 20.8173828125,
+            "mean_abs": 0.17331979272621018,
+            "p95_abs": 0.6256114959716795,
+            "rms": 0.36106355800702095
+          },
+          "scores": {
+            "max_abs": 0.0033705830574035645,
+            "mean_abs": 8.6211244620028e-08,
+            "p95_abs": 1.1920928955078125e-07,
+            "rms": 5.815444382998512e-06
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.892561913,
+              "xyxy": [
+                0.0,
+                53.8293152,
+                261.857269,
+                324.060608
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8916720151901245,
+              "xyxy": [
+                0.0,
+                53.795806884765625,
+                262.12274169921875,
+                324.044677734375
+              ]
+            },
+            "iou": 0.9988045383283458,
+            "coordinate_delta": [
+              0.0,
+              0.03350831523437847,
+              -0.26547269921877614,
+              0.015930265625001994
+            ],
+            "score_delta": 0.0008898978098754728
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.26547269921877614,
+        "max_score_abs_delta": 0.0008898978098754728
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.892561913,
+              "xyxy": [
+                0.0,
+                53.8293152,
+                261.857269,
+                324.060608
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8925619125366211,
+              "xyxy": [
+                0.0,
+                53.829315185546875,
+                261.8572692871094,
+                324.06060791015625
+              ]
+            },
+            "iou": 0.9999999985176111,
+            "coordinate_delta": [
+              0.0,
+              1.4453128471814125e-08,
+              -2.871094011425157e-07,
+              8.984375199361239e-08
+            ],
+            "score_delta": 4.6337889081371486e-10
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 2.871094011425157e-07,
+        "max_score_abs_delta": 4.6337889081371486e-10
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.8916723132133484,
+              "xyxy": [
+                0.0,
+                53.795806884765625,
+                262.122802734375,
+                324.044677734375
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8916720151901245,
+              "xyxy": [
+                0.0,
+                53.795806884765625,
+                262.12274169921875,
+                324.044677734375
+              ]
+            },
+            "iou": 0.9999997671505279,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              6.103515625e-05,
+              0.0
+            ],
+            "score_delta": 2.980232238769531e-07
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 6.103515625e-05,
+        "max_score_abs_delta": 2.980232238769531e-07
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.0003643227573858591,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011952714491478954
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 15.8035888671875,
+          "mean_abs": 0.37800728197608674,
+          "p95_abs": 1.3569923400878905,
+          "rms": 0.6941213276855399
+        },
+        "scores": {
+          "max_abs": 0.011854410171508789,
+          "mean_abs": 8.259842260962441e-08,
+          "p95_abs": 2.9802322387695312e-08,
+          "rms": 1.8678431195466783e-05
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.8925619125366211,
+              "xyxy": [
+                0.0,
+                53.75222396850586,
+                262.8391418457031,
+                324.1552734375
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8916720151901245,
+              "xyxy": [
+                0.0,
+                53.795806884765625,
+                262.12274169921875,
+                324.044677734375
+              ]
+            },
+            "iou": 0.9967057513294412,
+            "coordinate_delta": [
+              0.0,
+              -0.043582916259765625,
+              0.716400146484375,
+              0.110595703125
+            ],
+            "score_delta": 0.000889897346496582
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.716400146484375,
+        "max_score_abs_delta": 0.000889897346496582
+      }
+    },
+    {
+      "image": "multi_mosaic.png",
+      "shape": [
+        1281,
+        1281,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00034327365237345474,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011602254444717521
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 9.35296630859375,
+            "mean_abs": 0.21649097822251773,
+            "p95_abs": 0.798933410644531,
+            "rms": 0.4268824040596148
+          },
+          "scores": {
+            "max_abs": 0.34171760082244873,
+            "mean_abs": 9.157292190052214e-07,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 0.00044282482555667866
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 3.8424072265625,
+            "mean_abs": 0.11834502502566292,
+            "p95_abs": 0.44952163696289044,
+            "rms": 0.22874517719967125
+          },
+          "scores": {
+            "max_abs": 0.023332953453063965,
+            "mean_abs": 1.676950515026138e-07,
+            "p95_abs": 1.1920928955078125e-07,
+            "rms": 3.140857638039496e-05
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 4,
+        "reference_count": 4,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.931461394,
+              "xyxy": [
+                642.85791,
+                745.824646,
+                1206.21143,
+                1279.16809
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9306380748748779,
+              "xyxy": [
+                642.9473266601562,
+                745.8283081054688,
+                1206.076904296875,
+                1279.0869140625
+              ]
+            },
+            "iou": 0.9994434783396068,
+            "coordinate_delta": [
+              -0.0894166601563029,
+              -0.003662105468720256,
+              0.13452570312506396,
+              0.08117593749989283
+            ],
+            "score_delta": 0.0008233191251221239
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                1.27418804,
+                746.32312,
+                566.128235,
+                1278.83423
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9229692220687866,
+              "xyxy": [
+                1.2318576574325562,
+                746.329345703125,
+                565.9874877929688,
+                1278.9315185546875
+              ]
+            },
+            "iou": 0.9994816653718664,
+            "coordinate_delta": [
+              0.042330382567443925,
+              -0.006225703124982829,
+              0.14074720703126786,
+              -0.09728855468756592
+            ],
+            "score_delta": -0.00048589706878665595
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                1.03266644,
+                105.701591,
+                564.987915,
+                633.292725
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9225341081619263,
+              "xyxy": [
+                1.1130515336990356,
+                105.69371795654297,
+                565.159912109375,
+                633.0722045898438
+              ]
+            },
+            "iou": 0.9991200457553726,
+            "coordinate_delta": [
+              -0.08038509369903557,
+              0.007873043457024664,
+              -0.17199710937495638,
+              0.22052041015626855
+            ],
+            "score_delta": -5.078316192630439e-05
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.921923757,
+              "xyxy": [
+                642.809937,
+                105.665863,
+                1204.92798,
+                633.85614
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.921933650970459,
+              "xyxy": [
+                642.7080078125,
+                105.5972671508789,
+                1204.779541015625,
+                633.8152465820312
+              ]
+            },
+            "iou": 0.9993475555047031,
+            "coordinate_delta": [
+              0.1019291874999908,
+              0.0685958491210954,
+              0.14843898437493408,
+              0.04089341796873214
+            ],
+            "score_delta": -9.89397045902951e-06
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.22052041015626855,
+        "max_score_abs_delta": 0.0008233191251221239
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 4,
+        "reference_count": 4,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.931461394,
+              "xyxy": [
+                642.85791,
+                745.824646,
+                1206.21143,
+                1279.16809
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9314613938331604,
+              "xyxy": [
+                642.85791015625,
+                745.8246459960938,
+                1206.21142578125,
+                1279.1680908203125
+              ]
+            },
+            "iou": 0.999999990688625,
+            "coordinate_delta": [
+              -1.5625005289621186e-07,
+              3.906279744114727e-09,
+              4.2187500639556674e-06,
+              -8.203126071748557e-07
+            ],
+            "score_delta": 1.668396532039651e-10
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                1.03266644,
+                105.701591,
+                564.987915,
+                633.292725
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9224833250045776,
+              "xyxy": [
+                1.0326664447784424,
+                105.70159149169922,
+                564.9879150390625,
+                633.292724609375
+              ]
+            },
+            "iou": 0.9999999982498978,
+            "coordinate_delta": [
+              -4.7784423085062144e-09,
+              -4.916992253356511e-07,
+              -3.90624563806341e-08,
+              3.906250185536919e-07
+            ],
+            "score_delta": -4.5776715751344454e-12
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                1.27418804,
+                746.32312,
+                566.128235,
+                1278.83423
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9224833250045776,
+              "xyxy": [
+                1.2741880416870117,
+                746.3231201171875,
+                566.1282348632812,
+                1278.834228515625
+              ]
+            },
+            "iou": 0.9999999967474047,
+            "coordinate_delta": [
+              -1.687011641493541e-09,
+              -1.1718748282874003e-07,
+              1.3671876786247594e-07,
+              1.484374934079824e-06
+            ],
+            "score_delta": -4.5776715751344454e-12
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.921923757,
+              "xyxy": [
+                642.809937,
+                105.665863,
+                1204.92798,
+                633.85614
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9219237565994263,
+              "xyxy": [
+                642.8099365234375,
+                105.66586303710938,
+                1204.927978515625,
+                633.8561401367188
+              ]
+            },
+            "iou": 0.999999996182419,
+            "coordinate_delta": [
+              4.765624908031896e-07,
+              -3.71093733519956e-08,
+              1.484374934079824e-06,
+              -1.3671876786247594e-07
+            ],
+            "score_delta": 4.005736853329722e-10
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 4.2187500639556674e-06,
+        "max_score_abs_delta": 4.005736853329722e-10
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 4,
+        "reference_count": 4,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9306380748748779,
+              "xyxy": [
+                642.9473266601562,
+                745.8281860351562,
+                1206.0770263671875,
+                1279.0870361328125
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9306380748748779,
+              "xyxy": [
+                642.9473266601562,
+                745.8283081054688,
+                1206.076904296875,
+                1279.0869140625
+              ]
+            },
+            "iou": 0.9999993254012681,
+            "coordinate_delta": [
+              0.0,
+              -0.0001220703125,
+              0.0001220703125,
+              0.0001220703125
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9229690432548523,
+              "xyxy": [
+                1.2318576574325562,
+                746.329345703125,
+                565.9874877929688,
+                1278.9315185546875
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9229692220687866,
+              "xyxy": [
+                1.2318576574325562,
+                746.329345703125,
+                565.9874877929688,
+                1278.9315185546875
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": -1.7881393432617188e-07
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9225338697433472,
+              "xyxy": [
+                1.1131125688552856,
+                105.69365692138672,
+                565.159912109375,
+                633.072265625
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9225341081619263,
+              "xyxy": [
+                1.1130515336990356,
+                105.69371795654297,
+                565.159912109375,
+                633.0722045898438
+              ]
+            },
+            "iou": 0.9999996603244976,
+            "coordinate_delta": [
+              6.103515625e-05,
+              -6.103515625e-05,
+              0.0,
+              6.103515625e-05
+            ],
+            "score_delta": -2.384185791015625e-07
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9219333529472351,
+              "xyxy": [
+                642.7080078125,
+                105.59720611572266,
+                1204.7794189453125,
+                633.8152465820312
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.921933650970459,
+              "xyxy": [
+                642.7080078125,
+                105.5972671508789,
+                1204.779541015625,
+                633.8152465820312
+              ]
+            },
+            "iou": 0.9999996672715615,
+            "coordinate_delta": [
+              0.0,
+              -6.103515625e-05,
+              -0.0001220703125,
+              0.0
+            ],
+            "score_delta": -2.980232238769531e-07
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.0001220703125,
+        "max_score_abs_delta": 2.980232238769531e-07
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00034327365237345474,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0011602254444717521
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 9.827152252197266,
+          "mean_abs": 0.24020055213854427,
+          "p95_abs": 0.8838836669921875,
+          "rms": 0.45701834749758313
+        },
+        "scores": {
+          "max_abs": 0.3831965923309326,
+          "mean_abs": 9.387530652540071e-07,
+          "p95_abs": 2.9802322387695312e-08,
+          "rms": 0.0004858637476812307
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 4,
+        "reference_count": 4,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9304561614990234,
+              "xyxy": [
+                642.857177734375,
+                745.9573364257812,
+                1205.970947265625,
+                1279.04296875
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9306380748748779,
+              "xyxy": [
+                642.9473266601562,
+                745.8283081054688,
+                1206.076904296875,
+                1279.0869140625
+              ]
+            },
+            "iou": 0.999327606513368,
+            "coordinate_delta": [
+              -0.09014892578125,
+              0.1290283203125,
+              -0.10595703125,
+              -0.0439453125
+            ],
+            "score_delta": -0.0001819133758544922
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9230389595031738,
+              "xyxy": [
+                1.269057035446167,
+                746.3141479492188,
+                565.7838745117188,
+                1278.95654296875
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9229692220687866,
+              "xyxy": [
+                1.2318576574325562,
+                746.329345703125,
+                565.9874877929688,
+                1278.9315185546875
+              ]
+            },
+            "iou": 0.9994981484679439,
+            "coordinate_delta": [
+              0.03719937801361084,
+              -0.01519775390625,
+              -0.20361328125,
+              0.0250244140625
+            ],
+            "score_delta": 6.973743438720703e-05
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9230389595031738,
+              "xyxy": [
+                1.154710054397583,
+                105.76591491699219,
+                564.8882446289062,
+                632.9113159179688
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9225341081619263,
+              "xyxy": [
+                1.1130515336990356,
+                105.69371795654297,
+                565.159912109375,
+                633.0722045898438
+              ]
+            },
+            "iou": 0.9990027788034065,
+            "coordinate_delta": [
+              0.04165852069854736,
+              0.07219696044921875,
+              -0.27166748046875,
+              -0.160888671875
+            ],
+            "score_delta": 0.0005048513412475586
+          },
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9213602542877197,
+              "xyxy": [
+                642.8099365234375,
+                105.55615997314453,
+                1204.5262451171875,
+                633.9804077148438
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.921933650970459,
+              "xyxy": [
+                642.7080078125,
+                105.5972671508789,
+                1204.779541015625,
+                633.8152465820312
+              ]
+            },
+            "iou": 0.9989781552860164,
+            "coordinate_delta": [
+              0.1019287109375,
+              -0.041107177734375,
+              -0.2532958984375,
+              0.1651611328125
+            ],
+            "score_delta": -0.0005733966827392578
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.27166748046875,
+        "max_score_abs_delta": 0.0005733966827392578
+      }
+    },
+    {
+      "image": "odd_landscape.png",
+      "shape": [
+        667,
+        1001,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00021513466217432627,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0009184948267619683
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 18.497207641601562,
+            "mean_abs": 0.22965431987529708,
+            "p95_abs": 0.9363418579101562,
+            "rms": 0.5141772878476667
+          },
+          "scores": {
+            "max_abs": 0.0023099184036254883,
+            "mean_abs": 6.631123168127877e-08,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 3.9125517622287274e-06
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 10.70037841796875,
+            "mean_abs": 0.1805998745489688,
+            "p95_abs": 0.6599189758300781,
+            "rms": 0.37905606402087655
+          },
+          "scores": {
+            "max_abs": 0.002925395965576172,
+            "mean_abs": 8.644913101480121e-08,
+            "p95_abs": 1.4901161193847656e-07,
+            "rms": 6.711311492463821e-06
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.855849564,
+              "xyxy": [
+                1.8774668,
+                109.774391,
+                857.757751,
+                657.697571
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8542429208755493,
+              "xyxy": [
+                2.0433812141418457,
+                109.78807830810547,
+                857.6159057617188,
+                657.8302612304688
+              ]
+            },
+            "iou": 0.9993735153832463,
+            "coordinate_delta": [
+              -0.1659144141418456,
+              -0.013687308105474472,
+              0.14184523828123474,
+              -0.13269023046871098
+            ],
+            "score_delta": 0.0016066431244506907
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.1659144141418456,
+        "max_score_abs_delta": 0.0016066431244506907
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.855849564,
+              "xyxy": [
+                1.8774668,
+                109.774391,
+                857.757751,
+                657.697571
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.85584956407547,
+              "xyxy": [
+                1.8774667978286743,
+                109.7743911743164,
+                857.7577514648438,
+                657.6975708007812
+              ]
+            },
+            "iou": 0.9999999987726164,
+            "coordinate_delta": [
+              2.1713257858380075e-09,
+              -1.7431641197163117e-07,
+              -4.648437652576831e-07,
+              1.9921878902096068e-07
+            ],
+            "score_delta": -7.546996361185165e-11
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 4.648437652576831e-07,
+        "max_score_abs_delta": 7.546996361185165e-11
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.8542426228523254,
+              "xyxy": [
+                2.043285608291626,
+                109.78815460205078,
+                857.615966796875,
+                657.830322265625
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8542429208755493,
+              "xyxy": [
+                2.0433812141418457,
+                109.78807830810547,
+                857.6159057617188,
+                657.8302612304688
+              ]
+            },
+            "iou": 0.9999995663356119,
+            "coordinate_delta": [
+              -9.560585021972656e-05,
+              7.62939453125e-05,
+              6.103515625e-05,
+              6.103515625e-05
+            ],
+            "score_delta": -2.980232238769531e-07
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 9.560585021972656e-05,
+        "max_score_abs_delta": 2.980232238769531e-07
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00021513466217432627,
+        "p95_abs": 0.003921568393707275,
+        "rms": 0.0009184948267619683
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 18.4267578125,
+          "mean_abs": 0.26772928709785143,
+          "p95_abs": 1.0292999267578125,
+          "rms": 0.5771612036909657
+        },
+        "scores": {
+          "max_abs": 0.002763986587524414,
+          "mean_abs": 4.824290850332805e-08,
+          "p95_abs": 2.9802322387695312e-08,
+          "rms": 5.971234928735503e-06
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.8539129495620728,
+              "xyxy": [
+                1.8874903917312622,
+                109.73606872558594,
+                857.3815307617188,
+                657.7939453125
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.8542429208755493,
+              "xyxy": [
+                2.0433812141418457,
+                109.78807830810547,
+                857.6159057617188,
+                657.8302612304688
+              ]
+            },
+            "iou": 0.9993828985973967,
+            "coordinate_delta": [
+              -0.1558908224105835,
+              -0.05200958251953125,
+              -0.234375,
+              -0.03631591796875
+            ],
+            "score_delta": -0.0003299713134765625
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.234375,
+        "max_score_abs_delta": 0.0003299713134765625
+      }
+    },
+    {
+      "image": "portrait.png",
+      "shape": [
+        901,
+        577,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00011307561161667461,
+        "p95_abs": 5.960464477539063e-08,
+        "rms": 0.0006658680467267246
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 5.006591796875,
+            "mean_abs": 0.08908937686965579,
+            "p95_abs": 0.42319030761718746,
+            "rms": 0.23383308884855494
+          },
+          "scores": {
+            "max_abs": 0.004749268293380737,
+            "mean_abs": 7.27837018313862e-08,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 6.88394030757802e-06
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 8.9505615234375,
+            "mean_abs": 0.2017684320466859,
+            "p95_abs": 0.7130195617675781,
+            "rms": 0.4220704161804224
+          },
+          "scores": {
+            "max_abs": 0.002938508987426758,
+            "mean_abs": 7.401229370208014e-08,
+            "p95_abs": 1.4901161193847656e-07,
+            "rms": 4.276418001636067e-06
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.917896271,
+              "xyxy": [
+                0.85724026,
+                304.916595,
+                510.190643,
+                662.594055
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9175180792808533,
+              "xyxy": [
+                0.9275888800621033,
+                304.9444580078125,
+                510.10260009765625,
+                662.580322265625
+              ]
+            },
+            "iou": 0.9995727640883207,
+            "coordinate_delta": [
+              -0.0703486200621033,
+              -0.027863007812527485,
+              0.08804290234377277,
+              0.013732734375025757
+            ],
+            "score_delta": 0.00037819171914676986
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.08804290234377277,
+        "max_score_abs_delta": 0.00037819171914676986
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.917896271,
+              "xyxy": [
+                0.85724026,
+                304.916595,
+                510.190643,
+                662.594055
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9178962707519531,
+              "xyxy": [
+                0.8572402596473694,
+                304.9165954589844,
+                510.1906433105469,
+                662.5940551757812
+              ]
+            },
+            "iou": 0.9999999976149081,
+            "coordinate_delta": [
+              3.526305913936767e-10,
+              -4.589844024849299e-07,
+              -3.105468522335286e-07,
+              -1.7578122424311005e-07
+            ],
+            "score_delta": 2.480469163401722e-10
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 4.589844024849299e-07,
+        "max_score_abs_delta": 2.480469163401722e-10
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9175180792808533,
+              "xyxy": [
+                0.9276748299598694,
+                304.94451904296875,
+                510.1026916503906,
+                662.580322265625
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9175180792808533,
+              "xyxy": [
+                0.9275888800621033,
+                304.9444580078125,
+                510.10260009765625,
+                662.580322265625
+              ]
+            },
+            "iou": 0.9999994807290074,
+            "coordinate_delta": [
+              8.594989776611328e-05,
+              6.103515625e-05,
+              9.1552734375e-05,
+              0.0
+            ],
+            "score_delta": 0.0
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 9.1552734375e-05,
+        "max_score_abs_delta": 0.0
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 0.00011307561161667461,
+        "p95_abs": 5.960464477539063e-08,
+        "rms": 0.0006658680467267246
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 6.6068115234375,
+          "mean_abs": 0.1311928210017227,
+          "p95_abs": 0.5104690551757812,
+          "rms": 0.28217646702358956
+        },
+        "scores": {
+          "max_abs": 0.0022423863410949707,
+          "mean_abs": 3.746812719674337e-08,
+          "p95_abs": 2.9802322387695312e-08,
+          "rms": 4.369494693094956e-06
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9184834957122803,
+              "xyxy": [
+                0.9357919692993164,
+                304.9183349609375,
+                510.081787109375,
+                662.7078247070312
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9175180792808533,
+              "xyxy": [
+                0.9275888800621033,
+                304.9444580078125,
+                510.10260009765625,
+                662.580322265625
+              ]
+            },
+            "iou": 0.9995136885177077,
+            "coordinate_delta": [
+              0.008203089237213135,
+              -0.026123046875,
+              -0.02081298828125,
+              0.12750244140625
+            ],
+            "score_delta": 0.000965416431427002
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.12750244140625,
+        "max_score_abs_delta": 0.000965416431427002
+      }
+    },
+    {
+      "image": "wide.png",
+      "shape": [
+        501,
+        1203,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 8.174986189146694e-05,
+        "p95_abs": 2.9802322387695312e-08,
+        "rms": 0.0005661756761939105
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 6.165863037109375,
+            "mean_abs": 0.07298541763708705,
+            "p95_abs": 0.31650009155273434,
+            "rms": 0.2108797573933368
+          },
+          "scores": {
+            "max_abs": 0.001331418752670288,
+            "mean_abs": 6.978706057582583e-08,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 4.285369450399107e-06
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 9.427978515625,
+            "mean_abs": 0.20139949143642472,
+            "p95_abs": 0.7180255889892576,
+            "rms": 0.43157089229907497
+          },
+          "scores": {
+            "max_abs": 0.0015023350715637207,
+            "mean_abs": 8.159028809695016e-08,
+            "p95_abs": 1.4901161193847656e-07,
+            "rms": 3.989321174029749e-06
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                267.975708,
+                82.9572601,
+                835.994629,
+                492.527893
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9214382171630859,
+              "xyxy": [
+                267.9889221191406,
+                83.14530944824219,
+                836.7155151367188,
+                492.5523986816406
+              ]
+            },
+            "iou": 0.9981915638903209,
+            "coordinate_delta": [
+              -0.013214119140627645,
+              -0.18804934824218833,
+              -0.7208861367187183,
+              -0.02450568164061906
+            ],
+            "score_delta": 0.0010451078369140276
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.7208861367187183,
+        "max_score_abs_delta": 0.0010451078369140276
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.922483325,
+              "xyxy": [
+                267.975708,
+                82.9572601,
+                835.994629,
+                492.527893
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9224833250045776,
+              "xyxy": [
+                267.9757080078125,
+                82.95726013183594,
+                835.99462890625,
+                492.52789306640625
+              ]
+            },
+            "iou": 0.9999999995813323,
+            "coordinate_delta": [
+              -7.812502644810593e-09,
+              -3.1835938330004865e-08,
+              9.375003173772711e-08,
+              -6.640624405918061e-08
+            ],
+            "score_delta": -4.5776715751344454e-12
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 9.375003173772711e-08,
+        "max_score_abs_delta": 4.5776715751344454e-12
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9214382767677307,
+              "xyxy": [
+                267.9888916015625,
+                83.14530944824219,
+                836.715576171875,
+                492.5523986816406
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9214382171630859,
+              "xyxy": [
+                267.9889221191406,
+                83.14530944824219,
+                836.7155151367188,
+                492.5523986816406
+              ]
+            },
+            "iou": 0.9999998390215602,
+            "coordinate_delta": [
+              -3.0517578125e-05,
+              0.0,
+              6.103515625e-05,
+              0.0
+            ],
+            "score_delta": 5.960464477539063e-08
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 6.103515625e-05,
+        "max_score_abs_delta": 5.960464477539063e-08
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 0.003921627998352051,
+        "mean_abs": 8.174986189146694e-05,
+        "p95_abs": 2.9802322387695312e-08,
+        "rms": 0.0005661756761939105
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 5.4876708984375,
+          "mean_abs": 0.1130838785639831,
+          "p95_abs": 0.40774841308593746,
+          "rms": 0.26288079227933603
+        },
+        "scores": {
+          "max_abs": 0.0026584863662719727,
+          "mean_abs": 6.611157386075883e-08,
+          "p95_abs": 2.9802322387695312e-08,
+          "rms": 7.975847297413811e-06
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 1,
+        "reference_count": 1,
+        "matched": [
+          {
+            "class_id": 16,
+            "actual": {
+              "class_id": 16,
+              "confidence": 0.9224833250045776,
+              "xyxy": [
+                267.97625732421875,
+                83.15762329101562,
+                836.6495361328125,
+                492.53173828125
+              ]
+            },
+            "reference": {
+              "class_id": 16,
+              "confidence": 0.9214382171630859,
+              "xyxy": [
+                267.9889221191406,
+                83.14530944824219,
+                836.7155151367188,
+                492.5523986816406
+              ]
+            },
+            "iou": 0.9997811940511175,
+            "coordinate_delta": [
+              -0.012664794921875,
+              0.0123138427734375,
+              -0.06597900390625,
+              -0.020660400390625
+            ],
+            "score_delta": 0.0010451078414916992
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.06597900390625,
+        "max_score_abs_delta": 0.0010451078414916992
+      }
+    },
+    {
+      "image": "zidane.png",
+      "shape": [
+        720,
+        1280,
+        3
+      ],
+      "preprocessing": {
+        "max_abs": 5.960464477539063e-08,
+        "mean_abs": 3.906472253826602e-09,
+        "p95_abs": 2.9802322387695312e-08,
+        "rms": 1.0532648698564476e-08
+      },
+      "raw_output": {
+        "preprocessing_effect_same_onnx_backend": {
+          "boxes": {
+            "max_abs": 0.000885009765625,
+            "mean_abs": 1.4559775590896607e-05,
+            "p95_abs": 6.103515625e-05,
+            "rms": 3.0677850517235875e-05
+          },
+          "scores": {
+            "max_abs": 4.112720489501953e-06,
+            "mean_abs": 2.0448029750869388e-08,
+            "p95_abs": 8.940696716308594e-08,
+            "rms": 3.628724511488498e-08
+          }
+        },
+        "trt_vs_onnx_same_gpu_input": {
+          "boxes": {
+            "max_abs": 30.635009765625,
+            "mean_abs": 0.183026890066408,
+            "p95_abs": 0.6975509643554686,
+            "rms": 0.5466684388898283
+          },
+          "scores": {
+            "max_abs": 0.004320055246353149,
+            "mean_abs": 2.2980038608823503e-07,
+            "p95_abs": 1.4901161193847656e-07,
+            "rms": 1.2946735921315514e-05
+          }
+        }
+      },
+      "final_cpp_vs_onnx": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 3,
+        "reference_count": 3,
+        "matched": [
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.856810093,
+              "xyxy": [
+                748.789551,
+                41.2827148,
+                1149.31421,
+                710.837402
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8577837944030762,
+              "xyxy": [
+                748.7894287109375,
+                41.3692626953125,
+                1149.3870849609375,
+                710.7779541015625
+              ]
+            },
+            "iou": 0.9995998094936503,
+            "coordinate_delta": [
+              0.00012228906246036786,
+              -0.08654789531249918,
+              -0.07287496093749724,
+              0.059447898437497315
+            ],
+            "score_delta": -0.000973701403076177
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.789233446,
+              "xyxy": [
+                142.94519,
+                200.792023,
+                1135.07043,
+                712.399658
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.7879738807678223,
+              "xyxy": [
+                143.08154296875,
+                200.774658203125,
+                1134.8448486328125,
+                712.4093017578125
+              ]
+            },
+            "iou": 0.999582442650321,
+            "coordinate_delta": [
+              -0.13635296875000336,
+              0.017364796875000366,
+              0.22558136718748756,
+              -0.009643757812455078
+            ],
+            "score_delta": 0.0012595652321777395
+          },
+          {
+            "class_id": 27,
+            "actual": {
+              "class_id": 27,
+              "confidence": 0.486331522,
+              "xyxy": [
+                361.046692,
+                438.288574,
+                524.189758,
+                715.967773
+              ]
+            },
+            "reference": {
+              "class_id": 27,
+              "confidence": 0.48391300439834595,
+              "xyxy": [
+                361.04864501953125,
+                438.2520751953125,
+                524.0501098632812,
+                715.9412841796875
+              ]
+            },
+            "iou": 0.9989055477265867,
+            "coordinate_delta": [
+              -0.0019530195312427168,
+              0.03649880468748279,
+              0.13964813671873344,
+              0.026488820312465577
+            ],
+            "score_delta": 0.002418517601654069
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.22558136718748756,
+        "max_score_abs_delta": 0.002418517601654069
+      },
+      "postprocess_cpp_vs_python_on_identical_trt_output": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 3,
+        "reference_count": 3,
+        "matched": [
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.856810093,
+              "xyxy": [
+                748.789551,
+                41.2827148,
+                1149.31421,
+                710.837402
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8568100929260254,
+              "xyxy": [
+                748.78955078125,
+                41.28271484375,
+                1149.314208984375,
+                710.83740234375
+              ]
+            },
+            "iou": 0.9999999963393619,
+            "coordinate_delta": [
+              2.1874996036785888e-07,
+              -4.374999917899913e-08,
+              1.0156250027648639e-06,
+              -3.4375000268482836e-07
+            ],
+            "score_delta": 7.397460421998403e-11
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.789233446,
+              "xyxy": [
+                142.94519,
+                200.792023,
+                1135.07043,
+                712.399658
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.7892334461212158,
+              "xyxy": [
+                142.9451904296875,
+                200.79202270507812,
+                1135.0704345703125,
+                712.399658203125
+              ]
+            },
+            "iou": 0.9999999939868202,
+            "coordinate_delta": [
+              -4.2968750335603545e-07,
+              2.9492187536561687e-07,
+              -4.5703125124418875e-06,
+              -2.031249550782377e-07
+            ],
+            "score_delta": -1.2121581516311153e-10
+          },
+          {
+            "class_id": 27,
+            "actual": {
+              "class_id": 27,
+              "confidence": 0.486331522,
+              "xyxy": [
+                361.046692,
+                438.288574,
+                524.189758,
+                715.967773
+              ]
+            },
+            "reference": {
+              "class_id": 27,
+              "confidence": 0.4863315224647522,
+              "xyxy": [
+                361.04669189453125,
+                438.28857421875,
+                524.1897583007812,
+                715.9677734375
+              ]
+            },
+            "iou": 0.9999999951465152,
+            "coordinate_delta": [
+              1.0546875728323357e-07,
+              -2.1875001721127774e-07,
+              -3.0078126656007953e-07,
+              -4.3750003442255547e-07
+            ],
+            "score_delta": -4.6475218118402495e-10
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 4.5703125124418875e-06,
+        "max_score_abs_delta": 4.6475218118402495e-10
+      },
+      "postprocess_identical_output_pass": true,
+      "preprocessing_one_uint8_level_bound_pass": true,
+      "pt_cpu_fp32_vs_onnx_cpu_fp32": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 3,
+        "reference_count": 3,
+        "matched": [
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8577837944030762,
+              "xyxy": [
+                748.78955078125,
+                41.3692626953125,
+                1149.3870849609375,
+                710.7779541015625
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8577837944030762,
+              "xyxy": [
+                748.7894287109375,
+                41.3692626953125,
+                1149.3870849609375,
+                710.7779541015625
+              ]
+            },
+            "iou": 0.999999695279514,
+            "coordinate_delta": [
+              0.0001220703125,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 0.0
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.7879746556282043,
+              "xyxy": [
+                143.08132934570312,
+                200.774658203125,
+                1134.8447265625,
+                712.4093017578125
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.7879738807678223,
+              "xyxy": [
+                143.08154296875,
+                200.774658203125,
+                1134.8448486328125,
+                712.4093017578125
+              ]
+            },
+            "iou": 0.9999996615187463,
+            "coordinate_delta": [
+              -0.000213623046875,
+              0.0,
+              -0.0001220703125,
+              0.0
+            ],
+            "score_delta": 7.748603820800781e-07
+          },
+          {
+            "class_id": 27,
+            "actual": {
+              "class_id": 27,
+              "confidence": 0.4839134216308594,
+              "xyxy": [
+                361.04864501953125,
+                438.2520751953125,
+                524.0501098632812,
+                715.9412841796875
+              ]
+            },
+            "reference": {
+              "class_id": 27,
+              "confidence": 0.48391300439834595,
+              "xyxy": [
+                361.04864501953125,
+                438.2520751953125,
+                524.0501098632812,
+                715.9412841796875
+              ]
+            },
+            "iou": 1.0,
+            "coordinate_delta": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "score_delta": 4.172325134277344e-07
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.000213623046875,
+        "max_score_abs_delta": 7.748603820800781e-07
+      },
+      "opencv_cpp_vs_python_input": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "p95_abs": 0.0,
+        "rms": 0.0
+      },
+      "cuda_vs_opencv_cpp_input": {
+        "max_abs": 5.960464477539063e-08,
+        "mean_abs": 3.906472253826602e-09,
+        "p95_abs": 2.9802322387695312e-08,
+        "rms": 1.0532648698564476e-08
+      },
+      "trt_preprocessing_effect_same_engine": {
+        "boxes": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "p95_abs": 0.0,
+          "rms": 0.0
+        },
+        "scores": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "p95_abs": 0.0,
+          "rms": 0.0
+        }
+      },
+      "trt_cpp_opencv_input_vs_onnx_reference": {
+        "matching": "maximum cardinality; same class; prefer higher IoU edges",
+        "min_match_iou": 0.9,
+        "actual_count": 3,
+        "reference_count": 3,
+        "matched": [
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.8568100929260254,
+              "xyxy": [
+                748.78955078125,
+                41.28271484375,
+                1149.314208984375,
+                710.83740234375
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.8577837944030762,
+              "xyxy": [
+                748.7894287109375,
+                41.3692626953125,
+                1149.3870849609375,
+                710.7779541015625
+              ]
+            },
+            "iou": 0.9995998070575042,
+            "coordinate_delta": [
+              0.0001220703125,
+              -0.0865478515625,
+              -0.0728759765625,
+              0.0594482421875
+            ],
+            "score_delta": -0.0009737014770507812
+          },
+          {
+            "class_id": 0,
+            "actual": {
+              "class_id": 0,
+              "confidence": 0.7892334461212158,
+              "xyxy": [
+                142.9451904296875,
+                200.79202270507812,
+                1135.0704345703125,
+                712.399658203125
+              ]
+            },
+            "reference": {
+              "class_id": 0,
+              "confidence": 0.7879738807678223,
+              "xyxy": [
+                143.08154296875,
+                200.774658203125,
+                1134.8448486328125,
+                712.4093017578125
+              ]
+            },
+            "iou": 0.9995824394515259,
+            "coordinate_delta": [
+              -0.1363525390625,
+              0.017364501953125,
+              0.2255859375,
+              -0.0096435546875
+            ],
+            "score_delta": 0.0012595653533935547
+          },
+          {
+            "class_id": 27,
+            "actual": {
+              "class_id": 27,
+              "confidence": 0.4863315224647522,
+              "xyxy": [
+                361.04669189453125,
+                438.28857421875,
+                524.1897583007812,
+                715.9677734375
+              ]
+            },
+            "reference": {
+              "class_id": 27,
+              "confidence": 0.48391300439834595,
+              "xyxy": [
+                361.04864501953125,
+                438.2520751953125,
+                524.0501098632812,
+                715.9412841796875
+              ]
+            },
+            "iou": 0.9989055428795551,
+            "coordinate_delta": [
+              -0.001953125,
+              0.0364990234375,
+              0.1396484375,
+              0.0264892578125
+            ],
+            "score_delta": 0.00241851806640625
+          }
+        ],
+        "unmatched_actual": [],
+        "unmatched_reference": [],
+        "max_coordinate_abs_delta": 0.2255859375,
+        "max_score_abs_delta": 0.00241851806640625
+      }
+    }
+  ]
+}

@@ -142,7 +142,7 @@ if(ENABLE_WARNINGS)
     if(MSVC)
         add_compile_options(/W4)
     else()
-        add_compile_options(-Wall -Wextra -Wpedantic)
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wall> $<$<COMPILE_LANGUAGE:CXX>:-Wextra> $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>)
     endif()
 endif()
 
@@ -175,6 +175,13 @@ set_target_properties(cuda_preprocessing PROPERTIES
     POSITION_INDEPENDENT_CODE ON
 )
 
+add_library(cuda_postprocessing STATIC include/yolos/core/cuda_postprocessing.cu)
+target_include_directories(cuda_postprocessing PRIVATE "${CMAKE_SOURCE_DIR}/include" "${TENSORRT_INCLUDE_DIR}")
+target_link_libraries(cuda_postprocessing PRIVATE CUDA::cudart)
+# Keep FP32 IoU arithmetic consistent with the CPU reference at exact thresholds.
+target_compile_options(cuda_postprocessing PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--fmad=false>)
+set_target_properties(cuda_postprocessing PROPERTIES CUDA_SEPARABLE_COMPILATION ON POSITION_INDEPENDENT_CODE ON)
+
 # ============================================================================
 # Helper Function
 # ============================================================================
@@ -188,6 +195,7 @@ function(add_yolo_executable name source)
         ${NVINFER_LIB}
         CUDA::cudart
         cuda_preprocessing
+        cuda_postprocessing
         Threads::Threads
     )
     # Optional: link nvonnxparser if available
@@ -208,6 +216,7 @@ endfunction()
 # ============================================================================
 add_yolo_executable(image_inference src/image_inference.cpp)
 add_yolo_executable(baseline_detection src/baseline_detection.cpp)
+add_yolo_executable(cuda_postprocessing_test tests/detection/cuda_postprocessing_test.cpp)
 add_yolo_executable(video_inference src/video_inference.cpp)
 add_yolo_executable(camera_inference src/camera_inference.cpp)
 add_yolo_executable(class_image_inference src/class_image_inference.cpp)

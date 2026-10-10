@@ -70,10 +70,11 @@ int main(int argc, char* argv[]) try {
     bool display = true, graph = true;
     float conf = .4f, iou = .45f;
     int maxDet = 300;
-    std::string csvPath;
+    std::string csvPath, postprocessMode="cpu";
     for (int i = 4; i < argc; ++i) {
         std::string a = argv[i];
-        if (a == "--no-display") display = false;
+        if (a=="--postprocess" && i+1<argc) postprocessMode=argv[++i];
+        else if (a == "--no-display") display = false;
         else if (a == "--csv" && i+1 < argc) csvPath = argv[++i];
         else if (a == "--graph" && i+1 < argc) {
             std::string v = argv[++i];
@@ -103,6 +104,7 @@ int main(int argc, char* argv[]) try {
     YOLODetector detector(modelPath, labelsPath);
     detector.setGraphEnabled(graph);
     detector.setMaxDet(maxDet);
+    detector.setPostprocessMode(postprocessMode);
 
     for (const auto& imgPath : imageFiles) {
         std::cout << "\nProcessing: " << imgPath << std::endl;

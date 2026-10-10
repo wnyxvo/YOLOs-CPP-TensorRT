@@ -1,0 +1,28 @@
+[
+  {
+    "case": "half_io",
+    "shape": [
+      1,
+      3,
+      640,
+      640
+    ],
+    "onnx_dtype": 10,
+    "returncode": 1,
+    "expected_error": "only FP32 I/O is implemented",
+    "pass": true
+  },
+  {
+    "case": "batch2",
+    "shape": [
+      2,
+      3,
+      640,
+      640
+    ],
+    "onnx_dtype": 1,
+    "returncode": 1,
+    "expected_error": "Expected static FP32 NCHW input [1,3,H,W]",
+    "pass": true
+  }
+]

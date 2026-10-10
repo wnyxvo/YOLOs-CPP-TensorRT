@@ -70,12 +70,12 @@ public:
 
     struct StageTimes {
         double stagingMs{0};
-        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, d2hMs{0};
+        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, filterMs{0}, nmsMs{0}, d2hMs{0};
     };
     void setGraphEnabled(bool enabled) { graphEnabled_ = enabled; }
     bool isGraphEnabled() const { return graphEnabled_ && graphCaptured_; }
     void setProfiling(bool enabled) {
-        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 5>>();
+        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 7>>();
         profiling_ = enabled;
     }
     const StageTimes& stageTimes() const { return stageTimes_; }
@@ -90,8 +90,11 @@ public:
             if (!f) throw std::runtime_error("Cannot write tensor: " + path);
         };
         write(prefix + ".input.f32", in);
-        for (size_t i = 0; i < outputTensors_.size(); ++i)
-            write(prefix + ".output" + std::to_string(i) + ".f32", outputTensors_[i]);
+        for (size_t i = 0; i < outputTensors_.size(); ++i) {
+            auto& out = outputTensors_[i];
+            CUDA_CHECK(cudaMemcpy(out.hostBuf.data(),out.deviceBuf.data(),out.bytes,cudaMemcpyDeviceToHost));
+            write(prefix + ".output" + std::to_string(i) + ".f32", out);
+        }
     }
     void writeEngineInfo(std::ostream& os) const {
         os << "mode,name,dtype,shape,bytes\n";
@@ -156,7 +159,7 @@ protected:
     bool graphCaptured_{false};
     bool graphEnabled_{true};
     bool profiling_{false};
-    std::unique_ptr<std::array<trt::CudaEvent, 5>> events_;
+    std::unique_ptr<std::array<trt::CudaEvent, 7>> events_;
     StageTimes stageTimes_;
     void markStage(size_t i) { if (profiling_) (*events_)[i].record(stream_.get()); }
 
@@ -223,14 +226,13 @@ protected:
 
         markStage(3);
 
-        // 4. D2H copy of outputs
-        for (auto& out : outputTensors_) {
-            CUDA_CHECK(cudaMemcpyAsync(
-                out.hostBuf.data(), out.deviceBuf.data(), out.bytes,
-                cudaMemcpyDeviceToHost, stream_.get()));
-        }
-
+        // Optional output processing runs on the existing stream before D2H.
+        filterGpuOutputs();
         markStage(4);
+        nmsGpuOutputs();
+        markStage(5);
+        copyOutputsToHost();
+        markStage(6);
 
         // 5. Single sync point
         stream_.synchronize();
@@ -239,11 +241,21 @@ protected:
             stageTimes_.h2dMs = trt::CudaEvent::elapsed((*events_)[0], (*events_)[1]);
             stageTimes_.preprocessMs = trt::CudaEvent::elapsed((*events_)[1], (*events_)[2]);
             stageTimes_.inferenceMs = trt::CudaEvent::elapsed((*events_)[2], (*events_)[3]);
-            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
+            stageTimes_.filterMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
+            stageTimes_.nmsMs = trt::CudaEvent::elapsed((*events_)[4], (*events_)[5]);
+            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[5], (*events_)[6]);
         }
 
         // 6. Cache scale/pad for postprocessing (computed on host, negligible)
         computeScalePad(srcW, srcH);
+    }
+
+    virtual void filterGpuOutputs() {}
+    virtual void nmsGpuOutputs() {}
+    virtual void copyOutputsToHost() {
+        for (auto& out : outputTensors_)
+            CUDA_CHECK(cudaMemcpyAsync(out.hostBuf.data(),out.deviceBuf.data(),out.bytes,
+                                       cudaMemcpyDeviceToHost,stream_.get()));
     }
 
     // ====================================================================

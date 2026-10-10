@@ -1,0 +1,14 @@
+{
+  "CMakeLists.txt": "b273a0335d1e7622adce78e758d8fab7f55988e61468daf6e7032afdab621de2",
+  "include/yolos/core/cuda_postprocessing.cu": "4ca0ad54b18358b7cfee1b677df23819e23afd6631c85c839297dc0cfd231b5f",
+  "include/yolos/core/cuda_postprocessing.hpp": "34145336893a0f0181a295ece3605c8eb1c613876bd9aa1d25d1e0049d9c5141",
+  "include/yolos/core/detection_postprocessing.hpp": "a6a649df0b238a34615d2ba1f3464ec3f07e5da98b26cf1c4ae728b482abc4a7",
+  "include/yolos/core/trt_session_base.hpp": "c6b02b4e8bf1acac00cbe2794d8b9c41567e2f9c724dd9db062851f0893bd5b3",
+  "include/yolos/tasks/detection.hpp": "28f2cdeb3ac65bf66baa21ca52dcd7df695283c646ad88337a4b3b4caa85957e",
+  "src/baseline_detection.cpp": "042422b34eae04b1278ecdddcea06bcbb829c66c2b14ba3c87c1890bc834dd9e",
+  "src/image_inference.cpp": "4b1650ca3b775deca8bc89a0bf3993ab8864c64ef8a9d60caa3c79f1a09d00b2",
+  "tests/detection/cuda_postprocessing_test.cpp": "d4c1df9f48e2b4928ea8063fb3e2cc03e5d1df14ea1c685cbec841485b009ed2",
+  "scripts/cuda_postprocessing/run.py": "3231590239d982b47df7f1977fb121476a3714c26e969346a57c0705fc0b4fed",
+  "build/baseline_detection": "3c0e3fc9c316d26097019d02910735aedc00540b32eb66eb228dc511edf88133",
+  "build/cuda_postprocessing_test": "46e8fac2880e89ab4960435ef3450ba78750fe47af6cb6d50bd112b13b4f7eae"
+}

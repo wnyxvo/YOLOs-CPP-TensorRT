@@ -1,0 +1,427 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a6b7442..4ee17cc 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -142,7 +142,7 @@ if(ENABLE_WARNINGS)
+     if(MSVC)
+         add_compile_options(/W4)
+     else()
+-        add_compile_options(-Wall -Wextra -Wpedantic)
++        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wall> $<$<COMPILE_LANGUAGE:CXX>:-Wextra> $<$<COMPILE_LANGUAGE:CXX>:-Wpedantic>)
+     endif()
+ endif()
+ 
+@@ -175,6 +175,13 @@ set_target_properties(cuda_preprocessing PROPERTIES
+     POSITION_INDEPENDENT_CODE ON
+ )
+ 
++add_library(cuda_postprocessing STATIC include/yolos/core/cuda_postprocessing.cu)
++target_include_directories(cuda_postprocessing PRIVATE "${CMAKE_SOURCE_DIR}/include" "${TENSORRT_INCLUDE_DIR}")
++target_link_libraries(cuda_postprocessing PRIVATE CUDA::cudart)
++# Keep FP32 IoU arithmetic consistent with the CPU reference at exact thresholds.
++target_compile_options(cuda_postprocessing PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:--fmad=false>)
++set_target_properties(cuda_postprocessing PROPERTIES CUDA_SEPARABLE_COMPILATION ON POSITION_INDEPENDENT_CODE ON)
++
+ # ============================================================================
+ # Helper Function
+ # ============================================================================
+@@ -188,6 +195,7 @@ function(add_yolo_executable name source)
+         ${NVINFER_LIB}
+         CUDA::cudart
+         cuda_preprocessing
++        cuda_postprocessing
+         Threads::Threads
+     )
+     # Optional: link nvonnxparser if available
+@@ -208,6 +216,7 @@ endfunction()
+ # ============================================================================
+ add_yolo_executable(image_inference src/image_inference.cpp)
+ add_yolo_executable(baseline_detection src/baseline_detection.cpp)
++add_yolo_executable(cuda_postprocessing_test tests/detection/cuda_postprocessing_test.cpp)
+ add_yolo_executable(video_inference src/video_inference.cpp)
+ add_yolo_executable(camera_inference src/camera_inference.cpp)
+ add_yolo_executable(class_image_inference src/class_image_inference.cpp)
+diff --git a/include/yolos/core/trt_session_base.hpp b/include/yolos/core/trt_session_base.hpp
+index 374b233..7312126 100644
+--- a/include/yolos/core/trt_session_base.hpp
++++ b/include/yolos/core/trt_session_base.hpp
+@@ -70,12 +70,12 @@ public:
+ 
+     struct StageTimes {
+         double stagingMs{0};
+-        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, d2hMs{0};
++        float h2dMs{0}, preprocessMs{0}, inferenceMs{0}, filterMs{0}, nmsMs{0}, d2hMs{0};
+     };
+     void setGraphEnabled(bool enabled) { graphEnabled_ = enabled; }
+     bool isGraphEnabled() const { return graphEnabled_ && graphCaptured_; }
+     void setProfiling(bool enabled) {
+-        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 5>>();
++        if (enabled && !events_) events_ = std::make_unique<std::array<trt::CudaEvent, 7>>();
+         profiling_ = enabled;
+     }
+     const StageTimes& stageTimes() const { return stageTimes_; }
+@@ -90,8 +90,11 @@ public:
+             if (!f) throw std::runtime_error("Cannot write tensor: " + path);
+         };
+         write(prefix + ".input.f32", in);
+-        for (size_t i = 0; i < outputTensors_.size(); ++i)
+-            write(prefix + ".output" + std::to_string(i) + ".f32", outputTensors_[i]);
++        for (size_t i = 0; i < outputTensors_.size(); ++i) {
++            auto& out = outputTensors_[i];
++            CUDA_CHECK(cudaMemcpy(out.hostBuf.data(),out.deviceBuf.data(),out.bytes,cudaMemcpyDeviceToHost));
++            write(prefix + ".output" + std::to_string(i) + ".f32", out);
++        }
+     }
+     void writeEngineInfo(std::ostream& os) const {
+         os << "mode,name,dtype,shape,bytes\n";
+@@ -156,7 +159,7 @@ protected:
+     bool graphCaptured_{false};
+     bool graphEnabled_{true};
+     bool profiling_{false};
+-    std::unique_ptr<std::array<trt::CudaEvent, 5>> events_;
++    std::unique_ptr<std::array<trt::CudaEvent, 7>> events_;
+     StageTimes stageTimes_;
+     void markStage(size_t i) { if (profiling_) (*events_)[i].record(stream_.get()); }
+ 
+@@ -223,14 +226,13 @@ protected:
+ 
+         markStage(3);
+ 
+-        // 4. D2H copy of outputs
+-        for (auto& out : outputTensors_) {
+-            CUDA_CHECK(cudaMemcpyAsync(
+-                out.hostBuf.data(), out.deviceBuf.data(), out.bytes,
+-                cudaMemcpyDeviceToHost, stream_.get()));
+-        }
+-
++        // Optional output processing runs on the existing stream before D2H.
++        filterGpuOutputs();
+         markStage(4);
++        nmsGpuOutputs();
++        markStage(5);
++        copyOutputsToHost();
++        markStage(6);
+ 
+         // 5. Single sync point
+         stream_.synchronize();
+@@ -239,13 +241,23 @@ protected:
+             stageTimes_.h2dMs = trt::CudaEvent::elapsed((*events_)[0], (*events_)[1]);
+             stageTimes_.preprocessMs = trt::CudaEvent::elapsed((*events_)[1], (*events_)[2]);
+             stageTimes_.inferenceMs = trt::CudaEvent::elapsed((*events_)[2], (*events_)[3]);
+-            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
++            stageTimes_.filterMs = trt::CudaEvent::elapsed((*events_)[3], (*events_)[4]);
++            stageTimes_.nmsMs = trt::CudaEvent::elapsed((*events_)[4], (*events_)[5]);
++            stageTimes_.d2hMs = trt::CudaEvent::elapsed((*events_)[5], (*events_)[6]);
+         }
+ 
+         // 6. Cache scale/pad for postprocessing (computed on host, negligible)
+         computeScalePad(srcW, srcH);
+     }
+ 
++    virtual void filterGpuOutputs() {}
++    virtual void nmsGpuOutputs() {}
++    virtual void copyOutputsToHost() {
++        for (auto& out : outputTensors_)
++            CUDA_CHECK(cudaMemcpyAsync(out.hostBuf.data(),out.deviceBuf.data(),out.bytes,
++                                       cudaMemcpyDeviceToHost,stream_.get()));
++    }
++
+     // ====================================================================
+     // Legacy CPU-blob path (kept for classification & fallback)
+     // ====================================================================
+diff --git a/include/yolos/tasks/detection.hpp b/include/yolos/tasks/detection.hpp
+index f822bbb..7708a54 100644
+--- a/include/yolos/tasks/detection.hpp
++++ b/include/yolos/tasks/detection.hpp
+@@ -23,6 +23,7 @@
+ #include "yolos/core/nms.hpp"
+ #include "yolos/core/drawing.hpp"
+ #include "yolos/core/trt_session_base.hpp"
++#include "yolos/core/cuda_postprocessing.hpp"
+ 
+ namespace yolos {
+ namespace det {
+@@ -80,6 +81,7 @@ public:
+     virtual std::vector<Detection> detect(const cv::Mat& image,
+                                           float confThreshold = 0.4f,
+                                           float iouThreshold = 0.45f) {
++        configurePostprocess(confThreshold,iouThreshold);
+         // Full GPU pipeline: pinned H2D → CUDA letterbox → TRT infer → D2H
+         inferGpu(image);
+ 
+@@ -111,6 +113,31 @@ public:
+         }
+     }
+ 
++    enum class PostprocessMode { CPU, GPUFilter, GPUNms };
++    void setPostprocessMode(const std::string& mode) {
++        PostprocessMode next;
++        if (mode=="cpu") next=PostprocessMode::CPU;
++        else if (mode=="gpu-filter") next=PostprocessMode::GPUFilter;
++        else if (mode=="gpu-nms") next=PostprocessMode::GPUNms;
++        else throw std::invalid_argument("postprocess must be cpu, gpu-filter, or gpu-nms");
++        if (next!=PostprocessMode::CPU) {
++            const auto& shape=getOutputShape();
++            if ((version_!=YOLOVersion::V8 && version_!=YOLOVersion::V11) || numOutputs()!=1 ||
++                shape.size()!=3 || shape[0]!=1 || shape[1]!=int64_t(classNames_.size()+4) ||
++                shape[2]<1 || shape[2]>30000)
++                throw std::invalid_argument("GPU postprocessing requires standard YOLOv8/v11 [1,4+classes,N], N<=30000");
++            gpuPost_=std::make_unique<cuda::DetectionPostprocessor>(int(shape[2]),next==PostprocessMode::GPUNms);
++        } else gpuPost_.reset();
++        postprocessMode_=next;
++    }
++    const char* postprocessModeName() const {
++        return postprocessMode_==PostprocessMode::CPU ? "cpu" : postprocessMode_==PostprocessMode::GPUFilter ? "gpu-filter" : "gpu-nms";
++    }
++    size_t lastCandidateCount() const {return lastCandidateCount_;}
++    size_t lastResultCount() const {return lastResultCount_;}
++    size_t lastD2hBytes() const {return gpuPost_ ? gpuPost_->transferBytes(maxDet_) : outputTensors_[0].bytes;}
++    size_t postprocessDeviceBytes() const {return gpuPost_ ? gpuPost_->deviceBytes() : 0;}
++
+     void setMaxDet(int n) {
+         if (n < 1 || n > 30000) throw std::invalid_argument("max_det must be in [1,30000]");
+         maxDet_ = n;
+@@ -124,6 +151,55 @@ public:
+ 
+ protected:
+     int maxDet_{300};
++    PostprocessMode postprocessMode_{PostprocessMode::CPU};
++    std::unique_ptr<cuda::DetectionPostprocessor> gpuPost_;
++    float gpuConf_{.4f},gpuIou_{.45f};
++    size_t lastCandidateCount_{0},lastResultCount_{0};
++    void configurePostprocess(float conf,float iou) {
++        if (!std::isfinite(conf)||!std::isfinite(iou)||conf<0||conf>1||iou<0||iou>1)
++            throw std::invalid_argument("Detection thresholds must be finite in [0,1]");
++        gpuConf_=conf;gpuIou_=iou;
++    }
++    void filterGpuOutputs() override {
++        if (gpuPost_) gpuPost_->filter(static_cast<const float*>(outputTensors_[0].deviceBuf.data()),
++                                       int(classNames_.size()),gpuConf_,stream_.get());
++    }
++    void nmsGpuOutputs() override {
++        if (postprocessMode_==PostprocessMode::GPUNms) gpuPost_->nms(gpuIou_,maxDet_,stream_.get());
++    }
++    void copyOutputsToHost() override {
++        if (gpuPost_) gpuPost_->copyToHost(maxDet_,stream_.get());
++        else TrtSessionBase::copyOutputsToHost();
++    }
++    std::vector<Detection> finishCandidates(const std::vector<post::Candidate>& candidates,const cv::Size& size) {
++        std::vector<Detection> result;result.reserve(candidates.size());
++        for (const auto& c:candidates) {
++            Detection d;d.conf=c.score;d.classId=c.classId;
++            d.xyxy={std::clamp((c.x1-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
++                    std::clamp((c.y1-cachedPadY_)/cachedScaleY_,0.f,float(size.height)),
++                    std::clamp((c.x2-cachedPadX_)/cachedScaleX_,0.f,float(size.width)),
++                    std::clamp((c.y2-cachedPadY_)/cachedScaleY_,0.f,float(size.height))};
++            int x=int(std::round(d.xyxy[0])),y=int(std::round(d.xyxy[1]));
++            d.box=BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
++            result.push_back(d);
++        }
++        lastResultCount_=result.size();
++        return result;
++    }
++    std::vector<Detection> postprocessCompressed(const cv::Size& size) {
++        const auto& h=gpuPost_->header();
++        const auto capacity=size_t(getOutputShape()[2]);
++        if (h.overflow || h.candidateCount>capacity) throw std::runtime_error("GPU candidate capacity exceeded; no silent truncation");
++        if (h.invalid) throw std::runtime_error("Non-finite GPU candidate/score");
++        lastCandidateCount_=h.candidateCount;
++        size_t count=postprocessMode_==PostprocessMode::GPUNms ? h.resultCount : h.candidateCount;
++        if (count>capacity || (postprocessMode_==PostprocessMode::GPUNms && count>size_t(maxDet_)))
++            throw std::runtime_error("Invalid GPU result count");
++        std::vector<post::Candidate> candidates(gpuPost_->records(),gpuPost_->records()+count);
++        if (postprocessMode_==PostprocessMode::GPUFilter) candidates=post::nms(std::move(candidates),gpuIou_,maxDet_);
++        return finishCandidates(candidates,size);
++    }
++
+     YOLOVersion version_{YOLOVersion::Auto};
+     std::vector<std::string> classNames_;
+     std::vector<cv::Scalar> classColors_;
+@@ -140,6 +216,7 @@ protected:
+                                                YOLOVersion version,
+                                                float confThreshold,
+                                                float iouThreshold) {
++        if (gpuPost_) return postprocessCompressed(originalSize);
+         // Use cached scale/pad computed during GPU preprocessing
+         const float invScale = 1.0f / getCachedScale();
+         const float padX = getCachedPadX();
+@@ -175,56 +252,11 @@ protected:
+         if (outputShape.size() != 3 || outputShape[0] != 1 ||
+             static_cast<size_t>(numClasses) != classNames_.size())
+             throw std::runtime_error("Standard detection requires [1,4+classes,boxes] with matching labels");
+-        struct Candidate { std::array<float,4> xyxy; float score; int cls; };
+-        std::vector<Candidate> candidates;
+-        candidates.reserve(512);
+-        for (int d = 0; d < numDets; ++d) {
+-            int cls = 0; float score = rawOutput[4 * numDets + d];
+-            for (int c = 1; c < numClasses; ++c) {
+-                float v = rawOutput[(4 + c) * numDets + d];
+-                if (v > score) { score = v; cls = c; }
+-            }
+-            if (score <= confThreshold) continue;
+-            float cx = rawOutput[d], cy = rawOutput[numDets+d];
+-            float w = rawOutput[2*numDets+d], h = rawOutput[3*numDets+d];
+-            candidates.push_back({{cx-w*.5f,cy-h*.5f,cx+w*.5f,cy+h*.5f},score,cls});
+-        }
+-        std::stable_sort(candidates.begin(), candidates.end(),
+-                         [](const Candidate& a, const Candidate& b) { return a.score > b.score; });
+-        if (candidates.size() > 30000) candidates.resize(30000);
+-        std::vector<size_t> kept;
+-        kept.reserve(std::min(size_t(maxDet_), candidates.size()));
+-        auto iou = [](const std::array<float,4>& a, const std::array<float,4>& b) {
+-            float inter = std::max(0.f, std::min(a[2],b[2])-std::max(a[0],b[0])) *
+-                          std::max(0.f, std::min(a[3],b[3])-std::max(a[1],b[1]));
+-            float area = (a[2]-a[0])*(a[3]-a[1]) + (b[2]-b[0])*(b[3]-b[1])-inter;
+-            return area > 0 ? inter/area : 0.f;
+-        };
+-        for (size_t i=0;i<candidates.size();++i) {
+-            bool suppressed = false;
+-            for (size_t k : kept)
+-                if (candidates[i].cls == candidates[k].cls && iou(candidates[i].xyxy,candidates[k].xyxy)>iouThreshold) {
+-                    suppressed = true; break;
+-                }
+-            if (!suppressed) kept.push_back(i);
+-            if (kept.size() >= size_t(maxDet_)) break;
+-        }
+-        // NMS in input coordinates with float boxes. Undo letterbox and clip only afterwards.
+-        // Installed Ultralytics uses separate gains from rounded resize dimensions.
+-        (void)invScale;
+-        std::vector<Detection> detections; detections.reserve(kept.size());
+-        for (size_t i : kept) {
+-            const auto& c = candidates[i];
+-            Detection d; d.conf = c.score; d.classId = c.cls;
+-            d.xyxy = {std::clamp((c.xyxy[0]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
+-                      std::clamp((c.xyxy[1]-padY)/cachedScaleY_,0.f,float(originalSize.height)),
+-                      std::clamp((c.xyxy[2]-padX)/cachedScaleX_,0.f,float(originalSize.width)),
+-                      std::clamp((c.xyxy[3]-padY)/cachedScaleY_,0.f,float(originalSize.height))};
+-            int x = int(std::round(d.xyxy[0])), y = int(std::round(d.xyxy[1]));
+-            d.box = BoundingBox(x,y,int(std::round(d.xyxy[2]))-x,int(std::round(d.xyxy[3]))-y);
+-            detections.push_back(d);
+-        }
+-        return detections;
++        auto candidates=post::collect(rawOutput,numDets,numClasses,confThreshold);
++        lastCandidateCount_=candidates.size();
++        auto kept=post::nms(std::move(candidates),iouThreshold,maxDet_);
++        (void)invScale;(void)padX;(void)padY;
++        return finishCandidates(kept,originalSize);
+     }
+ 
+     /// @brief Postprocess for YOLOv7 format [batch, boxes, features]
+diff --git a/src/baseline_detection.cpp b/src/baseline_detection.cpp
+index cd66d2d..470f2c2 100644
+--- a/src/baseline_detection.cpp
++++ b/src/baseline_detection.cpp
+@@ -19,6 +19,7 @@ public:
+     using YOLODetector::YOLODetector;
+     double postMs{0};
+     std::vector<Detection> measured(const cv::Mat& im, float conf, float iou, bool profile) {
++        configurePostprocess(conf,iou);
+         inferGpu(im);
+         auto start = profile ? Clock::now() : Clock::time_point{};
+         auto result = postprocess(im.size(), inputShape_, version_, conf, iou);
+@@ -27,6 +28,9 @@ public:
+     }
+     void inferCpuForDiagnostic(const std::vector<float>& blob) { infer(blob.data(),blob.size()); }
+     void checkPostprocessing() {
++        // Synthetic expectations below use max_det=300 independently of the
++        // CLI limit being validated; the caller restores its configured limit.
++        setMaxDet(300);
+         auto* raw = outputTensors_[0].hostBuf.as<float>();
+         std::vector<float> backup(raw, raw + outputTensors_[0].bytes/sizeof(float));
+         auto savedX=cachedScaleX_, savedY=cachedScaleY_, savedPx=cachedPadX_, savedPy=cachedPadY_;
+@@ -66,16 +70,19 @@ int main(int argc, char** argv) try {
+     if (argc < 5) {
+         std::cerr << "Usage: baseline_detection ENGINE LABELS IMAGE_OR_FOLDER OUTPUT_PREFIX "
+                      "[--graph 0|1] [--profile] [--warmup N] [--runs N] [--dump] [--checks] "
+-                     "[--conf F] [--iou F]\n";
++                     "[--conf F] [--iou F] [--postprocess cpu|gpu-filter|gpu-nms] [--max-det N]\n";
+         return 1;
+     }
+     const std::string prefix = argv[4];
+-    int warmup = 30, runs = 100, graph = 1;
++    int warmup = 30, runs = 100, graph = 1, maxDet=300;
++    std::string postprocessMode="cpu";
+     float conf = .25f, iou = .45f;
+     bool profile = false, dump = false, checks = false;
+     for (int i = 5; i < argc; ++i) {
+         std::string a = argv[i];
+-        if (a == "--profile") profile = true;
++        if (a=="--postprocess" && i+1<argc) postprocessMode=argv[++i];
++        else if (a=="--max-det" && i+1<argc) maxDet=std::stoi(argv[++i]);
++        else if (a == "--profile") profile = true;
+         else if (a == "--dump") dump = true;
+         else if (a == "--checks") checks = true;
+         else if (i+1 < argc && a == "--warmup") warmup = std::stoi(argv[++i]);
+@@ -105,18 +112,21 @@ int main(int argc, char** argv) try {
+     }
+     BaselineDetector det(argv[1], argv[2], yolos::YOLOVersion::V11);
+     det.checkOutput();
++    det.setMaxDet(maxDet);
++    det.setPostprocessMode(postprocessMode);
+     det.setGraphEnabled(graph != 0);
+     if (graph && !det.isGraphEnabled()) throw std::runtime_error("Graph requested but capture unavailable");
+     det.setProfiling(profile);
+     std::ofstream io(prefix + ".engine.csv"), config(prefix + ".config.csv");
+     det.writeEngineInfo(io);
+-    config << "graph_requested,graph_actual,profile,warmup_per_image,runs_per_image,images,conf,iou,max_det,opencv,trt\n"
++    config << "graph_requested,graph_actual,profile,warmup_per_image,runs_per_image,images,conf,iou,max_det,opencv,trt,postprocess,candidate_capacity,extra_device_bytes\n"
+            << graph << ',' << det.isGraphEnabled() << ',' << profile << ',' << warmup << ',' << runs << ','
+-           << images.size() << ',' << conf << ',' << iou << ",300," << CV_VERSION << ','
+-           << NV_TENSORRT_MAJOR << '.' << NV_TENSORRT_MINOR << '.' << NV_TENSORRT_PATCH << '.' << NV_TENSORRT_BUILD << '\n';
++           << images.size() << ',' << conf << ',' << iou << ',' << maxDet << ',' << CV_VERSION << ','
++           << NV_TENSORRT_MAJOR << '.' << NV_TENSORRT_MINOR << '.' << NV_TENSORRT_PATCH << '.' << NV_TENSORRT_BUILD
++           << ',' << det.postprocessModeName() << ",8400," << det.postprocessDeviceBytes() << '\n';
+     std::ofstream results(prefix + ".detections.csv"), times(prefix + ".timings.csv");
+     results << "image,class_id,class_name,confidence,x1,y1,x2,y2\n" << std::setprecision(9);
+-    times << "image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,d2h_ms,postprocess_ms\n"
++    times << "image,iteration,e2e_ms,staging_ms,h2d_ms,preprocess_ms,inference_ms,filter_ms,nms_ms,d2h_ms,postprocess_ms,candidate_count,result_count,d2h_bytes\n"
+           << std::fixed << std::setprecision(6);
+     // Round-robin whole-set warmup and measurement to reduce image/order bias.
+     for (int n = 0; n < warmup; ++n)
+@@ -130,9 +140,9 @@ int main(int argc, char** argv) try {
+             if (profile) {
+                 const auto& t = det.stageTimes();
+                 times << ',' << t.stagingMs << ',' << t.h2dMs << ',' << t.preprocessMs << ',' << t.inferenceMs
+-                      << ',' << t.d2hMs << ',' << det.postMs;
+-            } else times << ",,,,,,";
+-            times << '\n';
++                      << ',' << t.filterMs << ',' << t.nmsMs << ',' << t.d2hMs << ',' << det.postMs;
++            } else times << ",,,,,,,,";
++            times << ',' << det.lastCandidateCount() << ',' << ds.size() << ',' << det.lastD2hBytes() << '\n';
+             if (n == 0) {
+                 for (const auto& d : ds) {
+                     results << csv(paths[k].filename().string()) << ',' << d.classId << ','
+@@ -181,6 +191,7 @@ int main(int argc, char** argv) try {
+         if (!rejected) throw std::runtime_error("Empty Mat accepted");
+         check << "PASS empty/gray/BGRA/float input rejected\n";
+         det.checkPostprocessing();
++        det.setMaxDet(maxDet);
+         check << "PASS float NMS, clipping after NMS, class-aware NMS, max_det and confidence boundary\n";
+     }
+     if (!io || !config || !results || !times) throw std::runtime_error("Output write failed");
+diff --git a/src/image_inference.cpp b/src/image_inference.cpp
+index 0d5d910..d1d0049 100644
+--- a/src/image_inference.cpp
++++ b/src/image_inference.cpp
+@@ -70,10 +70,11 @@ int main(int argc, char* argv[]) try {
+     bool display = true, graph = true;
+     float conf = .4f, iou = .45f;
+     int maxDet = 300;
+-    std::string csvPath;
++    std::string csvPath, postprocessMode="cpu";
+     for (int i = 4; i < argc; ++i) {
+         std::string a = argv[i];
+-        if (a == "--no-display") display = false;
++        if (a=="--postprocess" && i+1<argc) postprocessMode=argv[++i];
++        else if (a == "--no-display") display = false;
+         else if (a == "--csv" && i+1 < argc) csvPath = argv[++i];
+         else if (a == "--graph" && i+1 < argc) {
+             std::string v = argv[++i];
+@@ -103,6 +104,7 @@ int main(int argc, char* argv[]) try {
+     YOLODetector detector(modelPath, labelsPath);
+     detector.setGraphEnabled(graph);
+     detector.setMaxDet(maxDet);
++    detector.setPostprocessMode(postprocessMode);
+ 
+     for (const auto& imgPath : imageFiles) {
+         std::cout << "\nProcessing: " << imgPath << std::endl;

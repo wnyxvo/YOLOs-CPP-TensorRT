@@ -1,0 +1,37 @@
+[
+  {
+    "path": "results/baseline/samples/bus.png",
+    "bytes": 1753172,
+    "sha256": "bf5a9f8f6a89bb2ec24dff2121b2614344e76abc8a884bc66a46689ac0ee39c6"
+  },
+  {
+    "path": "results/baseline/samples/dog.png",
+    "bytes": 125456,
+    "sha256": "fd884edf3ba037becb245dc6860a59aa19ea87ac12b0532d2495e6c8f16ccd84"
+  },
+  {
+    "path": "results/baseline/samples/multi_mosaic.png",
+    "bytes": 1475283,
+    "sha256": "3d422e560f1f252f41c3908ac53ee2a147da84f07bed8b2440777bf18faf04c5"
+  },
+  {
+    "path": "results/baseline/samples/odd_landscape.png",
+    "bytes": 484448,
+    "sha256": "33e5716f77889ef1c93f57dece05bb875109d97cae3440deb7a70b7f80d82d96"
+  },
+  {
+    "path": "results/baseline/samples/portrait.png",
+    "bytes": 239900,
+    "sha256": "163e6f58372f9523f05897aa78d330ccf7c0fcf6a2a2565ec4e53ce2b542729d"
+  },
+  {
+    "path": "results/baseline/samples/wide.png",
+    "bytes": 304933,
+    "sha256": "a2547e8e7204885fd4a4269e54785f8e9fc2e1f4d57ffcb62ec343370925e3d3"
+  },
+  {
+    "path": "results/baseline/samples/zidane.png",
+    "bytes": 1041015,
+    "sha256": "6c2f6c030c660af02e1827b63e34ecd9045afd4751fd02abb760e06db6bbe7bf"
+  }
+]

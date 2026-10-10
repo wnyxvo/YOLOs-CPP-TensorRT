@@ -1,0 +1,194 @@
+{
+  "g1_cpu": {
+    "samples": 2800,
+    "mean_ms": 2.1782980721428573,
+    "p50_ms": 2.121355,
+    "p95_ms": 2.6914464999999996,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      2822400
+    ]
+  },
+  "g1_gpu-filter": {
+    "samples": 2800,
+    "mean_ms": 1.4600752410714286,
+    "p50_ms": 1.407116,
+    "p95_ms": 1.9464083999999997,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      268816
+    ]
+  },
+  "g1_gpu-nms": {
+    "samples": 2800,
+    "mean_ms": 1.5866595953571427,
+    "p50_ms": 1.5307145,
+    "p95_ms": 2.123978449999999,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      9616
+    ]
+  },
+  "g0_cpu": {
+    "samples": 2800,
+    "mean_ms": 3.101897136785714,
+    "p50_ms": 3.0893024999999996,
+    "p95_ms": 4.0777383,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      2822400
+    ]
+  },
+  "g0_gpu-filter": {
+    "samples": 2800,
+    "mean_ms": 2.3436197264285714,
+    "p50_ms": 2.2541830000000003,
+    "p95_ms": 3.3586972,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      268816
+    ]
+  },
+  "g0_gpu-nms": {
+    "samples": 2800,
+    "mean_ms": 2.575550386071429,
+    "p50_ms": 2.5665839999999998,
+    "p95_ms": 3.6298198999999984,
+    "candidates_per_image": {
+      "bus.png": [
+        47
+      ],
+      "dog.png": [
+        10
+      ],
+      "multi_mosaic.png": [
+        41
+      ],
+      "odd_landscape.png": [
+        10
+      ],
+      "portrait.png": [
+        10
+      ],
+      "wide.png": [
+        10
+      ],
+      "zidane.png": [
+        26
+      ]
+    },
+    "d2h_bytes": [
+      9616
+    ]
+  }
+}
